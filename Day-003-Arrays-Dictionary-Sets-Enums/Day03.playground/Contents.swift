@@ -242,3 +242,52 @@ var mascota2 = Mascota.gato
 print(mascota2)
 var mascota3 = Mascota.peces
 print(mascota3)
+
+//Mini Proyecto del dia 03 Analizador de Playlist Musicales
+struct Cancion {
+    let nombre : String
+    let artista : String
+    let duracion : Int
+}
+
+let playlist = [
+    Cancion(nombre: "Shake it Off", artista: "Taylor Swift", duracion: 220),
+    Cancion(nombre: "Me Porto Bonito", artista: "Bad Bunny", duracion: 178),
+    Cancion(nombre: "Cruel Summer", artista: "Taylor Swift", duracion: 179),
+    Cancion(nombre: "La Jumpa", artista: "Bad Bunny", duracion: 256),
+    Cancion(nombre: "As It Was", artista: "Harry Styles", duracion: 167),
+    Cancion(nombre: "Anti-Hero", artista: "Taylor Swift", duracion: 201)
+]
+
+var duracionTotal = 0
+duracionTotal += playlist[0].duracion
+duracionTotal += playlist[1].duracion
+duracionTotal += playlist[2].duracion
+duracionTotal += playlist[3].duracion
+duracionTotal += playlist[4].duracion
+duracionTotal += playlist[5].duracion
+
+var minutosPlaylist = duracionTotal / 60
+var segundosPlaylist = duracionTotal % 60
+
+print("Duracion total de la playlist: \(minutosPlaylist) minutos y \(segundosPlaylist) segundos")
+ 
+
+var artistasUnicos = Set<String>()
+artistasUnicos.insert(playlist[0].artista)
+artistasUnicos.insert(playlist[1].artista)
+artistasUnicos.insert(playlist[2].artista)
+artistasUnicos.insert(playlist[3].artista)
+artistasUnicos.insert(playlist[4].artista)
+artistasUnicos.insert(playlist[5].artista)
+
+
+print("Reporte de Artistas")
+var reporteArtistas = [String : Int]()
+reporteArtistas[playlist[0].artista] = 1
+reporteArtistas[playlist[1].artista] = 1
+reporteArtistas[playlist[2].artista] = 2
+reporteArtistas[playlist[3].artista] = 2
+reporteArtistas[playlist[4].artista] = 1
+reporteArtistas[playlist[5].artista] = 3
+print(reporteArtistas)
