@@ -180,3 +180,65 @@ user2.markAsActive()
 user2.incrementFollowersCountN(countN: 50)
 user2.verifyAccount()
 user2.showProfileSummaryN()
+
+
+//Repaso del dia 01 + 02
+
+//Mi mascota Digital
+
+struct MascotaDigital {
+    
+    let nombre : String
+    var hambre : Int
+    var felicidad : Int
+    var dormido : Bool
+    
+    var estadoHambre : String {
+        return hambre > 5 ? "Hambrienta 🍖" : "Saciada 😋"
+    }
+    
+    var estadoFelicidad : String {
+        return felicidad > 5 ? "Feliz 😊" : "Triste 😟"
+
+    }
+    var estadoSuenio : String{
+        return dormido ? "Durmiendo 😴" : "Despierta ☀️"
+
+    }
+    
+    mutating func alimentarla() {
+        if hambre > 0 {
+            hambre -= 2
+        }
+        print("Le diste de comer a \(nombre) cantidad actual de hambre \(hambre)")
+    }
+    mutating func jugarConMascota(){
+        print("Estas jugando con tu mascota virtual")
+        felicidad += 1
+        hambre += 1
+    }
+    mutating func cambiarEstadoSuenio (){
+        dormido.toggle()
+    }
+    func imprimirReporte() {
+            print("""
+            --- REPORTE DE ESTADO DE: \(nombre.uppercased()) ---
+            Felicidad: \(felicidad)/10 (\(estadoFelicidad))
+            Hambre:    \(hambre)/10 (\(estadoHambre))
+            Estado:    \(estadoSuenio)
+            ------------------------------------
+            """)
+        }
+    
+}
+
+var kira = MascotaDigital(nombre: "Kira", hambre: 5, felicidad: 5, dormido: false)
+
+print("--- Estado Inicial ---")
+kira.imprimirReporte()
+kira.jugarConMascota()
+kira.jugarConMascota()
+kira.cambiarEstadoSuenio()
+
+print("--- Estado Final ---")
+kira.imprimirReporte()
