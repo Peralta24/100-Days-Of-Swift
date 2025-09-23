@@ -1,2 +1,19 @@
 # 100-Days-Of-Swift
-Mi progreso en el reto #100DaysOfSwift de Paul Hudson
+Este repositorio documenta mi progreso en el reto **100 Days of Swift** de Paul Hudson.
+
+Aqui guardo mis notas, proyector y retos diarios relacionados al lenguaje Swift y el desarollo para iOS.
+
+Mi objetivo es aprender Swift de manera estructurada, practicar todos los dias y construir proyectos que me
+ayuden a mejorar como desarollador iOS.
+
+- [x] Día 1 – Variables, constantes y strings  
+- [x] Día 2 – Tipos de datos y operadores  
+
+
+
+
+## 🛠️ Proyectos
+
+- [Day 16–18] Proyecto 1: Storm Viewer – [Código](./Project1-StormViewer)  
+- [Day 19–21] Proyecto 2: Guess the Flag – [Código](./Project2-GuessTheFlag)  
+
