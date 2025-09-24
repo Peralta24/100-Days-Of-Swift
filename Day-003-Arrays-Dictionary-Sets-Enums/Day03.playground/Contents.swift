@@ -346,3 +346,120 @@ diasDeAsistencia.insert(DiaDeLaSemana.lunes)
 print("Esta semana el usuario ha entrenado \(diasDeAsistencia.count) dias distintos")
 print("El usuario entreno el martes ? \(diasDeAsistencia.contains(DiaDeLaSemana.martes))")
 
+//Mini Proyecto Biblioteca
+
+// --- 1. DEFINICIÓN DEL MODELO ---
+// Se crea la "plantilla" o "molde" para todos los futuros objetos de tipo Libro.
+struct Libro {
+    // --- Propiedades ---
+    // Datos que describen un libro.
+    let titulo: String
+    let autor : String
+    var copiasDisponibles : Int
+    
+    // Un Enum anidado para definir un tipo de dato específico para los géneros.
+    enum Genero {
+        case ficcion
+        case nonFiccion
+        case fantasia
+        case CienciaFiccion
+    }
+    var genero : Genero
+    
+    // Una propiedad computada que calcula el estado basado en las copias.
+    var prestado :String {
+        return copiasDisponibles > 0 ? "Disponible" : "Agotado"
+    }
+    
+    // --- Métodos (Acciones) ---
+    // Un método "mutating" porque cambia el valor de una propiedad (copiasDisponibles).
+    mutating func prestamo(){
+        copiasDisponibles -= 1
+    }
+    
+    mutating func devolucion(){
+        copiasDisponibles += 1
+    }
+    
+    // Un método para imprimir un resumen rápido del estado de un libro.
+    func mostrarInfo (){
+        print("Titulo : \(titulo), Autor : \(autor), Copias Disponibles : \(copiasDisponibles), Genero : \(genero) esta disponible ? : \(prestado)")
+    }
+}
+
+// --- 2. CREACIÓN DEL INVENTARIO INICIAL ---
+
+// Se crea un Array vacío que contendrá la colección de la biblioteca.
+var coleccionLibros = Array<Libro>()
+
+// Se crean las variables para cada libro individual.
+var libro1 = Libro(titulo: "1984", autor: "George Orwell", copiasDisponibles: 2, genero: .ficcion)
+// Se añade una COPIA de libro1 al array.
+coleccionLibros.append(libro1)
+
+var libro2 = Libro(titulo: "Sapiens", autor: "Yuval Noah Harari", copiasDisponibles: 3, genero: .nonFiccion)
+coleccionLibros.append(libro2)
+
+var libro3 = Libro(titulo: "El Hobbit", autor: "J.R.R Tolkien", copiasDisponibles: 4, genero: .fantasia)
+coleccionLibros.append(libro3)
+
+var libro4 = Libro(titulo: "Dune", autor: "Frank Herbert", copiasDisponibles: 1, genero: .CienciaFiccion)
+coleccionLibros.append(libro4)
+
+var libro5 = Libro(titulo: "El senor de los anillos", autor: "J.R.R Tolkien", copiasDisponibles: 1, genero: .fantasia)
+coleccionLibros.append(libro5)
+
+
+// --- 3. SIMULACIÓN DE EVENTOS DEL DÍA ---
+
+// Se imprime el total de libros inicial en la colección.
+print("La biblioteca tiene un total de \(coleccionLibros.count) libros")
+
+// Evento 1: Préstamo de "Dune"
+print("Juan pide prestado Dune")
+// Se modifica la COPIA del libro que está DENTRO del array en la posición 3.
+coleccionLibros[3].prestamo()
+// Se revisa el estado de la COPIA DENTRO del array para confirmar el cambio.
+print("La cantidad de copias disponibles de Dune es \(coleccionLibros[3].copiasDisponibles)")
+
+// Evento 2: Préstamo de "1984"
+print("Ana pide prestado 1984")
+coleccionLibros[0].prestamo()
+print("La cantidad de copias disponibles de 1984 es \(coleccionLibros[0].copiasDisponibles)")
+
+// Evento 3: Préstamo de "El Hobbit"
+print("Carlos pide prestado El Hobbit")
+coleccionLibros[2].prestamo()
+print("La cantidad de copias disponibles de El Hobbit es \(coleccionLibros[2].copiasDisponibles)")
+
+// Evento 4: Devolución de "1984"
+coleccionLibros[0].devolucion()
+
+
+// --- 4. GENERACIÓN DE REPORTES FINALES ---
+
+// Reporte de Inventario (basado en las variables originales, no en el array actualizado).
+print("Todos los libros de la coleccion")
+libro1.mostrarInfo()
+libro2.mostrarInfo()
+libro3.mostrarInfo()
+libro4.mostrarInfo()
+libro5.mostrarInfo()
+
+// Reporte de Autores Únicos (creado manualmente).
+var autoresBiblioteca = Set<String>()
+autoresBiblioteca.insert(coleccionLibros[0].autor)
+autoresBiblioteca.insert(coleccionLibros[1].autor)
+autoresBiblioteca.insert(coleccionLibros[2].autor)
+autoresBiblioteca.insert(coleccionLibros[3].autor)
+autoresBiblioteca.insert(coleccionLibros[4].autor)
+print("Los autores de la biblioteca son: \(autoresBiblioteca)")
+
+// Reporte de Conteo por Género (creado manualmente).
+var generosBiblioteca = [String : Int]()
+generosBiblioteca["Ficción", default: 0] = 1
+generosBiblioteca["Non Ficción", default: 0] = 1
+generosBiblioteca["Fantasia", default: 0] = 1
+generosBiblioteca["Ciencia Ficción", default: 0] = 1
+generosBiblioteca["Fantasia", default: 0] = 2
+print("Titulos de cada genero de la biblioteca: \(generosBiblioteca)")
