@@ -9,6 +9,7 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 1 – Variables, constantes y strings  
 - [x] Día 2 – Tipos de datos y operadores 
 - [x] Día 3 – Tipos de estructuras de datos (Arrays,Dictionaries,Sets and enums)
+- [x] Día 4 – Anotaciones de Tipo
  
 
 
