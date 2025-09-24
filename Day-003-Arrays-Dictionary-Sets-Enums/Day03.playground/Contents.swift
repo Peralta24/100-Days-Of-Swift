@@ -291,3 +291,58 @@ reporteArtistas[playlist[3].artista] = 2
 reporteArtistas[playlist[4].artista] = 1
 reporteArtistas[playlist[5].artista] = 3
 print(reporteArtistas)
+
+
+//Ejercicios para practicar el dia 03
+
+//Ejercicio 1
+
+var listaDeTareas = Array<String>()
+
+listaDeTareas.append("Pasear al perro")
+listaDeTareas.append("Estudiar Swift")
+listaDeTareas.append("Hacer la compra")
+listaDeTareas.append("Llamar a mama")
+listaDeTareas.append("Llamar a papa")
+
+print("Tengo \(listaDeTareas.count) tareas pendientes")
+print("La segunda tarea es \(listaDeTareas[1])")
+print("Haz completo la tarea \(listaDeTareas[0])")
+listaDeTareas.remove(at: 0)
+print(listaDeTareas)
+print("Lista ordenada \(listaDeTareas.sorted())")
+
+//Ejercicio 2
+
+var calificaciones = [String : Int]()
+calificaciones["Ana"] = 9
+calificaciones["Juan"] = 7
+calificaciones["Luisa"] = 10
+print("Juan ha repetido su examen y su calificacion mejor 8")
+calificaciones["Juan"] = 8
+print("La calificacion de Ana es \(calificaciones["Ana",default: 0])")
+print("Calificación de Pedro \(calificaciones["Pedro"].map { String($0) } ?? "Calificacion no encontrada")")
+
+print(calificaciones)
+
+//Ejercicio 3
+enum DiaDeLaSemana {
+    case lunes
+    case martes
+    case miercoles
+    case jueves
+    case viernes
+    case sabado
+    case domingo
+}
+
+var diasDeAsistencia = Set<DiaDeLaSemana>()
+
+diasDeAsistencia.insert(DiaDeLaSemana.lunes)
+diasDeAsistencia.insert(DiaDeLaSemana.miercoles)
+diasDeAsistencia.insert(DiaDeLaSemana.viernes)
+diasDeAsistencia.insert(DiaDeLaSemana.lunes)
+
+print("Esta semana el usuario ha entrenado \(diasDeAsistencia.count) dias distintos")
+print("El usuario entreno el martes ? \(diasDeAsistencia.contains(DiaDeLaSemana.martes))")
+
