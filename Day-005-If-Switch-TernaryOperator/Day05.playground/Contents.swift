@@ -201,3 +201,61 @@ let currentTheme: Theme = .dark
 let uiTheme = currentTheme == .dark ? "Dark mode":"Light mode"
 
 print(uiTheme)
+
+//Mini Proyecto del dia 05
+
+let pesoEnKg = 7.0
+let esFragil = true
+
+enum TipoDeEnvio {
+    case estandar,express,prioritario
+}
+
+let tipoDeEnvioSeleccionado = TipoDeEnvio.prioritario
+
+
+var costoBase : Double
+
+if pesoEnKg < 1.0{
+    costoBase = 50
+}else if  pesoEnKg <= 5.0 {
+    costoBase = 120
+}else{
+    costoBase = 250
+}
+
+let multiplicadorDeUrgencia : Double
+let nombreDelServicio : String
+switch tipoDeEnvioSeleccionado {
+case .estandar:
+    multiplicadorDeUrgencia = 1.0
+    nombreDelServicio = "Estandar"
+case .express :
+    multiplicadorDeUrgencia = 1.5
+    nombreDelServicio = "Express"
+case .prioritario :
+    multiplicadorDeUrgencia = 2.0
+    nombreDelServicio = "Prioritario"
+}
+
+let costoExtraFragil : Double
+
+costoExtraFragil = esFragil ? 75.0 : 0.0
+
+var costoTotal = (costoBase * multiplicadorDeUrgencia) + costoExtraFragil
+
+print("Resumen de Envio Swift Express")
+print("Costo Base : $\(costoBase)")
+print("Tipo de Envio: \(nombreDelServicio) (Multiplicador: \(multiplicadorDeUrgencia))")
+print("Costo Extra por paquete fragil $\(costoExtraFragil)")
+print("-----------------------------")
+print("Costo Total: \(costoTotal)")
+
+
+
+
+
+
+
+
+
