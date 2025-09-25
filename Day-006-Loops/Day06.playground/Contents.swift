@@ -63,3 +63,31 @@ for _ in 1...5 {
 }
 
 print(lyric)
+
+//bucle while
+var countDown = 10
+
+while countDown > 0 {
+    print("\(countDown)")
+    countDown -= 1
+}
+print("Blast off!")
+
+
+//Funcion numero random
+
+var randomInt = Int.random(in: 1...100)
+var randomDouble = Double.random(in: 0...1)
+print(randomInt)
+print(randomDouble)
+
+
+//Comprobar cuantas veces se ejecutara hasta encontrar el numero random con while
+var roll = 0
+while roll != 20 {
+   roll = Int.random(in: 1...100)
+    print("You rolled a \(roll)")
+}
+print("You hit the 20!")
+
+//Como omitir elementos del bucle con break y continue
