@@ -254,7 +254,72 @@ print("Costo Total: \(costoTotal)")
 
 //Codigo de repaso
 
+//Sistema de Bonos para Empleados
 
+
+enum Puesto {
+    case junior, semiSenior, senior, liderTecnico
+}
+
+struct Empleado {
+    let nombre : String
+    let puesto : Puesto
+    let antiguedadEnAnios : Int
+    let proyectosCompletados : Int
+}
+// Array con la lista de empleados
+let listaDeEmpleados = [
+    Empleado(nombre: "Carlos", puesto: .junior, antiguedadEnAnios: 1, proyectosCompletados: 8),
+    Empleado(nombre: "Laura", puesto: .semiSenior, antiguedadEnAnios: 3, proyectosCompletados: 12),
+    Empleado(nombre: "David", puesto: .senior, antiguedadEnAnios: 6, proyectosCompletados: 9),
+    Empleado(nombre: "Elena", puesto: .liderTecnico, antiguedadEnAnios: 8, proyectosCompletados: 15)
+]
+
+for empleado in listaDeEmpleados {
+    var bonoBase : Double
+    var multiplicadorAntiguedad : Double
+    var bonoExtra : Double
+    
+    switch empleado.puesto {
+    case .junior:
+        bonoBase = 800.0
+    case .semiSenior:
+        bonoBase = 1200.0
+    case .senior:
+        bonoBase = 1800.0
+    case .liderTecnico:
+        bonoBase = 2500.0
+        
+    }
+    
+    if empleado.antiguedadEnAnios < 2 {
+        multiplicadorAntiguedad = 1.0
+    }else if empleado.antiguedadEnAnios > 2 && empleado.antiguedadEnAnios <= 5{
+        multiplicadorAntiguedad = 1.2
+    }else{
+        multiplicadorAntiguedad = 1.5
+    }
+    
+    
+    if empleado.proyectosCompletados > 10 {
+        bonoExtra = 500.0
+    }else{
+        bonoExtra = 0.0
+    }
+    
+    var bonotTotal = (bonoBase * multiplicadorAntiguedad) + bonoExtra
+    
+    print(
+        "Resumen de cada Empleado"
+        ,"Nombre: \(empleado.nombre)"
+        ,"Puesto: \(empleado.puesto)"
+        ,"Antiguedad en años: \(empleado.antiguedadEnAnios)"
+        ,"Proyectos Completados: \(empleado.proyectosCompletados)"
+        ,"Bono Base: $\(bonoBase)"
+    )
+    
+    
+}
 
 
 
