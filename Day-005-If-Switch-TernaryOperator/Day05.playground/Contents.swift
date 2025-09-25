@@ -275,11 +275,11 @@ let listaDeEmpleados = [
     Empleado(nombre: "Elena", puesto: .liderTecnico, antiguedadEnAnios: 8, proyectosCompletados: 15)
 ]
 
+print("--- Cálculo de Bonos Anuales ---")
+
 for empleado in listaDeEmpleados {
-    var bonoBase : Double
-    var multiplicadorAntiguedad : Double
-    var bonoExtra : Double
-    
+
+    let bonoBase: Double
     switch empleado.puesto {
     case .junior:
         bonoBase = 800.0
@@ -289,36 +289,29 @@ for empleado in listaDeEmpleados {
         bonoBase = 1800.0
     case .liderTecnico:
         bonoBase = 2500.0
-        
     }
-    
+
+    let multiplicadorAntiguedad: Double
     if empleado.antiguedadEnAnios < 2 {
         multiplicadorAntiguedad = 1.0
-    }else if empleado.antiguedadEnAnios > 2 && empleado.antiguedadEnAnios <= 5{
+    } else if empleado.antiguedadEnAnios <= 5 {
         multiplicadorAntiguedad = 1.2
-    }else{
+    } else {
         multiplicadorAntiguedad = 1.5
     }
-    
-    
-    if empleado.proyectosCompletados > 10 {
-        bonoExtra = 500.0
-    }else{
-        bonoExtra = 0.0
-    }
-    
-    var bonotTotal = (bonoBase * multiplicadorAntiguedad) + bonoExtra
-    
-    print(
-        "Resumen de cada Empleado"
-        ,"Nombre: \(empleado.nombre)"
-        ,"Puesto: \(empleado.puesto)"
-        ,"Antiguedad en años: \(empleado.antiguedadEnAnios)"
-        ,"Proyectos Completados: \(empleado.proyectosCompletados)"
-        ,"Bono Base: $\(bonoBase)"
-    )
-    
-    
+
+    // Usamos el operador ternario para el bono extra.
+    let bonoExtra: Double = empleado.proyectosCompletados > 10 ? 500.0 : 0.0
+
+    // Calculamos el bono total.
+    let bonoTotal = (bonoBase * multiplicadorAntiguedad) + bonoExtra
+
+    // Imprimimos el reporte final como se pedía en el reto.
+    print("""
+    Reporte para: \(empleado.nombre)
+    - Puesto: \(empleado.puesto)
+    - Bono Total: $\(bonoTotal)
+    """)
 }
 
 
