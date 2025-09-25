@@ -31,7 +31,7 @@ for libro in inventario {
     // 1. Declaramos variables para guardar los resultados
     let longitud: String
     let descripcion: String
-
+    
     // 2. Usamos IF/ELSE IF para ASIGNAR el valor a 'longitud'
     if libro.paginas < 300 {
         longitud = "Corto"
@@ -40,7 +40,7 @@ for libro in inventario {
     } else {
         longitud = "Largo"
     }
-
+    
     // 3. Usamos SWITCH para ASIGNAR el valor a 'descripcion'
     switch libro.genero {
     case .ficcion:
@@ -52,7 +52,7 @@ for libro in inventario {
     case .tecnologia:
         descripcion = "Lectura esencial para desarrolladores."
     }
-
+    
     // 4. Usamos el OPERADOR TERNARIO para obtener el estado
     let estadoLibre = libro.disponible ? "✅ Disponible" : "❌ Prestado"
 
