@@ -26,28 +26,41 @@ let inventario = [
     Libro(titulo: "Cosmos", autor: "Carl Sagan", genero: .ciencia, paginas: 384, disponible: true)
 ]
 
+// Bucle para generar el reporte de cada libro
 for libro in inventario {
+    // 1. Declaramos variables para guardar los resultados
+    let longitud: String
+    let descripcion: String
+
+    // 2. Usamos IF/ELSE IF para ASIGNAR el valor a 'longitud'
     if libro.paginas < 300 {
-        print("El libro \(libro.titulo) es Corto tiene \(libro.paginas) paginas")
-    }else if libro.paginas <= 450{
-        print("El libro \(libro.titulo) es Mediano tiene \(libro.paginas) paginas")
-    }else {
-        print("El libro \(libro.titulo) es largo tiene \(libro.paginas) paginas")
+        longitud = "Corto"
+    } else if libro.paginas <= 450 {
+        longitud = "Mediano"
+    } else {
+        longitud = "Largo"
     }
-    
+
+    // 3. Usamos SWITCH para ASIGNAR el valor a 'descripcion'
     switch libro.genero {
-        case .ficcion:
-        print("Ideal para viajar a otros mundos")
+    case .ficcion:
+        descripcion = "Ideal para viajar a otros mundos."
     case .ciencia:
-        print("Para expandir tu conocimiento del universo")
+        descripcion = "Para expandir tu conocimiento del universo."
     case .historia:
-        print("Un viaje al pasado para entender el presente")
+        descripcion = "Un viaje al pasado para entender el presente."
     case .tecnologia:
-        print("Lectura esencial para desarolladores")
+        descripcion = "Lectura esencial para desarrolladores."
     }
-    
-    var estadoLibre = libro.disponible ?  "✅ Disponible" : "❌ Prestado"
-    
+
+    // 4. Usamos el OPERADOR TERNARIO para obtener el estado
+    let estadoLibre = libro.disponible ? "✅ Disponible" : "❌ Prestado"
+
+    print("📖 Título: \(libro.titulo)")
+    print("   - Longitud: \(longitud)")
+    print("   - Descripción: \(descripcion)")
+    print("   - Estado: \(estadoLibre)")
+    print("")
 }
 
 
