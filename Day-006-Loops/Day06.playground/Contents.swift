@@ -133,3 +133,66 @@ for i in 1...100 {
         print(i)
     }
 }
+
+//Mini proyecto : Simulador de Lanzamiento de cohete
+
+let sistemas = ["✅ Propulsión", "⚠️ Telemetría", "✅ Navegación", "❌ Fuga de Combustible", "✅ Control de Vuelo"]
+print("---INICIANDO PROTOCOLO DE LANZAMIENTO---")
+var lanzamientoAbortado = false
+
+for sistema in sistemas {
+
+    print("El estado del sistema  Verficando : \(sistema) ")
+    
+    if sistema.contains("⚠️") {
+        print("Sistema con advertencia ignorado por ahora")
+        continue
+    }
+    
+    if sistema.contains("❌") {
+        lanzamientoAbortado = false
+        print("¡FALLA CRITICA!¡Abortando lanzamiento!")
+        break
+    }
+    
+
+}
+if !lanzamientoAbortado {
+    print("Iniciando cuenta regresiva")
+    var contador = 10
+
+    while contador > 0 {
+        print(contador)
+        contador -= 1
+    }
+    print("Lanzamiento en curso...")
+    var lanzamientoExitoso = false
+    lanzamientoExitoso = true
+
+    if lanzamientoExitoso {
+        var misionFallida = false // 1. Creamos una bandera, suponemos que todo irá bien.
+        
+        for altitud in 1...100 {
+            print("Ascendiendo... Altitud actual: \(altitud) km.")
+            
+            let chequeoDeAnomalia = Int.random(in: 1...200)
+            
+            if chequeoDeAnomalia == 42 {
+                misionFallida = true
+                print("💥 ¡Anomalía detectada a los \(altitud) km! La misión ha fallado.")
+                break // Salimos del bucle de ascenso.
+            }
+
+        }
+        if !misionFallida {
+            print("El cohete ha alcanzado la órbita. ¡Lanzamiento exitoso!")
+        }
+    }
+    
+    
+}else {
+    print("\n--- LANZAMIENTO CANCELADO DEBIDO A FALLA CRÍTICA ---")
+}
+
+
+
