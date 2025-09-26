@@ -74,4 +74,77 @@ default :
 }
 
 
+print("Ejercicio numero 2")
+//Challenge Number 2 of Challenge 05
+
+//Gestor de Inventario De Heroe
+
+struct Objeto {
+    let nombre : String
+    let tipo : String
+    let valorEnOro : Double
+    var cantidad: Int
+    let esMagico : Bool
+    
+    //Un metodo para simular la ventana de una unidad
+    mutating func venderUnaUnidad() {
+        if cantidad > 0 {
+            cantidad -= 1
+        }
+    }
+}
+
+var inventario = [
+    Objeto(nombre: "Espada de Acero", tipo: "Arma", valorEnOro: 150.0, cantidad: 1, esMagico: false),
+    Objeto(nombre: "Poción de Vida Menor", tipo: "Poción", valorEnOro: 20.0, cantidad: 10, esMagico: true),
+    Objeto(nombre: "Escudo de Roble", tipo: "Armadura", valorEnOro: 80.0, cantidad: 1, esMagico: false),
+    Objeto(nombre: "Anillo de Agilidad", tipo: "Joya", valorEnOro: 500.0, cantidad: 1, esMagico: true),
+    Objeto(nombre: "Daga Élfica", tipo: "Arma", valorEnOro: 350.0, cantidad: 1, esMagico: true),
+    Objeto(nombre: "Elixir Mayor", tipo: "Poción", valorEnOro: 100.0, cantidad: 3, esMagico: true)
+]
+
+var oroGanadoEnLaVisita = 0.0
+var objetosMagiocsInventarioRestante = 0
+var totalRestoInventartio = 0.0
+var valorMonton = 0.0
+for i in inventario.indices{
+    var interesMercader = Int.random(in: 1...10)
+    
+    if interesMercader > 5 {
+        inventario[i].venderUnaUnidad()
+        oroGanadoEnLaVisita = oroGanadoEnLaVisita + inventario[i].valorEnOro
+        print(" - \(inventario[i].nombre): Venta Exitosa! Se vendio una unidad por \(inventario[i].valorEnOro) quedan \(inventario[i].cantidad)")
+    }else {
+        print(" - \(inventario[i].nombre): El mercader no esta interesado")
+        
+    }
+    valorMonton = Double(inventario[i].cantidad) * inventario[i].valorEnOro
+    totalRestoInventartio += valorMonton
+    
+}
+for j in inventario.indices {
+    
+    if inventario[j].esMagico == true && inventario[j].cantidad > 0 {
+        objetosMagiocsInventarioRestante += 1
+    }
+}
+
+
+print("----------------------------------------------------------")
+
+print("Reporte de Riqueza del Heroe")
+print(" - Oro ganado en esta visita : \(oroGanadoEnLaVisita) de oro.")
+print(" - Valor total del inventario restante : \(totalRestoInventartio) de oro")
+print(" - Objetos magicos restantes del inventario : \(objetosMagiocsInventarioRestante)")
+switch totalRestoInventartio {
+case 0...500:
+    print("Clasificacion de Riqueza : Heroe sin dinero")
+
+case 500...1000 :
+    print("Clasificacion de Riqueza : Heroe con dinero")
+case 1000...:
+    print("Clasificacion de Riqueza : Heroe Adinerado")
+default:
+    print("Cantidad no contemplada")
+}
 
