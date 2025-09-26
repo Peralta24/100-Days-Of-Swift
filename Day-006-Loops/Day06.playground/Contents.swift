@@ -193,3 +193,4 @@ if !lanzamientoAbortado {
 
 
 
+//Examen del dia numero 06 completado
