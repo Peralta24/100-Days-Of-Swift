@@ -150,7 +150,7 @@ for sistema in sistemas {
     }
     
     if sistema.contains("❌") {
-        lanzamientoAbortado = false
+        lanzamientoAbortado = true
         print("¡FALLA CRITICA!¡Abortando lanzamiento!")
         break
     }
@@ -166,18 +166,15 @@ if !lanzamientoAbortado {
         contador -= 1
     }
     print("Lanzamiento en curso...")
-    var lanzamientoExitoso = false
-    lanzamientoExitoso = true
 
-    if lanzamientoExitoso {
         var misionFallida = false // 1. Creamos una bandera, suponemos que todo irá bien.
         
         for altitud in 1...100 {
             print("Ascendiendo... Altitud actual: \(altitud) km.")
             
             let chequeoDeAnomalia = Int.random(in: 1...200)
-            
-            if chequeoDeAnomalia == 42 {
+            let numeroDeAnomalia = 42
+            if chequeoDeAnomalia == numeroDeAnomalia {
                 misionFallida = true
                 print("💥 ¡Anomalía detectada a los \(altitud) km! La misión ha fallado.")
                 break // Salimos del bucle de ascenso.
@@ -187,7 +184,7 @@ if !lanzamientoAbortado {
         if !misionFallida {
             print("El cohete ha alcanzado la órbita. ¡Lanzamiento exitoso!")
         }
-    }
+    
     
     
 }else {
