@@ -11,6 +11,8 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 3 – Tipos de estructuras de datos (Arrays,Dictionaries,Sets and enums)
 - [x] Día 4 – Anotaciones de Tipo
 - [x] Día 5 – Condicionales (if, else if, switch, operador ternario)
+- [x] Día 6 – Bucles (for, for in, while, break, continue, random in)
+
 
  
 
