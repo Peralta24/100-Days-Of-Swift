@@ -413,3 +413,69 @@ print(playlist.agregarAlbum(album2))
 playlist.mostrarAlbunes()
 
 
+//Ultimo ejercicio Challenge 06
+
+struct ProductoCarrito {
+    let id: String
+    let nombre: String
+    let precio: Double
+}
+
+struct CarritoDeCompras {
+    var catalogo : [String : ProductoCarrito]
+    var items : [String : Int] = [:]
+    
+    mutating func agregar(productoId:String, cantidad: Int) -> String{
+        guard let producto = catalogo[productoId] else {
+            return "Producto no encontrado"
+        }
+        
+        if catalogo[productoId] != nil {
+            if let valor = items[productoId] {
+                items[productoId] = valor + cantidad
+            }else{
+                items[productoId] = cantidad
+            }
+        }
+        return "Se agegaron \(cantidad) \(productoId) al carrito (Total de items: \(items.count))"
+    }
+    
+    
+    func calcularTotal() -> Double {
+        var total = 0.0
+        
+        for (productoId, cantidad) in items {
+            if let producto = catalogo[productoId] {
+                total += producto.precio * Double(cantidad)
+            }
+        }
+        
+        return total
+    }
+    
+    func generarTickerDeCompra() -> String {
+        print("Ticket de compra:")
+        
+        for (productoId, cantidad) in items {
+            if let producto = catalogo[productoId] {
+                print("\(cantidad) x \(producto.nombre) - \(producto.precio) = \(producto.precio * Double(cantidad))")
+            }
+        }
+        
+        print("Total: \(calcularTotal())")
+        return ""
+    }
+}
+var producto11 = ProductoCarrito(id: "123", nombre: "Leche", precio: 29.0)
+var producto22 = ProductoCarrito(id: "456", nombre: "Mantequilla", precio: 14.0)
+var catalogoProductos = [
+    producto11.id : producto11,
+    producto22.id : producto22
+]
+
+var carritoDeCompras = CarritoDeCompras(catalogo: catalogoProductos)
+
+print(carritoDeCompras.agregar(productoId: "123", cantidad: 2))
+print(carritoDeCompras.agregar(productoId: "456", cantidad: 1))
+carritoDeCompras.generarTickerDeCompra()
+print("Total: \(carritoDeCompras.calcularTotal())")
