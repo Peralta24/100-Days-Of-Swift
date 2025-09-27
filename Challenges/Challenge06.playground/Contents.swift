@@ -58,3 +58,62 @@ for i in cuentas.indices {
     
     print()
 }
+
+
+//challenge numero dos
+
+struct Tarea {
+    let titulo : String
+    var completada : Bool
+    let fechaCreacion : String
+
+    mutating func alternarEstado() {
+        completada.toggle()
+    }
+}
+
+
+struct GestorDeTareas {
+    var listaTareas : [Tarea] = []
+    
+    mutating func agregar(_ titulo : String){
+        let nuevaTarea = Tarea(titulo: titulo, completada: false, fechaCreacion: "2025-09-27")
+           listaTareas.append(nuevaTarea)
+    }
+    
+    func mostrarTareasPendientes() -> String {
+        var resultado = ""
+        for tarea in listaTareas {
+           
+            if !tarea.completada {
+                resultado += "Tarea pendiente : \(tarea.titulo)\n"
+            }
+        }
+        if resultado.isEmpty {
+            return "No hay tareas pendientes"
+        }
+        
+        return resultado
+    }
+}
+
+
+var gestor = GestorDeTareas()
+
+gestor.agregar("Estudiar Swift")
+gestor.agregar("Comprar víveres")
+gestor.agregar("Hacer ejercicio")
+
+if gestor.listaTareas.count > 1 {
+    gestor.listaTareas[1].alternarEstado()
+}
+
+print("--Mis tareas pendientes--")
+print(gestor.mostrarTareasPendientes())
+
+
+
+
+
+
+
