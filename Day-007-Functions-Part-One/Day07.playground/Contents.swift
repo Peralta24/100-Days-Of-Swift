@@ -89,3 +89,6 @@ func printTimesTable(for number: Int) {
 }
 
 printTimesTable(for: 5)
+
+//Mini proyecto del dia 07
+
