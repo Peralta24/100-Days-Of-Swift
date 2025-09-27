@@ -184,3 +184,6 @@ for nombre in nombresInteresados{
 print("-------------------------------------")
 print("REPORTE FINAL : ")
 print(generarReporte(para: evento1))
+
+//Tercer mini proyecto
+
