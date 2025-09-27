@@ -293,4 +293,58 @@ print(resultadoC)
 print("Efectivo restante en el cajero: \(miCajero.efectivoDisponible)\n")
 
 
-//Ejercico 
+//Ejercico
+
+enum Categoria {
+    case lacteos, carnes, panaderia, limpieza
+}
+
+struct Producto {
+    let nombre : String
+    let precio : Double
+    let categoria : Categoria
+}
+
+struct Tienda {
+    var catalogo : [String : Producto]
+    var inventario : [String : Int]
+    var ingresos : Double = 0.0
+    
+    
+    mutating func vender (_ producto: String, cantidad : Int) -> (exito : Bool , mensaje : String){
+        guard let productoE = catalogo[producto]else {
+            return (false,"Error: El producto no esta en el catalogo")
+        }
+        
+        guard var cantidadActual = inventario[producto] else{
+            return (false,"Error: no hay ese producto")
+        }
+        if cantidadActual < cantidad{
+            return (false,"Error: no hay suficientes unidades en stock")
+        }
+        
+        var costoTotalVenta = productoE.precio * Double(cantidad)
+        
+        ingresos += costoTotalVenta
+        
+        cantidadActual -= cantidad
+        
+        inventario[producto] = cantidadActual
+        
+        return (true,"Venta realiza. Se vendieron \(cantidad) unidades de \(productoE.nombre). Ingreso total: \(costoTotalVenta)")
+    }
+}
+var producto1 = Producto(nombre: "Arrachera", precio: 200, categoria: .carnes)
+var tienda1 = Tienda(catalogo: ["arrachera":producto1], inventario: ["arrachera":10])
+
+
+print(tienda1.vender( "arrachera", cantidad: 5))
+print(tienda1.vender( "tacos",cantidad: 10))
+print(tienda1.vender("arrachera", cantidad: 20))
+print(tienda1.vender( "arrachera", cantidad: 5))
+print(tienda1.ingresos)
+
+
+
+//Ejercicio Propio Sobre Musica
+
