@@ -112,8 +112,54 @@ print("--Mis tareas pendientes--")
 print(gestor.mostrarTareasPendientes())
 
 
+//Challenge numero tres
+enum TipoDado : Int {
+    case d4 = 4
+    case d6 = 6
+    case d8 = 8
+    case d10 = 10
+    case d12 = 12
+    case d20 = 20
+}
 
 
+struct Jugador {
+    let nombre : String
+    var puntuacionRonda : Int = 0
+    
+    //Metodo para lanzar un daodo
+    mutating func lanzarDados(dado1 : TipoDado , dado2 :TipoDado){
+        var numeroRandom1 = Int.random(in: 1...dado1.rawValue)
+        var numeroRandom2 = Int.random(in: 1...dado2.rawValue)
+       
+        puntuacionRonda = numeroRandom1 + numeroRandom2
+        print("Lanza \(dado1),\(dado2) y obtuvo puntuacion de \(puntuacionRonda)")
+    }
+}
 
 
+var judadores = Array<Jugador>()
 
+var jugador1 = Jugador(nombre: "Jose")
+var jugador2 = Jugador(nombre: "Xana")
+var jugador3 = Jugador(nombre: "Angel")
+judadores.append(jugador1)
+judadores.append(jugador2)
+judadores.append(jugador3)
+
+for i in judadores.indices {
+    judadores[i].lanzarDados(dado1: .d20, dado2: .d4)
+    print("Puntuacion de ronda de \(judadores[i].nombre) es de \(judadores[i].puntuacionRonda)")
+    
+}
+var puntuacionMasAlta = 0
+var nombreDelGanador = ""
+
+for judadore in judadores {
+    if judadore.puntuacionRonda > puntuacionMasAlta{
+        nombreDelGanador = judadore.nombre
+        puntuacionMasAlta = judadore.puntuacionRonda
+    }
+}
+print("El jugador ganador es \(nombreDelGanador)")
+print("Obtuvo puntuacion mas alta de \(puntuacionMasAlta)")
