@@ -163,3 +163,95 @@ for judadore in judadores {
 }
 print("El jugador ganador es \(nombreDelGanador)")
 print("Obtuvo puntuacion mas alta de \(puntuacionMasAlta)")
+
+//Challenge numero cuatro
+
+//Maquina Expendedero
+
+struct MaquinaExpendedora {
+    var inventario : [String : Int]
+    
+    let precios : [String : Double]
+    
+    var dineroDepositado : Double = 0.0
+    
+    mutating func depositarDinero (_ cantidad : Double) {
+        dineroDepositado += cantidad
+        print("Depositaste la cantidad de $\(cantidad)")
+    }
+    
+    mutating func comprar(producto: String ) -> String {
+        
+            
+        guard let precio = precios[producto] else { return "El producto no existe" }
+            
+        if dineroDepositado < precio {
+            return "Dinero insuficiente"
+        }
+        
+        guard let cantidad = inventario[producto] else {return "Producto Agotado"}
+        
+        if cantidad <= 0 {
+           return "Producto agotado"
+        }
+        
+        inventario[producto] = cantidad - 1
+        let cambio = dineroDepositado - precio
+        
+        dineroDepositado = 0.0
+    
+        return "\(producto) y tu cambio \(cambio)"
+
+    }
+    
+}
+
+
+// 1. Asegúrate de que haya stock al crear la máquina
+var miMaquina = MaquinaExpendedora(
+    inventario: ["Papas Fritas": 4, "Refresco": 3, "Chocolate": 0], // ¡Ahora hay 5 papas!
+    precios: ["Papas Fritas": 1.25, "Refresco": 1.50, "Chocolate": 1.00]
+)
+
+print("¡Bienvenido!")
+
+// 2. Simula que el usuario deposita dinero
+miMaquina.depositarDinero(1.00)
+
+// 3. Ahora intenta la compra
+let resultado = miMaquina.comprar(producto: "Papas Fritas")
+print("Resultado: \(resultado)")
+
+// 4. Comprueba el estado final
+print("Dinero en la máquina: \(miMaquina.dineroDepositado)")
+print("Papas restantes: \(miMaquina.inventario["Papas Fritas"] ?? -1)")
+
+//Ejemplo del Cajero
+
+//El plano del cajero
+
+struct CajerAutomatico {
+    //Varibale para el efectivo que tiene el cajero fisicamente
+    var efectivoDisponible : Double
+    //Diccionario que simula la base de datos de cuentas bancaciras
+    //[NumeroDeCuenta:String]
+    var cuentasBancarias : [String : Double]
+    
+    mutating func retirar (cantidad montoARetirar:Double, deLaCuenta numeroDeCuenta: String) -> String {
+        
+        guard montoARetirar > 0 else{
+            return "Error: La cantidad a retirar debe ser positiva"
+        }
+        
+        guard let saldoActual = cuentasBancarias[numeroDeCuenta] else{
+            return "Error: El numero de cuenta no existe"
+        }
+        
+        guard saldoActual >= montoARetirar else{
+            let faltante = montoARetirar - saldoActual
+            return "Error: Saldo Insuficiente. Te falta \(faltante) para realizar esta operacion"
+        }
+        return "Procesando"
+    }
+}
+
