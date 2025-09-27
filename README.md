@@ -12,6 +12,7 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 4 – Anotaciones de Tipo
 - [x] Día 5 – Condicionales (if, else if, switch, operador ternario)
 - [x] Día 6 – Bucles (for, for in, while, break, continue, random in)
+- [x] Día 7 – Funciones Parte Uno (func,parametros,argumentos,tuplas,etiquetas)
 
 
  
