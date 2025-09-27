@@ -230,7 +230,7 @@ print("Papas restantes: \(miMaquina.inventario["Papas Fritas"] ?? -1)")
 
 //El plano del cajero
 
-struct CajerAutomatico {
+struct CajeroAutomatico {
     //Varibale para el efectivo que tiene el cajero fisicamente
     var efectivoDisponible : Double
     //Diccionario que simula la base de datos de cuentas bancaciras
@@ -251,7 +251,46 @@ struct CajerAutomatico {
             let faltante = montoARetirar - saldoActual
             return "Error: Saldo Insuficiente. Te falta \(faltante) para realizar esta operacion"
         }
-        return "Procesando"
+        
+        guard efectivoDisponible >= montoARetirar else{
+            return "Error : El cajero no dispone de suficiente efectivo este momento"
+        }
+        
+        cuentasBancarias[numeroDeCuenta] = saldoActual - montoARetirar
+        
+        efectivoDisponible -= montoARetirar
+        
+    
+        return "Retiro exitoso de \(montoARetirar). Tu nuevo saldo es: \(cuentasBancarias[numeroDeCuenta]!)."
     }
 }
 
+// --- CONFIGURACIÓN Y PRUEBAS ---
+
+// Creamos nuestro cajero con $10,000 de efectivo y dos cuentas de prueba
+var miCajero = CajeroAutomatico(
+    efectivoDisponible: 10000.0,
+    cuentasBancarias: ["12345": 500.0, "67890": 2500.0]
+)
+
+print("--- Intento 1: Retiro Exitoso ---")
+var resultadoC = miCajero.retirar(cantidad: 100.0, deLaCuenta: "12345")
+print(resultadoC)
+print("Efectivo restante en el cajero: \(miCajero.efectivoDisponible)\n")
+
+print("--- Intento 2: Saldo Insuficiente ---")
+resultadoC = miCajero.retirar(cantidad: 500.0, deLaCuenta: "12345") // El saldo ahora es 400
+print(resultadoC)
+print("Efectivo restante en el cajero: \(miCajero.efectivoDisponible)\n")
+
+print("--- Intento 3: Cuenta No Existe ---")
+resultadoC = miCajero.retirar(cantidad: 100.0, deLaCuenta: "00000")
+print(resultadoC)
+
+print("--- Intento 4: Cajero sin Fondos ---")
+resultadoC = miCajero.retirar(cantidad: 20000.0, deLaCuenta: "67890")
+print(resultadoC)
+print("Efectivo restante en el cajero: \(miCajero.efectivoDisponible)\n")
+
+
+//Ejercico 
