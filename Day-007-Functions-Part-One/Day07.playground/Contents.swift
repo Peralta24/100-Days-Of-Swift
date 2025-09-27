@@ -133,3 +133,54 @@ for comentario in comentarios {
         print("Comentario de \(comentario.autor) eliminado por ser spam ( \(comentario.texto))")
     }
 }
+
+
+//Segundo mini-proyecto del dia 07
+
+struct Evento {
+    let nombre : String
+    let capacidad : Int
+    var asistentes : [String] = []
+    
+    //Metodo para verficar si el evento esta lleno
+    func estaLleno() -> Bool{
+        return asistentes.count >= capacidad
+    }
+    
+    //Un metodo que modifica la struct
+    
+    mutating func inscribir (_ persona:String) -> Bool{
+        if !estaLleno(){
+            asistentes.append(persona)
+            return true
+        }else{
+            return false
+        }
+    }
+}
+
+
+func generarReporte(para evento : Evento) -> String{
+    var capacidadRestante = evento.capacidad - evento.asistentes.count
+    return "\(evento.nombre) - Plazas : \(evento.asistentes.count)/\(evento.capacidad) (Quedan \(capacidadRestante) disponibles)"
+}
+
+var evento1 = Evento(nombre: "Taller de Swift", capacidad: 6)
+
+var nombresInteresados = Array<String>()
+
+nombresInteresados.append("Xana")
+nombresInteresados.append("Victor")
+nombresInteresados.append("Rafael")
+nombresInteresados.append("Ricardo")
+
+for nombre in nombresInteresados{
+    if evento1.inscribir(nombre){
+        print("Inscripcion exitosa para \(nombre) en \(evento1.nombre)!")
+    }else{
+        print("Lo sentimos \(nombre) el evento \(evento1.nombre) ya esta lleno.")
+    }
+}
+print("-------------------------------------")
+print("REPORTE FINAL : ")
+print(generarReporte(para: evento1))
