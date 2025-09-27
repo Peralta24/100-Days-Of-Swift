@@ -348,3 +348,68 @@ print(tienda1.ingresos)
 
 //Ejercicio Propio Sobre Musica
 
+enum Genero {
+    case kpop, Anime, Chill
+}
+
+struct Album {
+    let titulo : String
+    let genero : Genero
+    let grupoOArista : String
+}
+
+struct Playlist {
+    var nombre: String
+    var canciones: [String : String]
+    var albums: [Album] = [] // Nombre en plural
+    var reproduciendo: Bool = false
+    
+    mutating func reproducir(la cancion: String) -> String {
+        guard let artista = canciones[cancion] else {
+            return "No existe la cancion en la Playlist"
+        }
+        reproduciendo = true
+        return "🎶 Reproduciendo '\(cancion)' de \(artista) en la playlist \(nombre)"
+    }
+    
+    mutating func pausar() -> String {
+        if reproduciendo {
+            reproduciendo = false
+            return "⏸️ Reproducción pausada."
+        } else {
+            return "No hay ninguna canción en reproducción."
+        }
+    }
+    
+    mutating func agregarAlbum(_ albumAAgregar: Album) -> String {
+        albums.append(albumAAgregar)
+        return "✅ Álbum '\(albumAAgregar.titulo)' agregado a la playlist."
+    }
+    
+    func mostrarAlbunes() {
+        print("\n--- Álbumes en la playlist \(nombre) ---")
+        if albums.isEmpty {
+            print("No hay álbumes en esta playlist.")
+        } else {
+            for albumEnPlaylist in albums {
+                print("- \(albumEnPlaylist.titulo) de \(albumEnPlaylist.grupoOArista) (\(albumEnPlaylist.genero))")
+            }
+        }
+    }
+}
+
+var playlist = Playlist(nombre: "Kpop Playlist", canciones: [
+    "Feel Special": "Twice",
+    "Like Crazy" : "Jimin"
+    ]
+)
+
+var album1 = Album(titulo: "Infinity Castle", genero: .Anime, grupoOArista: "DOS")
+var album2 = Album(titulo: "Jennie", genero: .kpop, grupoOArista: "Jennie")
+print(playlist.reproducir(la: "Like Crazy"))
+print(playlist.pausar()) // Llamada más simple y el print funciona como se espera
+print(playlist.agregarAlbum(album1)) // El print muestra el mensaje de confirmación
+print(playlist.agregarAlbum(album2))
+playlist.mostrarAlbunes()
+
+
