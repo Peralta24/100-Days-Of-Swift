@@ -187,3 +187,63 @@ print(generarReporte(para: evento1))
 
 //Tercer mini proyecto
 
+struct Ingrediente {
+    let nombre : String
+    var cantidad : Double //Usamos var porque esta cantidad cambiara
+    let unidad : String // ej: "gramos","tazas","unidades"
+
+}
+
+
+struct Receta {
+    let nombre : String
+    let porcionesBase : Int
+    var ingredientes : [Ingrediente] // Un array de la struct anterior
+    var porcionesActuales : Int
+    
+    init(nombre: String, porcionesBase: Int, ingredientes: [Ingrediente]) {
+            self.nombre = nombre
+            self.porcionesBase = porcionesBase
+            self.ingredientes = ingredientes
+            self.porcionesActuales = porcionesBase
+        }
+    
+    // Aqui ira la funcion para escalar la receta
+    mutating func escalar (para porciones : Int){
+        var factor = Double(porciones) / Double(porcionesBase)
+        
+        for i in ingredientes.indices{
+            ingredientes[i].cantidad *= factor
+        }
+        
+        self.porcionesActuales = porciones
+    }
+}
+
+
+func imprimirReceta(_ receta: Receta) {
+    print("--- Receta: \(receta.nombre) (para \(receta.porcionesActuales) porciones) ---")
+    for ingrediente in receta.ingredientes {
+        // Formateamos el número para que no tenga tantos decimales
+        let cantidadFormateada = String(format: "%.2f", ingrediente.cantidad)
+        print("- \(cantidadFormateada) \(ingrediente.unidad) de \(ingrediente.nombre)")
+    }
+}
+
+var recetaHotcakes = Receta(
+    nombre: "Hotcakes Clásicos",
+    porcionesBase: 4,
+    ingredientes: [
+        Ingrediente(nombre: "Harina", cantidad: 2, unidad: "tazas"),
+        Ingrediente(nombre: "Huevos", cantidad: 2, unidad: "unidades"),
+        Ingrediente(nombre: "Leche", cantidad: 1.5, unidad: "tazas"),
+        Ingrediente(nombre: "Azúcar", cantidad: 0.25, unidad: "tazas")
+    ]
+)
+
+imprimirReceta(recetaHotcakes)
+
+print("\n...escalando la receta...\n")
+recetaHotcakes.escalar(para: 6)
+
+imprimirReceta(recetaHotcakes)
