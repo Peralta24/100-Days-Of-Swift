@@ -92,3 +92,44 @@ printTimesTable(for: 5)
 
 //Mini proyecto del dia 07
 
+
+struct Comentario {
+    let autor : String
+    let texto : String
+}
+let palabrasProhibidas = ["oferta", "gratis", "descuento"]
+func esSpam(_ cadena : String) -> Bool{
+    let cadenaEnMinusculas = cadena.lowercased()
+    for palabrasProhibida in palabrasProhibidas {
+        if cadenaEnMinusculas.contains(palabrasProhibida){
+            return true
+        }
+    }
+    return false
+}
+
+var palabra = esSpam("Este es un comentario de prueba ")
+print(palabra)
+
+
+func publicar (el comentario : Comentario) -> String{
+    return ("El comentario fue hecho por \(comentario.autor) y dijo \(comentario.texto)")
+}
+
+var comentarioj = Comentario(autor: "Rafael", texto: "Buen video del putu")
+print(publicar(el: comentarioj))
+
+
+var comentarios = Array<Comentario>()
+comentarios.append(Comentario(autor: "Xana", texto: "Buen video del putupao"))
+comentarios.append(Comentario(autor: "Rafael", texto: "Buena oferta putupao"))
+comentarios.append(Comentario(autor: "Victor", texto: "Protogemas GRATIS Putupao"))
+
+for comentario in comentarios {
+    
+    if !esSpam(comentario.texto){
+        print(publicar(el: comentario))
+    }else{
+        print("Comentario de \(comentario.autor) eliminado por ser spam ( \(comentario.texto))")
+    }
+}
