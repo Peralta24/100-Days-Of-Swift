@@ -71,3 +71,67 @@ do {
     print("Ocurrio un error")
 }
 //Dia terminado
+
+//Ejercicio numero dos
+enum constrasenia : Error {
+    case demasiadoCorta,sinMayuscula,sinNumero
+}
+func verifacarContrasenia(contrasenia: String) throws ->  String {
+    
+    if contrasenia.count < 8 {
+        throw constrasenia.demasiadoCorta
+    }
+    if contrasenia.allSatisfy({ !$0.isUppercase }) {
+        throw constrasenia.sinMayuscula
+    }
+    if contrasenia.allSatisfy({ !$0.isNumber }) {
+        throw constrasenia.sinNumero
+    }
+    return "Contrasenia aceptada"
+    
+}
+
+do {
+    let result = try verifacarContrasenia(contrasenia: "M12345678")
+    print("\(result)")
+}catch constrasenia.demasiadoCorta {
+    print("Demasiado corta")
+}catch constrasenia.sinMayuscula {
+    print("Falta mayuscula")
+}catch constrasenia.sinNumero {
+    print("Falta numero")
+}
+
+//Ejercicio numero tres
+
+enum ErrorRegistro : Error {
+    case nombreVacio, emailInvalido, menorDeEdad
+}
+
+
+func registratUsuario(nombre : String, email :String, edad : Int) throws -> String {
+    if nombre.isEmpty {
+        throw ErrorRegistro.nombreVacio
+    }
+    
+    if !email.contains("@") {
+        throw ErrorRegistro.emailInvalido
+    }
+    if edad < 18 {
+        throw ErrorRegistro.menorDeEdad
+    }
+    
+    return "Bienvenido , \(nombre)! Tu registro ha sido exitoso."
+}
+
+
+do {
+    let usuario = try registratUsuario(nombre: "Rafael", email: "rafa@correo.com", edad: 21)
+    print(usuario)
+}catch ErrorRegistro.nombreVacio {
+    print("El nombre esta vacio")
+}catch ErrorRegistro.emailInvalido {
+    print("La direccion del correo es invalida")
+}catch ErrorRegistro.menorDeEdad {
+    print("Eres menor de edad")
+}
