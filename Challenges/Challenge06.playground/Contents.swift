@@ -480,3 +480,5 @@ print(carritoDeCompras.agregar(productoId: "456", cantidad: 1))
 carritoDeCompras.generarTickerDeCompra()
 print("Total: \(carritoDeCompras.calcularTotal())")
 
+
+

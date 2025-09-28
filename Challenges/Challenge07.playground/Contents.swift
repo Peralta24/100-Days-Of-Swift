@@ -234,3 +234,4 @@ do{
     print(error.mensaje)
 }
 
+//Ejercicio para practicar 
