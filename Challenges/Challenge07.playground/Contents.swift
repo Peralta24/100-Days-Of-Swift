@@ -68,4 +68,169 @@ if edad3 >= 18 {
     print("No puedes votar por que tienes \(edad3) años")
 }
 
-//Ejercicio 2 del dia 3 
+//Ejercicio 2 del dia 3
+
+var puntuacion = 20
+
+if puntuacion > 80 && puntuacion <= 100 {
+    print("Excelente trabajo.")
+}else if puntuacion > 50 && puntuacion <= 80{
+    print("No esta mal pero puedes mejorar.")
+}else {
+    print("Necesitas practicar mas.")
+}
+
+//Ejercicio 3 del dia 3
+enum climaP {
+    case soleado , lluvioso, nublado
+}
+let clima3 = climaP.soleado
+switch clima3 {
+case .soleado:
+    print("No olvides usar protecto solar.")
+case .lluvioso:
+    print("No olvides llevar un paraguas.")
+case .nublado:
+    print("No olvides llevar un sueter.")
+}
+
+//Ejercicio 1 del dia 4
+let numeroF =  5
+for i in 1...10 {
+    print("\(numeroF) x \(i) = \(numeroF * i)")
+}
+
+//Ejercicio 2 del dia 4
+var cuentaRegresiva = 10
+print("Despliegue en : ")
+while cuentaRegresiva > 0 {
+    print(cuentaRegresiva)
+    cuentaRegresiva -= 1
+}
+print("Despliegue!")
+
+//Ejercicio 3 del dia 4
+let numerosF = [1,3,5,7,8,9,11]
+
+for numeros in numerosF{
+    
+    if numeros % 2 != 0{
+        print("Numero impar encontrado es : \(numeros) saltando...")
+        continue
+    }else{
+        print("Primer numero par encontrado es : \(numeros)! Saliendo del bucle.")
+        break
+    }
+}
+        
+
+//Ejercicio 1 del dia 5
+func saludar (a nombre : String) {
+    print("Hola \(nombre)! Que tengas un gran dia")
+}
+
+saludar(a: "Xana")
+saludar(a: "Rafael")
+
+//Ejercicio 2 del dia 5
+func calcularAreaCuadrado(lado : Double ) -> Double {
+    return lado * lado
+}
+let area = calcularAreaCuadrado(lado: 5)
+print(area)
+
+//Ejercicio 3 del dia 5
+func esPar(el numero:Int) -> Bool {
+    if numero % 2 == 0{
+        return true
+    }
+    return false
+}
+print(esPar(el: 10))
+print(esPar(el: 3))
+
+//Ejercicio 1 del dia 6
+func organizarEvento(nombre : String, numeroDeInvitados: Int = 10) {
+    print("Evento organizado por \(nombre) para \(numeroDeInvitados) personas")
+}
+organizarEvento(nombre: "Rafael")
+organizarEvento(nombre: "Xana", numeroDeInvitados: 30)
+
+//Ejercicio 2 del dia 6
+enum ErrorDeContrasena : Error {
+    case demasiadoCorta, esObvia
+    
+    var mensaje : String {
+        switch self {
+        case .demasiadoCorta:
+            return "La contrasena es demasiado corta"
+        case .esObvia:
+            return "La contrasena es demasiado obvia"
+        }
+    }
+}
+
+func verificar(contrasena: String) throws{
+    if contrasena.count < 8{
+        throw ErrorDeContrasena.demasiadoCorta
+    }
+    if contrasena.contains("12345678"){
+        throw ErrorDeContrasena.esObvia
+    }
+    print("La contrasena es segura")
+}
+do {
+    try verificar(contrasena: "dfjsahfhasdjkfs2")
+}catch let error as ErrorDeContrasena{
+    print(error.mensaje)
+}
+
+
+//Ejercicio 3 del dia 6
+enum ErroresRaiz : Error {
+    case fueraRango, sinRaizEntera
+    
+    var mensaje : String {
+        switch self {
+        case .fueraRango:
+            return "El numero esta fuera del rango 1 y 10 000"
+        case .sinRaizEntera:
+            return "El numero no tiene raiz entera"
+        }
+    }
+}
+func raizCuadrada(de numero: Int) throws -> Int {
+    if numero < 1 || numero > 10_000 {
+        throw ErroresRaiz.fueraRango
+    }
+    
+    for i in 1...100 {
+        if i * i == numero {
+            return i
+        } else if i * i > numero {
+            throw ErroresRaiz.sinRaizEntera
+        }
+    }
+    
+    throw ErroresRaiz.sinRaizEntera
+}
+do{
+    let raiz = try raizCuadrada(de: -1)
+    print(raiz)
+}catch let error as ErroresRaiz{
+    print(error.mensaje)
+}
+do{
+    let raiz = try raizCuadrada(de: 25)
+    print(raiz)
+}catch let error as ErroresRaiz{
+    print(error.mensaje)
+}
+
+do{
+    let raiz = try raizCuadrada(de: 8)
+    print(raiz)
+}catch let error as ErroresRaiz {
+    print(error.mensaje)
+}
+
