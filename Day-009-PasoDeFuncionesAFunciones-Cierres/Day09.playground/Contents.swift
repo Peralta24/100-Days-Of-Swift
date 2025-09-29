@@ -104,4 +104,38 @@ print(upperCaseTeam)
 
 
 //Ejercicios de cierres finales
+let scores = [8, 4, 10, 6, 2, 9, 7, 5, 1]
+let animal = ["Lion", "Tiger", "Bear", "Elephant", "Giraffe", "Zebra", "Penguin"]
 
+let scoresSort = scores.sorted{$0 < $1}
+print(scoresSort)
+
+let animalAlfabetic = animal.sorted{$0.last! < $1.last!}
+print(animalAlfabetic)
+
+let animalLongitud = animal.sorted{$0.count < $1.count}
+print(animalLongitud)
+
+let scoresMa7 = scores.filter{$0 >= 7}
+print(scoresMa7)
+
+let scoresNumeroImpar = scores.filter{$0 % 2 != 0}
+print(scoresNumeroImpar)
+
+let name5count = animal.filter{$0.count <= 5}
+print(name5count)
+
+
+let scoreXTen = scores.map{$0 * 10}
+print(scoreXTen)
+let scoresPun = scores.map{"Tu puntuacion fue de \($0)"}
+print(scoresPun)
+
+let animalsCount = animal.map{$0.count}
+print(animalsCount)
+
+let desafioScores = scores.filter{$0 % 2 == 0}
+print(desafioScores)
+
+let desafioDuplicado = desafioScores.map {$0 * 2}
+print(desafioDuplicado)
