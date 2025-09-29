@@ -101,3 +101,7 @@ let tOnly = team.filter { $0.hasPrefix("T")}
 print(tOnly)
 let upperCaseTeam = team.map {$0.uppercased()}
 print(upperCaseTeam)
+
+
+//Ejercicios de cierres finales
+
