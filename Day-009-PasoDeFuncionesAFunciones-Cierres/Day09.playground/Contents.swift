@@ -225,4 +225,15 @@ doImportanWork {
 } third: {
     print("This is the third work")
 }
-//Fin dia 09 
+//Fin dia 09
+
+//CheckPoint 5
+
+let luckyNumbers = [7, 4, 38, 21, 16, 15, 12, 33, 31, 49]
+
+luckyNumbers
+    .filter{$0 % 2 != 0}
+    .sorted()
+    .map{"\($0) is a lucky number"}
+    .forEach{print($0)}
+
