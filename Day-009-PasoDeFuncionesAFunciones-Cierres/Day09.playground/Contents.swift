@@ -139,3 +139,89 @@ print(desafioScores)
 
 let desafioDuplicado = desafioScores.map {$0 * 2}
 print(desafioDuplicado)
+
+//Mas ejercicios sobre cierres finales
+let productos = [
+    ["name": "Laptop", "price": 1200, "stock": 5],
+    ["name": "Mouse", "price": 25, "stock": 30],
+    ["name": "Keyboard", "price": 75, "stock": 0],
+    ["name": "Monitor", "price": 300, "stock": 10],
+    ["name": "Webcam", "price": 50, "stock": 0]
+]
+
+
+let stockDisponible = productos.filter{ ($0["stock"] as! Int) > 0}
+print(stockDisponible)
+
+let nombreProducto = productos.map {$0["name"] as! String}
+print(nombreProducto)
+
+
+let sortedByPrice = productos.sorted { ($0["price"] as! Int) < ($1["price"] as! Int) }
+print(sortedByPrice)
+
+
+let productosBaratos = productos.filter { ($0["price"] as! Int) < 100 }
+print(productosBaratos)
+let productosMap = productosBaratos.map{ "\($0["name",default: ""])"}
+print(productosMap)
+let prouductosOrdenados = productosMap.sorted { $0 < $1 }
+print(prouductosOrdenados)
+
+
+//Version mas Swiftie
+let affordableProductNames = productos
+    .filter { ($0["price"] as! Int) < 100 }
+    .map { $0["name"] as! String }
+    .sorted() // .sorted() sin cierre ordena alfabéticamente por defecto
+print(affordableProductNames) // Debería imprimir ["Keyboard", "Mouse", "Webcam"]
+
+
+//Escribir funciones que aceptan otras funciones como parametros
+
+func greetUser1(){
+    print("Hi there!")
+}
+greetUser1()
+
+var greetCopy2 : () -> Void = greetUser1
+greetCopy2()
+
+
+func makeArray(size : Int, using generator : () -> Int) ->[Int]{
+    var number = [Int]()
+    
+    for _ in 0...size{
+        let newNumber = generator()
+        number.append(newNumber)
+    }
+    return number
+}
+func generateNumber() -> Int {
+    Int.random(in: 1...2102)
+}
+let rolls = makeArray(size: 50){
+    Int.random(in: 1...20)
+}
+print(rolls)
+
+print(makeArray(size: 10, using: generateNumber))
+
+
+func doImportanWork(first : () -> Void, second: () -> Void, third: () -> Void) {
+    print("About to star first Work")
+    first()
+    print("About to start second work")
+    second()
+    print("About to star third work")
+    third()
+    print("Done!")
+}
+
+doImportanWork {
+    print("This is the first work")
+} second : {
+    print("This is the second work")
+} third: {
+    print("This is the third work")
+}
