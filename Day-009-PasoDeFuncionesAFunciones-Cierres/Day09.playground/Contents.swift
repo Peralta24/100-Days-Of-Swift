@@ -237,3 +237,6 @@ luckyNumbers
     .map{"\($0) is a lucky number"}
     .forEach{print($0)}
 
+//Ejercicos de practica de lo visto hoy
+
+
