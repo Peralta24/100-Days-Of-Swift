@@ -234,4 +234,104 @@ do{
     print(error.mensaje)
 }
 
-//Ejercicio para practicar 
+struct Libro {
+    let id: String
+    let titulo: String
+    let autor: String
+}
+
+struct Biblioteca {
+    var catalogo: [String: Libro]
+    var librosPrestados: [String: String] = [:]
+
+    // Presta un libro a una persona
+    mutating func prestar(libroId: String, a persona: String) -> String {
+        // 1. Asegurarse de que el libro exista en el catálogo
+        guard let libro = catalogo[libroId] else {
+            return "Error: El libro con ID '\(libroId)' no existe."
+        }
+
+        // 2. Asegurarse de que el libro no esté ya prestado
+        if let _ = librosPrestados[libroId] {
+            return "Lo sentimos, '\(libro.titulo)' ya está prestado."
+        }
+
+        // 3. Registrar el préstamo
+        librosPrestados[libroId] = persona
+        return "'\(libro.titulo)' ha sido prestado a \(persona)."
+    }
+
+    // Devuelve un libro que estaba prestado
+    mutating func devolver(libroId: String) -> String {
+        guard let libro = catalogo[libroId] else {
+            return "Error: El libro con ID '\(libroId)' no existe."
+        }
+
+        // Verificar si el libro estaba efectivamente prestado
+        if librosPrestados.removeValue(forKey: libroId) != nil {
+            return "¡Gracias! '\(libro.titulo)' ha sido devuelto."
+        } else {
+            return "'\(libro.titulo)' no estaba en la lista de libros prestados."
+        }
+    }
+
+    // Muestra los libros que no están prestados
+    func mostrarDisponibles() {
+        print("--- Libros Disponibles ---")
+        for libro in catalogo.values {
+            if librosPrestados[libro.id] == nil {
+                print("- \(libro.titulo) por \(libro.autor)")
+            }
+        }
+        print("--------------------------")
+    }
+    
+    // Muestra los libros que están prestados
+    func mostrarPrestados() {
+        print("--- Libros Prestados ---")
+        if librosPrestados.isEmpty {
+            print("No hay libros prestados en este momento.")
+        } else {
+            for (libroId, persona) in librosPrestados {
+                if let libro = catalogo[libroId] {
+                    print("- '\(libro.titulo)' prestado a \(persona)")
+                }
+            }
+        }
+        print("------------------------")
+    }
+}
+
+// --- Ejemplo de Uso ---
+
+// 1. Crear algunos libros
+let libro1 = Libro(id: "L001", titulo: "Cien Años de Soledad", autor: "Gabriel García Márquez")
+let libro2 = Libro(id: "L002", titulo: "El Señor de los Anillos", autor: "J.R.R. Tolkien")
+let libro3 = Libro(id: "L003", titulo: "1984", autor: "George Orwell")
+
+// 2. Crear el catálogo de la biblioteca
+let catalogoInicial = [
+    libro1.id: libro1,
+    libro2.id: libro2,
+    libro3.id: libro3
+]
+
+// 3. Crear una instancia de la biblioteca
+var miBiblioteca = Biblioteca(catalogo: catalogoInicial)
+
+// 4. Probar las funcionalidades
+miBiblioteca.mostrarDisponibles()
+print("\n")
+print(miBiblioteca.prestar(libroId: "L002", a: "Juan Pérez"))
+print(miBiblioteca.prestar(libroId: "L003", a: "Ana Gómez"))
+print(miBiblioteca.prestar(libroId: "L002", a: "Pedro Marín")) // Intentar prestar un libro ya prestado
+print("\n")
+miBiblioteca.mostrarDisponibles()
+miBiblioteca.mostrarPrestados()
+print("\n")
+print(miBiblioteca.devolver(libroId: "L003"))
+print("\n")
+miBiblioteca.mostrarPrestados()
+miBiblioteca.mostrarDisponibles()
+
+
