@@ -76,3 +76,28 @@ let captainFirstTeam2 = team.sorted(by: { (name1: String, name2: String) -> Bool
 
     return name1 < name2
 })
+
+let saludo = {
+    print("Hola Closure!")
+}
+
+let saludoNom = { (nombreb: String) -> String in
+        "Hola \(nombreb)"
+}
+
+saludoNom("Xana")
+
+let numeros = [5,2,8,1,9,4]
+numeros.sorted()
+let numerosComparado = numeros.sorted(by: {(num1 : Int, num2: Int) -> Bool in
+    num1 != num2
+})
+
+//Como utilizar cierres finales y sintaxix abreviada
+
+let captainFirstTeam3 = team.sorted{ $0 > $1}
+
+let tOnly = team.filter { $0.hasPrefix("T")}
+print(tOnly)
+let upperCaseTeam = team.map {$0.uppercased()}
+print(upperCaseTeam)
