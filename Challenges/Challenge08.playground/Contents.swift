@@ -121,3 +121,124 @@ print(cuadroDeHonor)
 
 
 //Challenge 5 : El validador de Formulario
+
+enum EstadoValidacion {
+    case valido, errorLongitud, errorSinNumero
+    var mensaje : String {
+        switch self {
+        case .valido: 
+            return "El texto es válido"
+        case .errorLongitud:
+            return "El texto debe tener al menos 6 caracteres"
+        case .errorSinNumero:
+            return "El texto debe contener al menos un número"
+        }
+    }
+}
+
+func validar (_ texto: String) -> EstadoValidacion {
+    if texto.count < 6{
+        return .errorLongitud
+    } else if texto.range(of: "[0-9]", options: .regularExpression) == nil {
+        return .errorSinNumero
+    }
+    return .valido
+}
+
+func imprimirResultado(para texto : String) {
+    let resultado = validar(texto)
+    switch resultado {
+    case .valido:
+        print(resultado.mensaje)
+    case .errorLongitud:
+        print(resultado.mensaje)
+    case .errorSinNumero:
+        print(resultado.mensaje)
+    }
+}
+
+imprimirResultado(para: "swift123")   // Válido
+imprimirResultado(para: "hola")        // Error de longitud
+imprimirResultado(para: "holamundo")   // Error de número
+
+//Challenge 6 : El cajero automatico
+
+var saldoEnCuenta = 1000.0
+
+enum ErrorCajero: Error {
+    case montoInvalido
+    case fondosInsuficientes
+}
+@MainActor
+func retirarDinero(monto: Double) throws -> Double {
+    if monto <= 0 {
+        throw ErrorCajero.montoInvalido
+    }
+    if monto > saldoEnCuenta {
+        throw ErrorCajero.fondosInsuficientes
+    }
+    
+    saldoEnCuenta -= monto
+    return saldoEnCuenta
+}
+
+
+do {
+    let nuevoSaldo1 = try retirarDinero(monto: 500.0)
+    print("Retiro Exitoso nuevo saldo : \(nuevoSaldo1)")
+    let nuevoSaldo2 = try retirarDinero(monto: 600.0)
+    print("Nuevo saldo: $\(nuevoSaldo2)")
+
+}catch ErrorCajero.fondosInsuficientes{
+    print("Error: No tienes fondos suficientes")
+    
+}catch ErrorCajero.montoInvalido{
+    print("Error ingrtesa un monto valido")
+}catch {
+    print("Ocurrio un error inesperado \(error)")
+}
+print("Saldo final en la cuenta: \(saldoEnCuenta)") // Debería ser 500.0
+
+
+//Challenge 07 : Figuras Geometricas (Protocolos)
+
+protocol FiguraGeometrica {
+    var area: Double { get }
+    var perimetro : Double {get}
+}
+
+struct Cuadrado : FiguraGeometrica {
+    var area: Double {
+        return lado * lado
+    }
+    
+    var perimetro: Double {
+        return 4 * lado
+    }
+    
+    var lado : Double
+    
+}
+struct Circulo : FiguraGeometrica{
+    var radio: Double
+
+    var area: Double {
+        return Double.pi * radio * radio
+    }
+    
+    var perimetro : Double{
+        return 2 * Double.pi * radio
+    }
+}
+
+
+let miCuadrado = Cuadrado(lado: 10)
+let miCirculo = Circulo(radio: 5)
+
+// Crea un array que contenga ambas figuras
+let misFiguras: [FiguraGeometrica] = [miCuadrado, miCirculo]
+
+for figura in misFiguras {
+    // Gracias al protocolo, podemos tratarlas de la misma manera
+    print("Área: \(figura.area), Perímetro: \(figura.perimetro)")
+}
