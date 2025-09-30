@@ -239,4 +239,89 @@ luckyNumbers
 
 //Ejercicos de practica de lo visto hoy
 
+//Ejercicio 1 : Ordenando Palabras
+
+let nombres = ["Carlos","Ana","Beatriz","Daniela","Federico","Pau"]
+let nombresOrdenado = nombres.sorted{$0.count < $1.count}
+print(nombresOrdenado)
+
+//Ejercicio 2 : Filtrando Numeros
+let calificaciones = [5, 8, 10, 3, 7, 9, 6, 4]
+let calificacionFiltradas = calificaciones.filter{$0 >= 7}
+    .sorted()
+print(calificacionFiltradas)
+
+//Ejercicio 3  : Transformando Datos
+let temperaturasCelsius = [0.0, 10.0, 25.5, 32.0, -5.0]
+let temperaturaFarenheint = temperaturasCelsius.map{ ($0 * 9 / 5 ) + 32}
+print(temperaturaFarenheint)
+
+
+//Nivel 2 Intermedio (Encadenamiento y Datos Complejos)
+
+//Ejercicio 4 : Cadena de Compras
+let precios = [120.5, 88.0, 25.2, 99.9, 150.0, 45.7]
+
+let preciosFiltrados = precios.filter{$0 < 100}
+print(preciosFiltrados)
+let preciosFinal = preciosFiltrados.map{$0 * 1.6}
+print(preciosFinal)
+
+//Ejercicio 5 : Biblioteca Virtual
+struct Libro {
+    let titulo : String
+    let autor : String
+    let anioPublicacion : Int
+}
+
+let biblioteca = [
+    Libro(titulo: "Cien Años de Soledad", autor: "Gabriel García Márquez", anioPublicacion: 1967),
+    Libro(titulo: "La Sombra del Viento", autor: "Carlos Ruiz Zafón", anioPublicacion: 2001),
+    Libro(titulo: "El Código Da Vinci", autor: "Dan Brown", anioPublicacion: 2003),
+    Libro(titulo: "1984", autor: "George Orwell", anioPublicacion: 1949)
+]
+
+let librosAnio2000 = biblioteca.filter{$0.anioPublicacion > 2000}
+let librosmap = librosAnio2000.map{"El libo \($0.titulo) es despues del anio 200"}
+print(librosmap)
+
+//Ejercicio 6 : Reporte de Estudiantes
+let estudiantes = [
+    (nombre: "Luisa", calificacion: 8),
+    (nombre: "Andrés", calificacion: 5),
+    (nombre: "Sofía", calificacion: 10),
+    (nombre: "Pedro", calificacion: 4),
+    (nombre: "Ana", calificacion: 9)
+]
+
+let filtrarEstudiantes = estudiantes.filter{$0.calificacion > 5}
+let estudiantesOrdenadosPorNombre = filtrarEstudiantes.sorted{$0.nombre < $1.nombre}
+let estudiantesCalificacion = estudiantesOrdenadosPorNombre.map{"[\($0.nombre)] - Califacion : [\($0.calificacion)]"}
+print(estudiantesCalificacion.forEach{print($0)})
+
+//Nivel 3 : Avanzado (Creando tus Propias Funciones)
+
+func operar (num1 : Int, num2 :Int, usando operacion : (Int, Int) ->Int) -> Int {
+    return operacion (num1,num2)
+}
+let suma = operar(num1: 5, num2: 10) {$0 + $1}
+print("Suma: \(suma)")
+let resta = operar(num1: 10, num2: 3) {$0 - $1}
+print("Resta: \(resta)")
+let multiplicacion = operar(num1: 20, num2:10){$0 * $1}
+print("Multiplicacion: \(multiplicacion)")
+
+//Ejercicio 8 : (Reto) Mi propio filter
+func miFiltro<T>(en arreglo : [T], con condicion : (T) -> Bool) -> [T] {
+    var nuevoArreglo = Array<T>()
+    for element in arreglo{
+        if condicion(element)  {
+            nuevoArreglo.append(element)
+        }
+    }
+    return nuevoArreglo
+}
+let calificaciones8 = [5, 8, 10, 3, 7, 9, 6, 4]
+let aprobatoriasConMiFiltro = miFiltro(en: calificaciones) {calificacion in calificacion >= 7}
+print(aprobatoriasConMiFiltro)
 
