@@ -154,7 +154,7 @@ func imprimirResultado(para texto : String) {
         print(resultado.mensaje)
     case .errorSinNumero:
         print(resultado.mensaje)
-    }
+    }	
 }
 
 imprimirResultado(para: "swift123")   // Válido
