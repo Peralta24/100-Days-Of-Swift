@@ -325,3 +325,137 @@ let calificaciones8 = [5, 8, 10, 3, 7, 9, 6, 4]
 let aprobatoriasConMiFiltro = miFiltro(en: calificaciones) {calificacion in calificacion >= 7}
 print(aprobatoriasConMiFiltro)
 
+
+//Ejercicios fase dos dia 09
+
+//Ejercicio 1.1 : fase dos
+
+struct Cancion {
+    let titulo : String
+    let artista : String
+    let duracion : Int
+}
+
+
+let bibliotecaMusical = [
+    Cancion(titulo: "Bohemian Rhapsody", artista: "Queen", duracion: 355),
+    Cancion(titulo: "Don't Stop Me Now", artista: "Queen", duracion: 209),
+    Cancion(titulo: "Stairway to Heaven", artista: "Led Zeppelin", duracion: 482),
+    Cancion(titulo: "Another One Bites the Dust", artista: "Queen", duracion: 215),
+    Cancion(titulo: "Hotel California", artista: "Eagles", duracion: 391)
+]
+
+// Tu misión:
+// 1. **Filtrar** (`filter`): Obtén un arreglo con solo las canciones de "Queen".
+var cancionesQueen = bibliotecaMusical.filter{$0.artista == "Queen"}
+// 2. **Ordenar** (`sorted`): Ordena ese arreglo de la canción con mayor duración a la de menor duración.
+var cancionesOrdenadas = cancionesQueen.sorted{$0.duracion > $1.duracion}
+// 3. **Mapear** (`map`): Convierte el resultado final en un arreglo de Strings con el formato: "Título - Artista (Duración: X segundos)".
+var resultadCanciones = cancionesOrdenadas.map{"\($0.titulo) - \($0.artista) (Duración: \($0.duracion) segundos)"}
+
+print(resultadCanciones)
+
+
+//Ejercicio 1.2 Fase Dos
+
+enum Categoria {
+    case electronica, ropa, hogar, libros
+}
+
+struct Producto {
+    let nombre: String
+    let precio : Double
+    let categoria : Categoria
+}
+
+let catalogo = [
+    Producto(nombre: "Laptop Pro", precio: 1200.0, categoria: .electronica),
+    Producto(nombre: "Audífonos Inalámbricos", precio: 150.0, categoria: .electronica),
+    Producto(nombre: "Camiseta de Algodón", precio: 25.0, categoria: .ropa),
+    Producto(nombre: "Monitor 4K", precio: 350.0, categoria: .electronica),
+    Producto(nombre: "Sartén Antiadherente", precio: 45.0, categoria: .hogar)
+]
+
+// Tu misión:
+// 1. **Filtrar** (`filter`): Quédate solo con los productos que cumplan DOS condiciones: ser de la categoría `.electronica` Y tener un precio menor a 400.0.
+
+let ofertasElectronica  = catalogo
+    .filter{$0.categoria == .electronica && $0.precio < 400}
+// 2. **Ordenar** (`sorted`): Ordena los productos filtrados por su nombre, de la A a la Z.
+    .sorted{($0.nombre) < ($1.nombre)}
+// 3. **Mapear** (`map`): Extrae únicamente el nombre de cada producto para tener un arreglo de `[String]`.
+    .map{($0.nombre)}
+// let ofertasElectronica = catalogo.filter { ... }.sorted { ... }.map { ... }
+// print(ofertasElectronica)
+print(ofertasElectronica)
+
+
+//.Ejercicio 1.3 Fase Tres
+struct Estudiante {
+    let nombre : String
+    let calificaciones : [Double]
+    
+    var promedio : Double {
+        return calificaciones.reduce(0, +) / Double(calificaciones.count)
+    }
+}
+
+
+let listaClase = [
+    Estudiante(nombre: "Mariana", calificaciones: [8.0, 9.0, 10.0]), // Promedio 9.0
+    Estudiante(nombre: "Fernando", calificaciones: [5.0, 6.0, 7.0]), // Promedio 6.0
+    Estudiante(nombre: "Valeria", calificaciones: [7.0, 7.5, 8.0]), // Promedio 7.5
+    Estudiante(nombre: "David", calificaciones: [10.0, 9.5, 9.0]) // Promedio 9.5
+]
+
+// Tu misión:
+// 1. **Filtrar** (`filter`): Conserva solo a los estudiantes cuyo promedio de calificaciones sea 7.0 o mayor.
+let cuadroDeHonor = listaClase.filter{$0.promedio >= 7.0}
+// 2. **Ordenar** (`sorted`): Ordena a los estudiantes aprobados por su promedio, de mayor a menor.
+    .sorted{$0.promedio > $1.promedio}
+// 3. **Mapear** (`map`): Crea un arreglo de strings con el formato: "Nombre (Promedio: X.X)".
+    .map{"\($0.nombre)  (Promedio :\($0.promedio))"}
+// let cuadroDeHonor = listaClase.filter { ... }.sorted { ... }.map { ... }
+    .forEach{print ($0)}
+// print(cuadroDeHonor)
+print(cuadroDeHonor)
+
+
+//Funciones como parametros
+
+func repetir(veces: Int, accion: () -> Void) {
+
+    for _ in 1...veces{
+        accion()
+    }
+}
+
+repetir(veces:3){
+    print("Hola Swift")
+}
+
+repetir(veces:5) {
+    print("Numero aleatorio: \(Int.random(in: 1...100))")
+}
+
+
+func procesarArreglo<T, U>(arreglo2: [T], operacion: (T) -> U) -> [U] {
+    var arrayVacio = Array<U>()
+    
+    for elemento in arreglo2 {
+        var nuevoValor = operacion(elemento)
+        arrayVacio.append(nuevoValor)
+    }
+    return arrayVacio
+}
+
+let numerosp = [1, 2, 3, 4, 5]
+let numerosComoStrings = procesarArreglo(arreglo2: numerosp) { numero in
+    return "Número: \(numero)"
+}
+print(numerosComoStrings)
+
+
+let palabras = ["Hola", "Mundo", "Swift"]
+let longitudes = procesarArreglo(arreglo2: palabras, operacion: {palabra in return palabra.count})
+print(longitudes)
