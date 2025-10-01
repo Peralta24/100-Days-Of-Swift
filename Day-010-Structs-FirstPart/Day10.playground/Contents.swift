@@ -41,4 +41,7 @@ archer.takeVacation(days: 3)
 archer.takeVacation(days: 11)
 print(archer.vacationRemaining)
 
-//End   primera leccion 
+//End   primera leccion
+
+//Test primera leccion 10/12
+
