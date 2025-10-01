@@ -99,9 +99,55 @@ struct App {
     }
 }
 
-//Como crear inicializadores personalizados
 
 var app = App()
 app.contact.append("Adian E")
 app.contact.append("Allen W")
 app.contact.append("Ish S")
+
+
+//Como crear inicializadores personalizados
+
+struct Player {
+    let name : String
+    var number : Int {
+        willSet {
+            print("El numero es \(name)")
+            print("El nuevo numero sera \(newValue)")
+        }
+        
+        didSet{
+            print("El nuevo numero de \(name) es ")
+            print("El antiguo numero de \(name) fue \(oldValue)")
+        }
+    }
+    init(name: String) {
+        self.name = name
+        self.number = Int.random(in: 1...99)
+    }
+}
+
+let player = Player(name: "Adian E")
+print(player.number)
+print(player.number)
+player.number
+print(player.number)
+
+ 
+struct Employee3 {
+    var name: String
+    var yearsActive = 0
+}
+
+extension Employee3 {
+    init() {
+        self.name = "Anonymous"
+        print("Creating an anonymous employee…")
+    }
+}
+
+// creating a named employee now works
+let roslin = Employee3(name: "Laura Roslin")
+
+// as does creating an anonymous employee
+let anon = Employee3()
