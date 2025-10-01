@@ -99,6 +99,7 @@ struct App {
     }
 }
 
+//Como crear inicializadores personalizados
 
 var app = App()
 app.contact.append("Adian E")
