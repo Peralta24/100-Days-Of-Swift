@@ -154,11 +154,16 @@ let anon = Employee3()
 
 //Empezar a hacer ejercicios
 
+enum StockError: Error {
+    case precioInvalido
+    case cantidadInsuficiente(disponible: Int)
+    case valorNegativo
+    
 
-
+}
 struct Producto {
     let nombre : String
-    let precioUnitario : Double
+    let precioUnitario : Decimal
     var cantidadEnStock : Int {
         willSet{
             print("Preparando para cambiar el stock de \(nombre) de \(cantidadEnStock) a \(newValue)")
@@ -167,26 +172,46 @@ struct Producto {
             if cantidadEnStock > oldValue {
                 print("Stock de \(nombre) actualizado! Aumento en \(cantidadEnStock - oldValue) unidades")
             }else {
-                print("Stock de \(nombre) actualizado! Disminuyo en \(oldValue - cantidadEnStock) unidades")
+                print("Stock de \(nombre) actualizado! Disminuyo en \(oldValue - cantidadEnStock)")
             }
         }
     }
     
-    var valorTotalEnStock: Double {
+    mutating func agregarProductos (cantidad : Int) throws {
+        guard cantidad > 0 else{
+            throw StockError.valorNegativo
+        }
+        cantidadEnStock += cantidad
+    }
+    mutating func reducirProductos(cantidad : Int) throws {
+        guard cantidad > 0 else {
+            throw StockError.valorNegativo
+        }
+        guard cantidadEnStock >= cantidad else {
+            throw StockError.cantidadInsuficiente(disponible: self.cantidadEnStock)
+        }
+        cantidadEnStock -= cantidad
+    }
+    func imprimirInformacion(){
+        print("El nombre del producto es \(nombre)\nel precio es \(precioUnitario)\nel stock es de \(cantidadEnStock)")
+    }
+    
+    var valorTotalEnStock: Decimal {
         get {
-            return precioUnitario * Double(cantidadEnStock)
+            return precioUnitario * Decimal(cantidadEnStock)
         }
         set {
             guard precioUnitario > 0 else {
              print("No se puede ajustar el stock para un producto con precio cero.")
                 return
             }
-            cantidadEnStock = Int(newValue / precioUnitario)
+            let nuevoStock = newValue / precioUnitario
+            cantidadEnStock = (nuevoStock as NSDecimalNumber).intValue
 
         }
     }
     
-    init(nombre: String, precioUnitario: Double) {
+    init(nombre: String, precioUnitario: Decimal) {
         self.nombre = nombre
         self.precioUnitario = precioUnitario
         cantidadEnStock = 0
@@ -196,7 +221,7 @@ struct Producto {
 }
 
 extension Producto {
-    init(nombre : String, precioUnitario: Double, cantidadEnStock: Int) {
+    init(nombre : String, precioUnitario: Decimal, cantidadEnStock: Int) {
         self.nombre = nombre
         self.precioUnitario = precioUnitario
         self.cantidadEnStock = cantidadEnStock
@@ -207,8 +232,12 @@ extension Producto {
 var leche = Producto(nombre: "Leche", precioUnitario: 32.5)
 var carne = Producto(nombre: "Carne de Cerdo", precioUnitario: 54.3, cantidadEnStock: 20)
 print(leche)
-print(carne)
-leche.cantidadEnStock += 20
-print(leche)
-leche.cantidadEnStock -= 5
-print(leche)
+do {
+    try leche.agregarProductos(cantidad: 20)
+    try leche.reducirProductos(cantidad: 20)
+}catch StockError.cantidadInsuficiente(let disponible) {
+    print("Error no se puede completar la operacion Cantidad disponible \(disponible) ")
+}catch {
+    print("Ocurrio un error inesperado \(error)")
+}
+leche.imprimirInformacion()
