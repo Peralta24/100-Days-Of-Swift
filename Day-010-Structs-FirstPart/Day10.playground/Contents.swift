@@ -151,3 +151,6 @@ let roslin = Employee3(name: "Laura Roslin")
 
 // as does creating an anonymous employee
 let anon = Employee3()
+
+//Empezar a hacer ejercicios
+
