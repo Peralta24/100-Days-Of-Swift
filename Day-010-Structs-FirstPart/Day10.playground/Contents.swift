@@ -412,4 +412,86 @@ gestorDeTareas.eliminarTarea(enIndice: 0)
 gestorDeTareas.mostrarTareas()
 gestorDeTareas.cambiarPrioridad(deTarea: "Practicar Swift", a: .media)
 
+//Ultimo miniProyecto: Maquina Expendedora
+enum MaquinaError : Error {
+    case productoAgotado
+    case creditoInsuficiente
+    case productoInvalido
+    
+    var mensaje : String {
+        switch self {
+        case .productoAgotado:
+            return "El producto está agotado"
+        case .creditoInsuficiente:
+            return "No hay suficiente crédito"
+        case .productoInvalido:
+            return "Producto inválido"
+        }
+    }
+}
 
+struct ProductoM_E {
+    let nombre : String
+    var precio : Decimal
+    
+}
+
+class MaquinaExpendedoraM_E {
+    var inventario : [String : Int]
+    var precios : [String : Decimal]
+    var creditoActual : Decimal
+    var ganancias : Decimal
+    
+    init(inventario: [String : Int], precios: [String : Decimal], creditoActual: Decimal, ganancias: Decimal) {
+        self.inventario = inventario
+        self.precios = precios
+        self.creditoActual = creditoActual
+        self.ganancias = ganancias
+    }
+    
+    
+    func vendiendoProducto(producto: String) throws -> String {
+        guard let stock = inventario[producto], stock > 0 else {
+            throw MaquinaError.productoAgotado
+        }
+        
+        guard let precioProducto = precios[producto] else {
+            throw MaquinaError.productoInvalido
+        }
+        guard creditoActual >= precioProducto else {
+               throw MaquinaError.creditoInsuficiente
+           }
+        inventario[producto]! -= 1
+        creditoActual -= precioProducto
+        ganancias += precioProducto
+         return "La venta fue un exito"
+        
+    }
+    
+    func agregarCredito(credito: Decimal) {
+        if credito <= 0 {
+            print("Ingresa cantidad valida")
+        }else{
+            self.creditoActual += credito
+        }
+    }
+    func devolverCredito() -> Decimal {
+        let devuelto = creditoActual
+        creditoActual = 0
+        return devuelto
+    }
+}
+
+var maquinae1 = MaquinaExpendedoraM_E(inventario: ["Coca Cola": 2, "Pepsi": 10], precios: ["Coca Cola": 15.0, "Pepsi": 14.5], creditoActual: 0, ganancias: 0)
+
+// Llamada correcta a agregarCredito (sin try, sin print)
+maquinae1.agregarCredito(credito: 20)
+print("Crédito actual: \(maquinae1.creditoActual)") // Así compruebas el crédito
+
+do {
+    print(try maquinae1.vendiendoProducto(producto: "Coca Cola")) // Esto debería funcionar ahora
+    print(try maquinae1.vendiendoProducto(producto: "Pepsi")) // Esto fallará por falta de crédito
+} catch let error as MaquinaError {
+    // Un solo catch es suficiente gracias a tu propiedad .mensaje
+    print("Error en la venta: \(error.mensaje)")
+}
