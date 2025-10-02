@@ -127,4 +127,140 @@ coche1.bajarCambio()
 //Challenge 09 mas dificil
 
 
-//Challenge 1 : El Registo de Calificaciones 
+//Challenge 1.1 : El Registo de Calificaciones
+
+print("Challenge 1.1 : El Registro de Calificaciones")
+
+var calificacionesDiccionario: [String : [String : Double]] = [
+    "Juan Pérez": ["Matemáticas": 4.3, "Historia": 4.5, "Ciencias": 1.0],
+    "Ana García": ["Matemáticas": 4.6, "Historia": 5.5, "Ciencias": 2.0],
+    "Luis Fernández": ["Matemáticas": 4.1, "Historia": 2.5, "Ciencias": 3.0]
+]
+var mejorAlumno = ""
+var mejorPromedio = 0.0
+for (alumno, calificaciones) in calificacionesDiccionario {
+    print("\nCalificaciones de \(alumno):")
+    
+    for (materia, nota) in calificaciones {
+        print("\(materia): \(nota)")
+    }
+    
+    let promedio = calificaciones.values.reduce(0, +) / Double(calificaciones.count)
+    print("Promedio: \(promedio)")
+    
+    if promedio > mejorPromedio{
+        mejorPromedio = promedio
+        mejorAlumno = alumno
+    }
+    
+}
+
+
+print("El alumno con mejor promedio es \(mejorAlumno) con \(mejorPromedio)")
+
+
+//Challenge 2.1  Validador de Contrasenia Avanzado
+enum ErrorDeContrasenia : Error {
+    case demasiadaCorta
+    case sinMayuscula
+    case sinNumero
+    
+    var mensaje : String {
+        switch self {
+        case .demasiadaCorta:
+            return "Contrasenia demasiado corta!"
+        case .sinMayuscula:
+            return "La contrasenia debe contener al menos una mayuscula"
+        case .sinNumero:
+            return "La contrasenia debe contener al menos un numero"
+        }
+    }
+}
+
+func validarContrasenia(_ password: String) throws -> Bool {
+    if password.count < 8 {
+        throw ErrorDeContrasenia.demasiadaCorta
+    }
+    
+    if password.range(of: "[A-Z]", options: .regularExpression) == nil {
+        throw ErrorDeContrasenia.sinMayuscula
+    }
+    
+    if password.range(of: "\\d", options: .regularExpression) == nil {
+        throw ErrorDeContrasenia.sinNumero
+    }
+    
+    return true
+}
+
+do {
+    try validarContrasenia("abc123asdAsdasda")
+    print("Contrasenia valida")
+}catch let error as ErrorDeContrasenia {
+    print(error.mensaje)
+}catch {
+    print("Error desconocido")
+}
+
+
+//Challenge 3.1
+
+struct Producto {
+    let nombre : String
+    let id : Int
+    var cantidadEnStock : Int
+    var precio : Double
+    static var ultimoId = 0
+
+    init(nombre: String, id: Int, cantidadEnStock: Int, precio: Double) {
+        self.nombre = nombre
+        self.id = id
+        self.cantidadEnStock = cantidadEnStock
+        self.precio = precio
+        Producto.ultimoId += 1
+    }
+    
+    mutating func agregarStock(cantidad : Int) {
+        cantidadEnStock += cantidad
+    }
+    mutating func quitarStock(cantidad : Int) {
+        if cantidadEnStock <= 0 {
+            print("No hay cantidad")
+        }else{
+            cantidadEnStock -= cantidad
+        }
+    }
+}
+
+struct Inventario {
+    private var productos : [Producto] = []
+    
+    var valorTotalDelInventario : Double {
+        return productos.reduce(0) { $0 + $1.precio * Double($1.cantidadEnStock) }
+    }
+    
+    mutating func agregarProducto(_ producto : Producto) {
+        productos.append(producto)
+    }
+    
+    func buscarProductos(conFiltro filtro: (Producto) -> Bool) -> [Producto] {
+        return productos.filter(filtro)
+    }
+    
+}
+
+var inventario1 = Inventario()
+var producto1 = Producto(nombre: "Arroz", id: Producto.ultimoId, cantidadEnStock: 7, precio: 60)
+var producto2 = Producto(nombre: "Avena", id: Producto.ultimoId, cantidadEnStock: 20, precio: 30)
+var producto3 = Producto(nombre: "Frijoles", id: Producto.ultimoId, cantidadEnStock: 4, precio: 55)
+
+inventario1.agregarProducto(producto1)
+inventario1.agregarProducto(producto2)
+inventario1.agregarProducto(producto3)
+
+print("Valor total del inventario: \(inventario1.valorTotalDelInventario)")
+
+let productosCaros = inventario1.buscarProductos(conFiltro: {$0.precio > 50})
+print("Productos caros", productosCaros.map{$0.nombre})
+let stockProductos = inventario1.buscarProductos(conFiltro: {$0.cantidadEnStock < 10})
+print("Stock Productos",stockProductos.map({$0.nombre}))
