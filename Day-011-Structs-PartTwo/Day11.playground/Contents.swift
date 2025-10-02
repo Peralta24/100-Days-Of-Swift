@@ -92,3 +92,7 @@ struct LegoBrick {
         LegoBrick.numberMade += 1
     }
 }
+
+//Chekpoint 6
+
+
