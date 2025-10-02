@@ -139,3 +139,8 @@ car1.changeGear(to: 11)
 car1.changeGear(to: 0)
 
 print("Marcha final: \(car1.currentGear)")
+
+
+//Ejercicios de practica
+
+
