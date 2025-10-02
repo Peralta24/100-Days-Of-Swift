@@ -130,4 +130,4 @@ var user3 = User4(name: "Paul")
 user3 = User4(name: "Taylor") // ✅ Se puede apuntar a un objeto nuevo
 
 
-//CheckPoint Number 7
+//Checkpoint 7
