@@ -69,21 +69,18 @@ print(EmEmployee.example)
 
 struct Unwrap {
     static let appURL = "https://itunes.apple.com/app/id1440611372"
-    //Entropia ajustada
-
-    static var entropy = Int.random(in: 1...1000)
+    nonisolated(unsafe)static var entropy = Int.random(in: 1...1000)
 
     static func getEntropy() -> Int {
-        entropy += 1
+        entropy += 1   // ✅ se puede modificar porque entropy es var
         return entropy
     }
-
 }
 
 Unwrap.getEntropy()
 
 struct LegoBrick {
-    static var numberMade = 0
+    nonisolated(unsafe)static var numberMade = 0
     var shape : String
     var color : String
     init(shape : String, color: String){
@@ -96,3 +93,49 @@ struct LegoBrick {
 //Chekpoint 6
 
 
+struct Car {
+
+    let model: String
+    let numberOfSeats: Int
+
+    // Se puede leer desde fuera, pero solo se puede modificar desde dentro
+    // de la estructura, gracias a private(set).
+    private(set) var currentGear: Int = 1
+
+    // Método para cambiar de marcha (hacia arriba o hacia abajo).
+    // Es 'mutating' porque modifica 'currentGear'.
+    mutating func changeGear(to newGear: Int) {
+        // Validamos la nueva marcha antes de asignarla.
+        if newGear >= 1 && newGear <= 10 {
+            currentGear = newGear
+            print("Cambio de marcha exitoso. Marcha actual: \(currentGear)")
+        } else {
+            print("Error: La marcha \(newGear) no es válida. Debe estar entre 1 y 10.")
+        }
+    }
+    
+    mutating func gearUp() {
+        // Reutilizamos la lógica de changeGear para no repetir código
+        changeGear(to: currentGear + 1)
+    }
+
+    mutating func gearDown() {
+        changeGear(to: currentGear - 1)
+    }
+}
+
+// --- Uso ---
+var car1 = Car(model: "Rav4", numberOfSeats: 5)
+
+print("Coche creado: \(car1.model) con \(car1.numberOfSeats) asientos.")
+print("Marcha inicial: \(car1.currentGear)")
+
+car1.gearUp()
+car1.gearUp()
+car1.gearDown()
+
+
+car1.changeGear(to: 11)
+car1.changeGear(to: 0)
+
+print("Marcha final: \(car1.currentGear)")
