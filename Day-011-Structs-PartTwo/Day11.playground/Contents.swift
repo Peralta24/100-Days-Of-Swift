@@ -168,12 +168,10 @@ struct Libro {
     }
 
     mutating func avanzarPagina(paginas : Int) {
-        if paginas > 0 {
-            paginaActual += paginas
-        }else{
-            paginaActual == paginaActual
-        }
+        guard paginas > 0 else { return }
+        paginaActual += paginas
     }
+    
     
     init(titulo: String, autor: String, paginasTotales: Int) {
         self.titulo = titulo
@@ -285,13 +283,12 @@ struct ConfiguracionApp {
     static let versionApp : String = "1.0.2"
     static let apiUrl : String = "https://api.example.com"
     
+    private init() { }
+
+    
     nonisolated(unsafe) static var temaActual : String = "claro"{
         didSet {
-            if temaActual == "claro" {
-                print("El tema de la app ha cambiado a \(temaActual)")
-            } else {
-                print("El tema de la app ha cambiado a \(temaActual)")
-            }
+            print("El tema de la app ha cambiado a \(temaActual)")
         }
     }
     
