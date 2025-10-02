@@ -33,7 +33,7 @@ if succes {
 //Propiedades y metodos estaticos
 
 struct School {
-    static var studentCount = 0
+    nonisolated(unsafe) static var studentCount = 0
     
     static func add (student : String) {
         print("\(student) joined the school.")
@@ -143,4 +143,177 @@ print("Marcha final: \(car1.currentGear)")
 
 //Ejercicios de practica
 
+
+//MiniProyecto 1 : Biblioteca Personal
+
+struct Libro {
+    let titulo : String
+    let autor : String
+    let paginasTotales : Int
+    var paginaActual : Int = 0 {
+        didSet {
+            if paginaActual > paginasTotales {
+                paginaActual = paginasTotales
+            }
+            if paginaActual < 1 {
+                paginaActual = 1
+            }
+            print("Has avanzado a la pagina \(paginaActual) Progeso : \(progreso)")
+        }
+    }
+    
+    var progreso: Double {
+        guard paginasTotales > 0 else { return 0.0 }
+        return Double(paginaActual) / Double(paginasTotales)
+    }
+
+    mutating func avanzarPagina(paginas : Int) {
+        if paginas > 0 {
+            paginaActual += paginas
+        }else{
+            paginaActual == paginaActual
+        }
+    }
+    
+    init(titulo: String, autor: String, paginasTotales: Int) {
+        self.titulo = titulo
+        self.autor = autor
+        if paginasTotales > 0{
+            self.paginasTotales = paginasTotales
+        }else{
+            self.paginasTotales = 1
+            print("Ingresa una opcion valida")
+        }
+    }
+}
+
+
+var miLibro = Libro(titulo: "El Nombre del Viento", autor: "Patrick Rothfuss", paginasTotales: 662)
+miLibro.avanzarPagina(paginas: 100)
+print(miLibro.progreso)
+miLibro.avanzarPagina(paginas: 600)
+
+
+//MiniProyecto2 2 : Registro de Ejercicio
+
+enum TipoDeActividad  {
+    case correr
+    case caminar
+    case pesas
+    case yoga
+}
+
+struct Actividad: Equatable {
+    let tipo: TipoDeActividad
+    let duracionEnMinutos: Int
+    let caloriasQuemadas: Int
+    var completada: Bool = false {
+        didSet {
+            if completada {
+                print("Has completado tu actividad con éxito ✅")
+            } else {
+                print("Actividad marcada como no completada ❌")
+            }
+        }
+    }
+    
+    mutating func marcarComoCompletada() {
+        if !completada {
+            completada = true
+            print("Actividad completada correctamente 🎉")
+        } else {
+            print("Actividad ya estaba completada")
+        }
+    }
+}
+
+struct RegistroDiario {
+    private var actividades : [Actividad] = []
+    
+    var totalCaloriasQuemadasdia : Int {
+        var sumaTotal = 0
+        for actividad in actividades {
+            sumaTotal += actividad.caloriasQuemadas
+        }
+        return sumaTotal
+    }
+    
+    var totalMinutos : Int {
+        var sumaTotalMinutos = 0
+        for actividad in actividades {
+            sumaTotalMinutos += actividad.duracionEnMinutos
+        }
+        return sumaTotalMinutos
+    }
+    var resumenDelDia : String {
+        return "Hoy has entrenado un total de \(totalMinutos) minutos  y has quemado \(totalCaloriasQuemadasdia) calorias"
+    }
+    
+    mutating func agregar(actividad: Actividad) {
+        actividades.append(actividad)
+    }
+    
+    mutating func reiniciarDia(){
+        actividades.removeAll()
+    }
+    func imprimirActividades () {
+        print("Las actividad a hacer son")
+        for actividade in actividades {
+            print(actividade.tipo)
+        }
+    }
+    
+
+    
+}
+var registroDeHoy = RegistroDiario()
+var carrera = Actividad(tipo: .correr, duracionEnMinutos: 30, caloriasQuemadas: 300)
+let pesas = Actividad(tipo: .pesas, duracionEnMinutos: 45, caloriasQuemadas: 250)
+
+registroDeHoy.agregar(actividad: carrera)
+registroDeHoy.agregar(actividad: pesas)
+
+print(registroDeHoy.resumenDelDia)
+registroDeHoy.imprimirActividades()
+carrera.marcarComoCompletada()
+
+//Mini Proyecto 3 : Configuracion de App
+
+struct ConfiguracionApp {
+    
+    static let nombreApp : String = "Mi App Increible"
+    static let versionApp : String = "1.0.2"
+    static let apiUrl : String = "https://api.example.com"
+    
+    nonisolated(unsafe) static var temaActual : String = "claro"{
+        didSet {
+            if temaActual == "claro" {
+                print("El tema de la app ha cambiado a \(temaActual)")
+            } else {
+                print("El tema de la app ha cambiado a \(temaActual)")
+            }
+        }
+    }
+    
+    nonisolated(unsafe) private(set) static var sesionesIniciadas: Int = 0
+    
+    
+    static func iniciarNuevaSesion() {
+        sesionesIniciadas += 1
+    }
+    static func mostrarInformacionApp() {
+        print("Nombre de la app: \(nombreApp)")
+        print("Version de la app: \(versionApp)")
+        print("URL de la API: \(apiUrl)")
+        print("Tema actual: \(temaActual)")
+        print("Número de sesiones iniciadas: \(sesionesIniciadas)")
+    }
+}
+
+print("Bienvenido a \(ConfiguracionApp.nombreApp)")
+ConfiguracionApp.iniciarNuevaSesion()
+ConfiguracionApp.iniciarNuevaSesion()
+
+ConfiguracionApp.mostrarInformacionApp()
+ConfiguracionApp.temaActual = "oscuro"
 
