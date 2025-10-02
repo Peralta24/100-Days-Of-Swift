@@ -15,7 +15,8 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 7 – Funciones Parte Uno (func,parametros,argumentos,tuplas,etiquetas)
 - [x] Día 8 – Funciones Parte Dos (Default Values, throwing functions)
 - [x] Día 9 – Closures, Funciones Como Parametros
-- [x] Día 10 – Structs, Propiedas Computadas, Propiedas observadoras
+- [x] Día 10 – Structs, Propiedas Computadas, Propiedades observadoras
+- [x] Día 11 - Structs,Control de Acceso, Propiedades Estaticas, Metodos Estaticos
 
 
  
