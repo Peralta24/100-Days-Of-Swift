@@ -241,3 +241,175 @@ do {
     print("Ocurrio un error inesperado \(error)")
 }
 leche.imprimirInformacion()
+
+
+//Mini Proyecto numero dos
+
+enum CuentaError : Error {
+    case montoInvalido
+    case saldoInsuficiente(Decimal)
+    case cuentaInactiva
+}
+
+struct CuentaBancaria {
+    let titular: String
+    let numeroDeCuenta: String
+    var estaActiva : Bool = true
+    
+    var saldo : Decimal = 0 {
+        didSet {
+                print("✅ Saldo actualizado. Valor anterior: \(oldValue), Nuevo valor: \(saldo)")
+            }
+    }
+    var descripcion: String {
+        return "Cuenta N° \(numeroDeCuenta) de \(titular) con saldo $\(saldo)."
+    }
+    mutating func depositar(monto: Decimal) throws {
+        guard monto > 0 else {
+            throw CuentaError.montoInvalido
+        }
+        guard estaActiva else {
+            throw CuentaError.cuentaInactiva
+        }
+        
+        saldo += monto
+    }
+    
+    mutating func retirar(monto: Decimal) throws {
+        guard monto > 0 else {
+            throw CuentaError.montoInvalido
+        }
+        guard saldo >= monto else {
+            throw CuentaError.saldoInsuficiente(monto)
+        }
+        guard estaActiva else {
+            throw CuentaError.cuentaInactiva
+        }
+        
+        saldo -= monto
+    }
+    
+    init(titular :String, numeroDeCuenta:String) {
+        self.titular = titular
+        self.numeroDeCuenta = numeroDeCuenta
+        
+        self.saldo = 0
+    }
+}
+
+var cuenta1 = CuentaBancaria(titular: "Rafael", numeroDeCuenta: "21131231")
+do{
+    try cuenta1.depositar(monto: 1000)
+    try cuenta1.retirar(monto: 12221)
+}catch CuentaError.cuentaInactiva{
+    print("Ocurrio un error")
+}catch CuentaError.saldoInsuficiente(let disponible) {
+    print("No tienes el saldo suficiente tu saldo es \(disponible)")
+}catch CuentaError.montoInvalido{
+    print("Ingresa un monto valido")
+}
+
+
+print("\n// --- Estado Final de la Cuenta --- //")
+print("Saldo final \(cuenta1.saldo)")
+
+
+//Nuevo Reto
+//Mini-Proyecto 3 : Gestor de Tareas
+
+enum Prioridad {
+    case alta
+    case media
+    case baja
+}
+struct Tarea {
+    let descripcion : String
+    var completada : Bool = false {
+        willSet {
+            print("El estado de la tarea cambiara")
+            print("Por el nuevo valor \(newValue)")
+        }
+        didSet{
+            print("La tarea cambio de estado era: \(oldValue)")
+            print("La tarea cambio de estado a: \(completada)")
+        }
+    }
+    var prioridad : Prioridad {
+        willSet{
+            print("La prioridad de \(descripcion) cambiara a \(newValue)")
+        }
+        didSet{
+            print("La propiedad de \(descripcion) se cambio de \(oldValue) a \(prioridad)")
+        }
+    }
+    var cantidadDeTareasCompletadas = [Int]()
+    mutating func completarTarea() {
+        if completada {
+            print("La tarea ya esta completada")
+        }else{
+            completada = true
+            print("Tarea completa con exito!")
+            cantidadDeTareasCompletadas += [1]
+        }
+    }
+    
+}
+struct GestorDeTareas {
+    var tareas = [Tarea]()
+    
+    mutating func agregarTarea(tarea : Tarea) {
+        if tareas.contains(where: { $0.descripcion == tarea.descripcion }) {
+            print("La tarea ya fue agregada el gestor de tareas")
+        }else{
+            tareas.append(tarea)
+        }
+    }
+    mutating func eliminarTarea(enIndice: Int) {
+        if tareas.indices.contains(enIndice) {
+            tareas.remove(at: enIndice)
+            print("Tarea removida con exito de la lista\nlista actual \(tareas)")
+        }else{
+            print("No se encontro la tarea en esa posicion")
+        }
+    }
+    mutating func cambiarPrioridad(deTarea descripcion: String, a nuevaPrioridad: Prioridad) {
+        for i in 0..<tareas.count {
+            if tareas[i].descripcion.uppercased() == descripcion.uppercased() {
+                print("La tarea fue encontrada")
+                tareas[i].prioridad = nuevaPrioridad
+                return
+            }
+        }
+        print("La tarea no fue encontrada")
+    }
+
+    
+    func buscarTarea(porDescripcion descripcion: String) -> Tarea? {
+        for tarea in tareas {
+            if tarea.descripcion.uppercased() == descripcion.uppercased() {
+                print("La tarea fue encontrada!")
+                return tarea
+            }
+            
+        }
+        return nil
+    }
+    
+    func mostrarTareas(){
+        for tarea in tareas {
+            print("Tarea: \(tarea.descripcion)")
+        }
+    }
+}
+var tarea1 = Tarea(descripcion: "Estudiar Swift", prioridad: .baja)
+var tarea2 = Tarea(descripcion: "Practicar Swift", prioridad: .alta)
+var gestorDeTareas = GestorDeTareas()
+gestorDeTareas.agregarTarea(tarea: tarea1)
+gestorDeTareas.agregarTarea(tarea: tarea2)
+gestorDeTareas.mostrarTareas()
+gestorDeTareas.buscarTarea(porDescripcion: "PracTicar Swift")
+gestorDeTareas.eliminarTarea(enIndice: 0)
+gestorDeTareas.mostrarTareas()
+gestorDeTareas.cambiarPrioridad(deTarea: "Practicar Swift", a: .media)
+
+
