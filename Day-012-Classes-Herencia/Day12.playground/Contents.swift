@@ -286,3 +286,130 @@ print(empleadoEstrella.salario)
 desarollador1.trabajar()
 desarollador2.trabajar()
 gerente1.trabajar()
+
+//MiniProyecto 2 : Gestion de una Biblioteca Digital
+
+// --- PASO 1: Protocolo ---
+// Define un contrato para cualquier cosa que pueda ser prestada.
+protocol Prestable {
+    var titulo: String { get }
+    var estaPrestado: Bool { get set }
+    
+    mutating func prestar() throws
+    mutating func devolver()
+}
+
+// -- PASO 2: Error Personalizado ---
+enum ErrorBiblioteca: Error {
+    case yaEstaPrestado
+    case articulONoEncontrado
+}
+
+// --PASO 3: Crear tipos concretos ---
+struct Libro : Prestable {
+    let titulo : String
+    let autor : String
+    var estaPrestado: Bool = false
+    
+    mutating func prestar() throws {
+        if estaPrestado {
+            throw ErrorBiblioteca.yaEstaPrestado
+        }
+        print("El libro '\(titulo)' ha sido prestado.")
+        self.estaPrestado = true
+    }
+    
+    mutating func devolver() {
+        print("El libro '\(titulo)' ha sido devuelto.")
+        self.estaPrestado = false
+    }
+}
+
+class Revista : Prestable {
+    let titulo: String
+    let numeroDeEdicion: Int
+    var estaPrestado: Bool
+    
+    init(titulo: String, numeroDeEdicion: Int, estaPrestado: Bool) {
+        self.titulo = titulo
+        self.numeroDeEdicion = numeroDeEdicion
+        self.estaPrestado = estaPrestado
+    }
+    
+    func prestar() throws {
+        if estaPrestado {
+            throw ErrorBiblioteca.yaEstaPrestado
+        }
+        print("La revista '\(titulo)' ha sido prestada.")
+        self.estaPrestado = true
+    }
+    
+    func devolver() {
+        print("La revista '\(titulo)' ha sido devuelta.")
+               self.estaPrestado = false
+    }
+}
+// --- PASO 4: Crear la clase Biblioteca ---
+
+class Biblioteca {
+    var catalogo = [Prestable]()
+    
+    func agregarArticulo(_ articulo: Prestable) {
+        catalogo.append(articulo)
+    }
+    func prestar(titulo: String) {
+            guard let indice = catalogo.firstIndex(where: { $0.titulo == titulo }) else {
+                print("Error: El artículo '\(titulo)' no se encontró en el catálogo.")
+                return
+            }
+            
+            do {
+                try catalogo[indice].prestar()
+            } catch ErrorBiblioteca.yaEstaPrestado {
+                print("Advertencia: '\(titulo)' no se puede prestar porque ya está prestado.")
+            } catch {
+                print("Ha ocurrido un error inesperado: \(error)")
+            }
+        }
+
+    
+    func buscarArticulo(filtro: (Prestable) -> Bool) -> [Prestable] {
+        return catalogo.filter(filtro)
+    }
+}
+
+var laZona = Biblioteca()
+var elCienFuegos = Libro(titulo: "El Cien Fuegos", autor: "Carlos Ruiz Zafón", estaPrestado: false)
+var donQuijote = Libro(titulo: "Don Quijote de la Mancha", autor: "Miguel de Cervantes", estaPrestado: true)
+var cienAnios = Libro(titulo: "Cien años de soledad", autor: "Gabriel García Márquez", estaPrestado: false)
+var laSombra = Libro(titulo: "La sombra del viento", autor: "Carlos Ruiz Zafón", estaPrestado: true)
+var elPrincipito = Libro(titulo: "El Principito", autor: "Antoine de Saint-Exupéry", estaPrestado: false)
+var rayuela = Libro(titulo: "Rayuela", autor: "Julio Cortázar", estaPrestado: true)
+
+laZona.agregarArticulo(elCienFuegos)
+laZona.agregarArticulo(donQuijote)
+laZona.agregarArticulo(cienAnios)
+laZona.agregarArticulo(laSombra)
+laZona.agregarArticulo(elPrincipito)
+laZona.agregarArticulo(rayuela)
+
+
+
+laZona.prestar(titulo: "El Cien Fuegos")
+laZona.prestar(titulo: "El Cien Fuegos")
+
+
+laZona.prestar(titulo: "asdfsdsa")
+
+let articulosPrestados = laZona.buscarArticulo(filtro: { $0.estaPrestado })
+print("Articulos prestados : \(articulosPrestados.map{$0.titulo})")
+
+let librosCarlos = laZona.buscarArticulo { articulo in
+        if let libro = articulo as? Libro {
+    
+            return libro.autor == "Carlos Ruiz Zafón"
+    }
+    return false
+}
+
+print("Libros de Carlos Ruiz Zafron : \(librosCarlos.map{$0.titulo})")
