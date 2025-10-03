@@ -241,3 +241,50 @@ biblio.listarInventario()
 
 biblio.inventario[0].prestar()
 biblio.listarInventario()
+
+//Tipos de retornos opacos
+
+func getRandomNumber() -> some Equatable {
+    Int.random(in: 1...6)
+}
+
+func getRandomBool() -> some Equatable {
+    Bool.random()
+}
+
+protocol Juguete {
+    func jugar()
+}
+
+struct Carrito: Juguete {
+    func jugar() {
+        print("🚗 Vroom vroom! Estoy jugando con un carrito")
+    }
+}
+
+struct Osito: Juguete {
+    func jugar() {
+        print("🧸 Abrazo suave! Estoy jugando con un osito")
+    }
+}
+
+// ❌ Función intentando devolver un "cualquier juguete"
+// Esto no funciona porque Swift no sabe cuál será en realidad
+/*
+func obtenerJuguete() -> Juguete {
+    // Puede devolver Carrito o Osito
+    Bool.random() ? Carrito() : Osito()
+}
+*/
+
+func obtenerCarrito() -> some Juguete{
+    Carrito()
+}
+func obtenerOsito() -> some Juguete{
+    Osito()
+}
+
+let miCarrito = obtenerCarrito()
+miCarrito.jugar()
+let miOsito = obtenerOsito()
+miOsito.jugar()
