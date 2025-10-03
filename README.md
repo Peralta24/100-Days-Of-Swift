@@ -17,6 +17,7 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 9 – Closures, Funciones Como Parametros
 - [x] Día 10 – Structs, Propiedas Computadas, Propiedades observadoras
 - [x] Día 11 - Structs,Control de Acceso, Propiedades Estaticas, Metodos Estaticos
+- [x] Día 12 - Clases, Herencia
 
 
  
