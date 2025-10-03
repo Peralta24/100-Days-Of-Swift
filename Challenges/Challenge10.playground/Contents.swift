@@ -214,3 +214,5 @@ do {
 }catch ErrorDeVenta.fondosInsuficientes{
     
 }
+//Test de Conocimiento
+
