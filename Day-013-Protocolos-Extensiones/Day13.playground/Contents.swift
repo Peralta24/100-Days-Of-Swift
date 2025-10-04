@@ -291,3 +291,49 @@ miOsito.jugar()
 
 //Como crear y utilizar extenciones de protocolo
 
+extension Collection {
+    var isNotEmpty : Bool {
+        isEmpty == false
+    }
+}
+
+let guests = ["Mario", "Luigi", "Peach"]
+
+if guests.isNotEmpty{
+    print("Guest count: \(guests.count)")
+}
+
+
+protocol PersonE {
+    var name : String {get}
+    func sayHello()
+}
+
+extension PersonE {
+    func sayHello(){
+        print("Hi, I'm\(name)")
+    }
+}
+
+struct Employee3 : PersonE {
+    let name : String
+}
+
+
+protocol Videojuego {
+    var titulo : String {get}
+    func jugar()
+}
+
+extension Videojuego {
+    func jugar(){
+        print("Estas jugando \(titulo)")
+    }
+}
+
+struct MarioBros : Videojuego {
+    var titulo : String
+}
+
+let juego = MarioBros(titulo: "Mario Bros")
+juego.jugar()
