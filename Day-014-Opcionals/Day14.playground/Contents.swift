@@ -271,3 +271,17 @@ print(author1)
 
 //Como manejar fallas de funciones con opcionales
 
+enum UserError: Error {
+    case badID, networkFailed
+}
+
+func getUser(id: Int) throws -> String {
+    throw UserError.networkFailed
+}
+
+if let user = try? getUser(id: 23) {
+    print("User: \(user)")
+}
+
+let user4 = (try? getUser(id: 23)) ?? "Anonymous"
+print(user4)
