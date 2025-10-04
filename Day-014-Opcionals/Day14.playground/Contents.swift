@@ -137,3 +137,122 @@ func printMeaningOfLifeG() {
 
 //Ejercicios guard
 
+func greetUser(name: String?){
+    
+    guard let name = name else{
+        print("Falta el nombre")
+        return
+    }
+    
+    print("Hola \(name)")
+}
+
+greetUser(name: "Rafael")
+greetUser(name: nil)
+
+func printCuadrado(of number: Int?){
+    guard let number = number else {
+        print("Numero no valido")
+        return
+    }
+    
+    print(number * number)
+}
+
+printCuadrado(of: 9)
+printCuadrado(of: nil)
+
+func safeDivide(_ a: Int?, by b: Int?) {
+    
+    guard let a = a else{
+        print("No ingresaste numero")
+        return
+    }
+    guard let b = b else{
+        print("No ingresaste numero")
+        return
+    }
+    if b == 0 {
+        print("El division no puede ser 0")
+        return
+    }
+    
+    print(a / b)
+    
+    
+}
+
+safeDivide(10, by: 2)
+safeDivide(8, by: 0)
+safeDivide(nil, by: 3)
+
+func checkAge(_ age : Int?) {
+    if let age =  age {
+        if age >= 18 {
+            print("Acceso permitido")
+        }else{
+            print("Acceso denegado")
+        }
+    }else{
+        print("Edad desconocida")
+    }
+}
+checkAge(20)
+checkAge(15)
+checkAge(nil)
+
+func combine(_ first: String?, _ second: String?){
+    guard let first = first else{
+        print("Faltan datos")
+        return
+    }
+    guard let second = second else{
+        print("Faltan datos")
+        return
+    }
+    
+    print("\(first) \(second)")
+}
+
+combine("Hola", "Mundo")
+combine(nil, "Swift")
+
+func getUsername3(from data:[String: String]?) {
+    guard let data = data else{
+        print("Error")
+        return
+    }
+    
+    print(data.values)
+    
+}
+getUsername3(from: ["username": "SwiftCoder"])
+getUsername3(from: [:])
+getUsername3(from: nil)
+
+//Desenvolver opcional con operador ??
+
+let captains = [
+    "Enterprise": "Picard",
+    "Voyager": "Janeway",
+    "Defiant": "Sisko"
+]
+
+let new = captains["Serenity"] ?? "N/A"
+
+
+let tvShows = ["Archer", "Babylon 5", "Ted Lasso"]
+let favorite = tvShows.randomElement() ?? "None"
+
+struct Book {
+    let title: String
+    let author: String?
+}
+
+let book = Book(title: "Beowulf", author: nil)
+let author = book.author ?? "Anonymous"
+print(author)
+
+
+//Concatenar opciones
+
