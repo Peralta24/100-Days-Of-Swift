@@ -340,3 +340,57 @@ juego.jugar()
 
 //CheckPoint 8
 
+
+protocol Edificio {
+    var habitaciones : Int {get}
+    var costo : Double {get}
+    var agenteInmobiliario : String {get}
+    var ubicacion : String {get}
+    func resumentarInfo() -> String
+}
+
+extension Edificio {
+    
+    var costoPorHabitacion: Double {
+        costo / Double(habitaciones)
+    }
+    func resumentarInfo() -> String {
+        return "El edificio cuenta con \(habitaciones) habitaciones,  con un costo \(costo) pesos , el agente inmobiliario que la vende es \(agenteInmobiliario)"
+    }
+}
+struct House: Edificio {
+    var habitaciones: Int
+    var costo: Double
+    var agenteInmobiliario: String
+    var ubicacion : String
+
+    func resumentarInfo() -> String {
+        return "Casa en \(ubicacion) con \(habitaciones) habitaciones, cuesta $\(costo), vendida por \(agenteInmobiliario)"
+    }
+}
+
+struct Office: Edificio {
+    var habitaciones: Int
+    var costo: Double
+    var agenteInmobiliario: String
+    var ubicacion : String
+
+    func resumentarInfo() -> String {
+        return "Oficina con \(habitaciones) espacios, cuesta $\(costo), agente: \(agenteInmobiliario)"
+    }
+}
+
+
+
+var house = House(habitaciones: 4, costo: 40_000, agenteInmobiliario: "Peralta Houses",ubicacion: "Puebla")
+var oficina = Office(habitaciones: 2, costo: 20_000, agenteInmobiliario: "Jose Office", ubicacion: "Mexico")
+
+print(house.resumentarInfo())
+print(oficina.resumentarInfo())
+let propiedades: [Edificio] = [house, oficina]
+
+for propiedad in propiedades {
+    print(propiedad.resumentarInfo())
+    print("→ Costo por habitación: \(propiedad.costoPorHabitacion)\n")
+}
+
