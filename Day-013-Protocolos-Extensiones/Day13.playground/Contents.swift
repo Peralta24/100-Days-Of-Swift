@@ -337,3 +337,6 @@ struct MarioBros : Videojuego {
 
 let juego = MarioBros(titulo: "Mario Bros")
 juego.jugar()
+
+//CheckPoint 8
+
