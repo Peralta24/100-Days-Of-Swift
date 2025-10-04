@@ -294,3 +294,101 @@ func array(_ array: [Int]?) -> Int { array?.randomElement() ?? Int.random(in: 1.
 print(array([10, 20, 30, 40]))  // → uno de esos números
 print(array([]))                // → número aleatorio 1...100
 print(array(nil))               // → número aleatorio 1...100
+
+
+//Nivel 1
+//Ejercicio 1 : Conversion de texto a numero
+
+func imprimirDobleSiEsNumero(texto : String?){
+    if let texto = texto, let numero = Int(texto) {
+        print(numero * 2)
+    }else{
+        print("Entrada invalida")
+    }
+}
+
+imprimirDobleSiEsNumero(texto: "20")
+imprimirDobleSiEsNumero(texto: "manzana")
+imprimirDobleSiEsNumero(texto: nil)
+
+//Nivel2
+//Ejercicio 2 : Verificacion de perfil de usuario
+
+func crearPerfilDeUsuario(nombre: String?, edad: String?){
+    guard let nombre  = nombre else{
+        print("El nombre es requerido")
+        return
+    }
+    
+    guard let edad = edad, let edadNum = Int(edad) else {
+        print("La edad es obligatoria")
+        return
+    }
+    Int(edad)
+    
+    print("Perfil creado para \(nombre) de \(edad) anios")
+}
+
+// Pruebas
+crearPerfilDeUsuario(nombre: "Ana", edad: "25") // Debería crear el perfil
+crearPerfilDeUsuario(nombre: nil, edad: "30")   // Debería fallar por el nombre
+crearPerfilDeUsuario(nombre: "Luis", edad: "treinta") // Debería fallar por la edad
+crearPerfilDeUsuario(nombre: "Pedro", edad: nil) // Debería fallar por la edad
+
+
+//Nivel 3
+//Ejercicio 3 : Configuracion de la aplicacion
+let configuracionUsuario: [String: String] = ["nombre": "Carlos", "idioma": "Español"]
+
+let temaActual = configuracionUsuario ["tema"] ?? "Claro"
+print("Tema actual: \(temaActual)")
+
+let configuracionUsuario2: [String: String] = ["nombre": "Laura", "tema": "Oscuro"]
+let temaActual2 = configuracionUsuario2 ["tema"] ?? "Oscuro"
+print("Tema actual: \(temaActual2)")
+
+
+//Nivel 4
+//Ejercicio 4 : Buscando en una libreta de Contactos
+struct Contacto {
+    let nombre: String
+    let email: String?
+}
+
+let contactos = [
+    Contacto(nombre: "Maria", email: "maria@correo.com"),
+    Contacto(nombre: "Juan", email: nil),
+    Contacto(nombre: "Pedro", email: "pedro@correo.com")
+]
+
+let emailJuan = contactos.first(where: {$0.nombre == "Juan"})?.email ?? "No se encuentra el contacto"
+print("Email de Juan: \(emailJuan)") // Imprime "Sin email" porque la propiedad email es nil
+let emailAna = contactos.first(where: {$0.nombre == "Ana"})?.email ?? "No se encuentra el contacto"
+print("Email de Ana: \(emailAna)")
+let emailDePedro = contactos.first(where: {$0.nombre == "Pedro"})?.email ?? "No se encuentra el contacto"
+print("Email de Pedro : \(emailDePedro)")
+
+
+func obtenerCalificacionFinal(datos: [String : String]?){
+    guard let datos = datos else{
+        print("No hay datos del estudiante sal!")
+        return
+    }
+    if let calificacion = datos["calificacion"], let calificacionD = Double(calificacion){
+        print("La calificacion final es: \(calificacionD)")
+    }else{
+        print("Calificacion no disponible.")
+    }
+}
+
+let estudiante1: [String: String]? = ["nombre": "Sofia", "calificacion": "9.5"]
+let estudiante2: [String: String]? = ["nombre": "Miguel"]
+let estudiante3: [String: String]? = ["nombre": "Elena", "calificacion": "diez"]
+let estudiante4: [String: String]? = nil
+
+obtenerCalificacionFinal(datos: estudiante1) // Debería imprimir 9.5
+obtenerCalificacionFinal(datos: estudiante2) // Debería imprimir "Calificación no disponible."
+obtenerCalificacionFinal(datos: estudiante3) // Debería imprimir "Calificación no disponible."
+obtenerCalificacionFinal(datos: estudiante4) // Debería imprimir "No hay datos del estudiante."
+
+
