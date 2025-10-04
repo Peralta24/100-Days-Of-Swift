@@ -288,3 +288,6 @@ let miCarrito = obtenerCarrito()
 miCarrito.jugar()
 let miOsito = obtenerOsito()
 miOsito.jugar()
+
+//Como crear y utilizar extenciones de protocolo
+
