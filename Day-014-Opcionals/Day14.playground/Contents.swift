@@ -285,3 +285,7 @@ if let user = try? getUser(id: 23) {
 
 let user4 = (try? getUser(id: 23)) ?? "Anonymous"
 print(user4)
+
+
+//Checkpoint 9
+
