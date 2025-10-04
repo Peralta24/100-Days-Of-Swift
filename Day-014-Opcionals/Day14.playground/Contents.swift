@@ -58,3 +58,53 @@ if let bestScore {
 
 //Ejerciicos primera leccion opcionales
 
+
+func dobleDelNumero(de texto : String){
+    if let numero = Int(texto) {
+        print(numero * 2)
+    }else{
+        print("Entrada invalida")
+    }
+}
+
+dobleDelNumero(de: "10")
+dobleDelNumero(de: "Swift")
+dobleDelNumero(de: "-5")
+
+let capitales = [
+    "México": "Ciudad de México",
+    "Francia": "París",
+    "Japón": "Tokio"
+]
+func imprimirCapital(de pais : String) {
+    if let capital = capitales[pais] {
+        print(capital)
+    }else{
+        print("No se encontro el capital")
+    }
+}
+
+imprimirCapital(de: "Francia")
+imprimirCapital(de: "Italia")
+
+struct Persona {
+    let nombre : String
+    let segundoNombre : String?
+}
+
+var rafael = Persona(nombre: "Rafael", segundoNombre: "Peralta")
+var xana = Persona(nombre: "Xana", segundoNombre: nil)
+
+func saludoCompleto(a persona : Persona) {
+    
+    if let nombreCompleto = persona.segundoNombre {
+        print("Tu nombre es : \(persona.nombre) \(nombreCompleto)")
+    }else{
+        print("Hola \(persona.nombre)")
+    }
+    
+}
+saludoCompleto(a: rafael)
+saludoCompleto(a: xana)
+
+//Desenvolver con guard
