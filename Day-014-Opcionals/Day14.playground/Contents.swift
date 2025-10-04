@@ -289,3 +289,8 @@ print(user4)
 
 //Checkpoint 9
 
+
+func array(_ array: [Int]?) -> Int { array?.randomElement() ?? Int.random(in: 1...100) }
+print(array([10, 20, 30, 40]))  // → uno de esos números
+print(array([]))                // → número aleatorio 1...100
+print(array(nil))               // → número aleatorio 1...100
