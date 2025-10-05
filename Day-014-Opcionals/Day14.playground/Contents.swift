@@ -504,3 +504,74 @@ mostrarCiudad(de: nil)                 // No se encontró la ciudad
 
 //Nivel 5
 
+enum ConversionError: Error {
+    case noEsNumero
+}
+
+func convertirAEntero(_ texto: String) throws -> Int {
+    guard let numero = Int(texto) else {
+        throw ConversionError.noEsNumero
+    }
+    return numero
+}
+
+func imprimirConversion(_ texto : String?) {
+        
+    guard let texto = texto, let numero = try? convertirAEntero(texto) else{
+        print("Error: no se pudo convertir a numero")
+        return
+    }
+    
+    print("El numero es \(numero)")
+}
+imprimirConversion("123")   // El número es 123
+imprimirConversion("Swift") // Error: no se pudo convertir a número
+imprimirConversion(nil)     // Error: no se pudo convertir a número
+
+//Reto final
+
+enum ConversionErrorF: Error {
+    case noEsNumero
+}
+
+func convertirAEnteroF(_ texto: String) throws -> Int {
+    guard let numero = Int(texto) else {
+        throw ConversionError.noEsNumero
+    }
+    return numero
+}
+
+struct DireccionF {
+    var ciudad: String
+    var codigoPostal: String?
+}
+
+struct PersonaF {
+    var nombre: String?
+    var apellido: String?
+    var edad: String? // Edad como String, para practicar try?
+    var direccion: DireccionF?
+}
+
+func mostrarInfoPersona(_ persona: PersonaF?) {
+    let nombre = persona?.nombre?.capitalized ?? "Desconocido"
+    let apellido = persona?.apellido?.capitalized ?? "Desconocido"
+    let edad = (try? convertirAEnteroF(persona?.edad ?? "")) ?? 0
+
+    
+    let ciudad = persona?.direccion?.ciudad ?? "No se encontro ciudad"
+    
+    print("Nombre Completo: \(nombre) \(apellido)")
+    print("Edad: \(edad)")
+    print("Ciudad: \(ciudad)")
+
+}
+var direccion1 = DireccionF(ciudad: "Puebla",codigoPostal: "82181")
+var persona1 = PersonaF()
+
+persona1.nombre = nil
+persona1.apellido = nil
+persona1.edad = nil
+persona1.direccion = nil
+
+mostrarInfoPersona(persona1)
