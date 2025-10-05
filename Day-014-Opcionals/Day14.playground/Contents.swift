@@ -392,3 +392,37 @@ obtenerCalificacionFinal(datos: estudiante3) // Debería imprimir "Calificación
 obtenerCalificacionFinal(datos: estudiante4) // Debería imprimir "No hay datos del estudiante."
 
 
+//Ejercicios Guiados
+
+func imprimirResumenDeUsuario(datosUsuarios : [String:Any]?){
+    
+    guard let datosUsuarios = datosUsuarios else {
+        print("No hay datos en el diccionario")
+        return
+    }
+    
+    guard let nombre = datosUsuarios["nombre"] as? String else {
+        print("Nombre no encontrado")
+        return
+    }
+    
+    let ciudad = (datosUsuarios["direccion"]as?[String:String])?["ciudad"] ?? "Ciudad desconocida"
+    
+    let membresia = (datosUsuarios["membresia"]as? String) ?? "Estandar"
+    
+    // 5. Imprimir el resumen final.
+        print("Resumen de Usuario:")
+        print("- Nombre: \(nombre)")
+        print("- Ciudad: \(ciudad)")
+        print("- Membresía: \(membresia)")
+        print("---")
+}
+
+
+//Ejercicio chekpoint 99
+func checkPoint99(arrayInt : [Int]?) -> Int{arrayInt?.randomElement() ?? Int.random(in:1...100)}
+
+
+print(checkPoint99(arrayInt: [0,1,2,3,4,5]))
+print(checkPoint99(arrayInt: nil))
+print(checkPoint99(arrayInt: []))
