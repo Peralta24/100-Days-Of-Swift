@@ -426,3 +426,81 @@ func checkPoint99(arrayInt : [Int]?) -> Int{arrayInt?.randomElement() ?? Int.ran
 print(checkPoint99(arrayInt: [0,1,2,3,4,5]))
 print(checkPoint99(arrayInt: nil))
 print(checkPoint99(arrayInt: []))
+
+//Ejercicios para practicar ChatGPT
+
+func saludar (_ nombre: String?) {
+    guard let nombre else {
+        print("Hola,Visitante!")
+        return
+    }
+    
+    if nombre.isEmpty{
+        print("Hola,Visitante!")
+    }else{
+        print("Hola, \(nombre)!")
+
+    }
+    
+}
+
+saludar(nil)
+saludar("")
+saludar("Pepe")
+
+
+func imprimirCuadrado(de numero: Int?){
+    guard let numero else{
+        print("Error: No se propociono ningun numero")
+        return
+    }
+    
+    print("El cuadrado del numero es \(numero * numero)")
+}
+
+imprimirCuadrado(de: 4)
+imprimirCuadrado(de: nil)
+
+
+func imprimirEtiqueta(nombre: String?, apellido: String?, edad: Int?) {
+    let nombreFinal = nombre ?? "Desconocido"
+    let apellidoFinal = apellido ?? "Desconocido"
+    let edadFinal = edad ?? 0
+
+    print("Nombre completo: \(nombreFinal) \(apellidoFinal) — Edad: \(edadFinal)")
+}
+
+imprimirEtiqueta(nombre: "Rafa", apellido: nil, edad: 25)
+imprimirEtiqueta(nombre: nil, apellido: "Peralta", edad: nil)
+
+
+//Nivel 4
+
+struct Direccion {
+    var ciudad : String
+    var codigoPostal : String?
+}
+
+struct Persona4{
+    var nombre: String
+    var direccion: Direccion?
+}
+func mostrarCiudad(de persona: Persona4?){
+
+    let ciudad2 = persona?.direccion?.ciudad ?? "No se encontro ciudad"
+    print("Ciudad : \(ciudad2)")
+    
+    
+}
+
+let direccion = Direccion(ciudad: "Monterrey", codigoPostal: "64000")
+let persona = Persona4(nombre: "Rafa", direccion: direccion)
+let personaSinDireccion = Persona4(nombre: "Alex", direccion: nil)
+
+mostrarCiudad(de: persona)             // Ciudad: Monterrey
+mostrarCiudad(de: personaSinDireccion) // No se encontró la ciudad
+mostrarCiudad(de: nil)                 // No se encontró la ciudad
+
+
+//Nivel 5
+
