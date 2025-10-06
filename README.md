@@ -20,6 +20,7 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 12 - Clases, Herencia
 - [x] Día 13 - Protocolos,Extenciones
 - [x] Día 14 - Opcionales
+- [x] Día 15 - Repaso de Swift (Terminado)
 
 
  
