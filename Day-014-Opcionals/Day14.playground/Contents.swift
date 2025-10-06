@@ -575,3 +575,4 @@ persona1.edad = nil
 persona1.direccion = nil
 
 mostrarInfoPersona(persona1)
+///
