@@ -181,5 +181,30 @@ print(eventosImportantes.count)
 print(listaEventos.sorted{$0.fecha < $1.fecha}.map{$0.fecha})
 
 
+//Ejercicio 6
+//Centro de soporte
+enum ClienteError: Error {
+    case noEncontrado
+}
+
+func buscarCliente(id: Int, en clientes: [Int: String]) throws -> String {
+   if let nombreCliente = clientes[id] {
+        return nombreCliente
+    } else {
+        throw ClienteError.noEncontrado
+    }
+}
+
+do {
+    let nombreCliente = try buscarCliente(id: 12345, en: [3223: "Juan Pérez"])
+    print("Nombre del cliente: \(nombreCliente)")
+} catch {
+    switch error {
+    case ClienteError.noEncontrado:
+        print("Cliente no encontrado.")
+    default:
+        print("Error inesperado: \(error)")
+    }
+}
 
 
