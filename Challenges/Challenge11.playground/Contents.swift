@@ -208,3 +208,16 @@ do {
 }
 
 
+//Ejercicio 7
+//Redes Sociales
+func filtrarUsuarios(_ usuarios: [String], usando filtro: (String) -> Bool) -> [String] {
+    return usuarios.filter(filtro)
+}
+
+var usuarios = ["ana", "maría", "julia", "clara", "maria"]
+
+// Filtrar los que empiecen con "a" y tengan más de 5 letras
+filtrarUsuarios(usuarios, usando: { $0.lowercased().first == "a" && $0.count > 5 })
+    .forEach { print($0) }
+
+
