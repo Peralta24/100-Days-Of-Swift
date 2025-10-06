@@ -60,3 +60,74 @@ print(verificarProgeso(pasos: 9_000))
 print(verificarProgeso(pasos: nil))
 
 
+//Tienda en linea
+protocol Vendible {
+    var nombre: String { get }
+    var precio: Double { get }
+    func descripcion() -> String
+}
+
+class Producto: Vendible {
+    var nombre: String
+    var precio: Double
+    
+    init(nombre: String, precio: Double) {
+        self.nombre = nombre
+        self.precio = precio
+    }
+
+    func descripcion() -> String {
+        "\(nombre) cuesta $\(precio)"
+    }
+}
+
+class Ropa : Producto {
+
+    var garantia : Int
+    var genero : String
+    
+    init(nombre: String, precio: Double, garantia: Int, genero: String) {
+        self.garantia = garantia
+        self.genero = genero
+        super.init(nombre: nombre, precio: precio)
+    }
+    
+    override func descripcion() -> String {
+        return "El nombre es \(nombre) el precio es de \(precio) pesos el genero es de \(genero) y la garantia es hasta el \(garantia)"
+    }
+}
+
+class Electronico : Producto {
+
+    var garantia : Int
+    var genero : String
+    
+    init(nombre: String, precio: Double, garantia: Int, genero: String) {
+        self.garantia = garantia
+        self.genero = genero
+        super.init(nombre: nombre, precio: precio)
+    }
+    
+    override func descripcion() -> String {
+        return "El nombre es \(nombre) el precio es de \(precio) pesos el genero es de \(genero) y la garantia es hasta el \(garantia)"
+    }
+}
+
+func calcularCompra(productos: [Producto]) -> Double {
+    var sumaProductos = 0.0
+    for producto in productos {
+        sumaProductos += producto.precio
+        
+    }
+    
+    return sumaProductos
+}
+
+var producto1 = Producto(nombre: "Zapatillas", precio: 15000.0)
+var producto2 = Producto(nombre: "Gafas", precio: 2000.0)
+
+var listaProductos: [Producto] = []
+listaProductos.append(producto1)
+listaProductos.append(producto2)
+
+print("Total de la compra: \(calcularCompra(productos: listaProductos)) pesos")
