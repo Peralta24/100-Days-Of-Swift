@@ -221,3 +221,55 @@ filtrarUsuarios(usuarios, usando: { $0.lowercased().first == "a" && $0.count > 5
     .forEach { print($0) }
 
 
+//Ejercicio 8
+//App de estadisticas
+struct Estadisticas {
+
+    nonisolated(unsafe) static var totalUsuarios: Int = 0
+    
+    private var usuariosActivos: Int
+    
+
+    init(usuariosActivos: Int) {
+        self.usuariosActivos = usuariosActivos
+
+        Estadisticas.totalUsuarios += 1
+    }
+    
+
+    private func calcularPorcentaje() -> Double {
+        guard Estadisticas.totalUsuarios > 0 else {
+            return 0.0
+        }
+        
+        return (Double(self.usuariosActivos) / Double(Estadisticas.totalUsuarios)) * 100
+    }
+    
+
+    func obtenerPorcentajeActivos() -> String {
+        let porcentaje = calcularPorcentaje()
+        return "El porcentaje de usuarios activos es del \(String(format: "%.2f", porcentaje))%."
+    }
+}
+let sesion1 = Estadisticas(usuariosActivos: 5)
+print("Después de la sesión 1:")
+print("Total de usuarios (estático): \(Estadisticas.totalUsuarios)")
+print(sesion1.obtenerPorcentajeActivos())
+print("--------------------")
+
+let sesion2 = Estadisticas(usuariosActivos: 8)
+print("Después de la sesión 2:")
+print("Total de usuarios (estático): \(Estadisticas.totalUsuarios)")
+print(sesion2.obtenerPorcentajeActivos())
+print("--------------------")
+
+let sesion3 = Estadisticas(usuariosActivos: 12)
+print("Después de la sesión 3:")
+print("Total de usuarios (estático): \(Estadisticas.totalUsuarios)")
+print(sesion3.obtenerPorcentajeActivos())
+print("--------------------")
+
+
+//MiniApp ProfesionalJunior
+
+

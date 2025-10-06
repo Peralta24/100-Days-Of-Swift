@@ -18,6 +18,8 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 10 – Structs, Propiedas Computadas, Propiedades observadoras
 - [x] Día 11 - Structs,Control de Acceso, Propiedades Estaticas, Metodos Estaticos
 - [x] Día 12 - Clases, Herencia
+- [x] Día 13 - Protocolos,Extenciones
+- [x] Día 14 - Opcionales
 
 
  
