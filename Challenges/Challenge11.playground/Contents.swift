@@ -270,6 +270,144 @@ print(sesion3.obtenerPorcentajeActivos())
 print("--------------------")
 
 
-//MiniApp ProfesionalJunior
+// MiniApp ProfesionalJunior
+
+enum NivelDePrioridad: Int, Comparable {
+    case baja = 1
+    case media = 2
+    case alta = 3
+    
+    var mensaje: String {
+        switch self {
+        case .baja:
+            return "🟢 Prioridad baja"
+        case .media:
+            return "🟡 Prioridad media"
+        case .alta:
+            return "🔴 Prioridad alta"
+        }
+    }
+    
+    static func < (lhs: NivelDePrioridad, rhs: NivelDePrioridad) -> Bool {
+        return lhs.rawValue < rhs.rawValue
+    }
+}
+
+struct Tarea {
+    let titulo : String
+    var descripcion : String?
+    var prioridad : NivelDePrioridad
+    var completada : Bool = false
+    var estadoTarea : String {
+        completada ? "✅ Completada" : "🕓 Pendiente"
+    }
+}
+
+struct GestorDeTareas {
+    var tareasCreadas : [Tarea] = []
+    
+    mutating func agregarTarea(tarea: Tarea){
+        if !tareasCreadas.contains(where: { $0.titulo == tarea.titulo }) {
+            tareasCreadas.append(tarea)
+            print("🆕 Tarea '\(tarea.titulo)' agregada con éxito.\n")
+        } else {
+            print("⚠️ La tarea '\(tarea.titulo)' ya existe.\n")
+        }
+    }
+    
+    mutating func marcarComoCompletado(tarea : Tarea){
+        if let index = tareasCreadas.firstIndex(where: { $0.titulo == tarea.titulo }) {
+            tareasCreadas[index].completada = true
+            print("✅ '\(tarea.titulo)' marcada como completada.\n")
+        } else {
+            print("❌ No se encontró la tarea '\(tarea.titulo)'.\n")
+        }
+    }
+    
+    func mostrarInformacion(){
+        print("📋 LISTA DE TAREAS:\n")
+        for tarea in tareasCreadas {
+            print("• Título: \(tarea.titulo)")
+            print("  \(tarea.prioridad.mensaje)")
+            print("  Estado: \(tarea.estadoTarea)\n")
+        }
+        print("-------------------------------\n")
+    }
+    
+    func mostrarPendientes(){
+        print("🕓 TAREAS PENDIENTES:\n")
+        let pendientes = tareasCreadas.filter { !$0.completada }
+        if pendientes.isEmpty {
+            print("🎉 No hay tareas pendientes.\n")
+        } else {
+            for tarea in pendientes {
+                print("• \(tarea.titulo) (\(tarea.prioridad.mensaje))")
+            }
+            print("")
+        }
+    }
+    
+    mutating func eliminarTareasCompletadas(){
+        let eliminadas = tareasCreadas.filter { $0.completada }
+        tareasCreadas.removeAll(where: { $0.completada })
+        if eliminadas.isEmpty {
+            print("⚠️ No había tareas completadas para eliminar.\n")
+        } else {
+            print("🗑️ Se eliminaron \(eliminadas.count) tarea(s) completada(s).\n")
+        }
+    }
+    
+    mutating func ordenarTareasSegunPrioridad() {
+        tareasCreadas.sort { $0.prioridad > $1.prioridad }
+        print("📊 Tareas ordenadas por prioridad (de alta a baja):")
+        for tarea in tareasCreadas {
+            print("• \(tarea.titulo) - \(tarea.prioridad.mensaje)")
+        }
+        print("")
+    }
+    
+    func mostrarCompletasYNo() {
+        print("📌 ESTADO GENERAL DE TAREAS:\n")
+        for tarea in tareasCreadas {
+            if tarea.completada {
+                print("✅ \(tarea.titulo) — \(tarea.prioridad.mensaje)")
+            } else {
+                print("🕓 \(tarea.titulo) — \(tarea.prioridad.mensaje)")
+            }
+        }
+        print("")
+    }
+    
+    func buscarTareaPorTitulo(titulo: String){
+        if tareasCreadas.contains(where: { $0.titulo == titulo }){
+            print("Tarea : \(titulo)")
+        }else {
+            print("No se encontro la tarea")
+        }
+    }
+}
 
 
+// Ejemplo de uso
+var tarea1 = Tarea(titulo: "Estudiar Swift", prioridad: .alta)
+var tarea2 = Tarea(titulo: "Pasear el perro", prioridad: .baja)
+var tarea3 = Tarea(titulo: "Arreglar la habitación", prioridad: .media)
+
+var gestorTareas = GestorDeTareas()
+
+gestorTareas.agregarTarea(tarea: tarea1)
+gestorTareas.agregarTarea(tarea: tarea2)
+gestorTareas.agregarTarea(tarea: tarea3)
+
+gestorTareas.mostrarInformacion()
+
+gestorTareas.marcarComoCompletado(tarea: tarea2)
+gestorTareas.mostrarPendientes()
+gestorTareas.mostrarInformacion()
+
+gestorTareas.mostrarCompletasYNo()
+gestorTareas.eliminarTareasCompletadas()
+gestorTareas.mostrarCompletasYNo()
+gestorTareas.ordenarTareasSegunPrioridad()
+
+gestorTareas.buscarTareaPorTitulo(titulo: "Estudiar Swiftdd")
