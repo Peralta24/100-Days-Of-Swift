@@ -155,3 +155,31 @@ func recibirSemafor(semaforo: Semaforo) -> String {
 }
 
 print(recibirSemafor(semaforo: .rojo))
+
+
+//Ejercicio 5
+//App de calendario
+
+struct Eventos {
+    let titulo : String
+    let fecha : String
+    let esImportante : Bool
+}
+var evento1 = Eventos(titulo: "TheExperience", fecha: "20/12/2025", esImportante: true)
+var evento2 = Eventos(titulo: "Fin de Año", fecha: "31/12/2025", esImportante: true)
+var evento3 = Eventos(titulo: "Navidad", fecha: "25/12/2025", esImportante: false)
+
+var listaEventos: [Eventos] = []
+listaEventos.append(evento1)
+listaEventos.append(evento2)
+listaEventos.append(evento3)
+
+
+var eventosImportantes = listaEventos.filter{$0.esImportante}
+print(eventosImportantes.map({$0.titulo}))
+print(eventosImportantes.count)
+print(listaEventos.sorted{$0.fecha < $1.fecha}.map{$0.fecha})
+
+
+
+
