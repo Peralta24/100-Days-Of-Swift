@@ -42,4 +42,21 @@ print("La suma total de entretenimiento es \(sumaEntretenimiento)")
 print(montosCategorias)
 
 
-//App de fitness 
+//App de fitness
+
+func verificarProgeso(pasos:Int?, objetivo: Int = 10_000) -> String {
+    if let pasos = pasos {
+        if pasos >= objetivo {
+            return "Enhorabuena has cumplido tu objetivo de pasos"
+        }else {
+            return "Faltan \(objetivo - pasos) pasos para cumplir tu objetivo"
+        }
+    }else {
+        return "No has dado información de pasos"
+    }
+}
+
+print(verificarProgeso(pasos: 9_000))
+print(verificarProgeso(pasos: nil))
+
+
