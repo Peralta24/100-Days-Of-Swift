@@ -40,3 +40,6 @@ print("La suma total de transporte es \(sumaTransporte)")
 print("La suma total de entretenimiento es \(sumaEntretenimiento)")
 
 print(montosCategorias)
+
+
+//App de fitness 
