@@ -131,3 +131,27 @@ listaProductos.append(producto1)
 listaProductos.append(producto2)
 
 print("Total de la compra: \(calcularCompra(productos: listaProductos)) pesos")
+
+
+//Ejercicio 4
+//Sistema de trafico
+enum Semaforo {
+    case rojo, amarillo, verde
+
+    var accion: String {
+        switch self {
+        case .rojo :
+            return("Detente")
+        case .amarillo:
+            return("Precaucion")
+        case .verde:
+            return("Avanza")
+        }
+    }
+}
+
+func recibirSemafor(semaforo: Semaforo) -> String {
+    return("El semaforo esta \(semaforo.accion) quedan 30 segundos para que cambie")
+}
+
+print(recibirSemafor(semaforo: .rojo))
