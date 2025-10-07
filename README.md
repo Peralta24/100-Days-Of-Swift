@@ -21,6 +21,7 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 13 - Protocolos,Extenciones
 - [x] Día 14 - Opcionales
 - [x] Día 15 - Repaso de Swift (Finalizado)
+- [x] Día 16 - Projecto 1 (Parte Uno)
 
 
  
