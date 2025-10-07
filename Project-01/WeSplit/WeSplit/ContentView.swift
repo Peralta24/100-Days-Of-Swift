@@ -16,15 +16,25 @@ struct ContentView: View {
     let tipPercentages = [10,15,20,25,0]//Opciones de propina
     
     var body: some View {
-        Form{
-            Section{
-                TextField("Amount", value: $checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD" ))
-                    .keyboardType(.decimalPad)
+        NavigationStack{
+            Form{
+                Section{
+                    TextField("Amount", value: $checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD" ))
+                        .keyboardType(.decimalPad)
+                    
+                    Picker("Number of people",selection: $numberOfPeople){
+                        ForEach(2..<10){
+                            Text("\($0) people")
+                        }
+                    }
+                }
+                Section{
+                    Text(checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                }
             }
-            Section{
-                Text(checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
-            }
+            .navigationTitle(Text("WeSplit"))
         }
+
     }
 }
 
