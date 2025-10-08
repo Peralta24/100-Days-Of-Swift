@@ -9,63 +9,67 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var checkAmount = 0.0//Revisar el total de la cuenta
-    @State private var numberOfPeople = 2//Cuantas personas pagaran la cuenta
-    @State private var tipPercentage = 10//Que porcentaje de propina dejaremos
+    //Primero debemos crear nuestras variables que seran leidas por la UI
+    @State private var totalCuenta = 0.0
+    @State private var cantidadPersonas = 2
+    @State private var cantidadDePropina = 10
     
     @FocusState private var isFocused: Bool
     
-    let tipPercentages = [10,15,20,25,0]//Opciones de propina
+    //Crear una lista con las propinas disponibles
+    let propinas = [10, 15, 20, 25,0]
+    //Crear la variable computada que calculara el valor de la cantidada por persona
+    var cantidadPorPersona: Double {
+            let personas = Double(cantidadPersonas + 2)
+            let propinaSeleccionada = Double(cantidadDePropina)
+            
+            let valorPropina = totalCuenta * propinaSeleccionada / 100
+            let totalConPropina = totalCuenta + valorPropina
+            let totalPorPersona = totalConPropina / personas
+            
+            return totalPorPersona
+        }
     
-    var totalPerPerson : Double {
-        let peopleCount = Double(numberOfPeople + 2)
-        let tipSelection = Double(tipPercentage)
-        
-        let tipValue = checkAmount / 100 * tipSelection
-        let grandTotal = checkAmount + tipValue
-        let amountPerPerson = grandTotal / peopleCount
-        
-        return amountPerPerson
-    }
     var body: some View {
         NavigationStack{
             Form{
                 Section{
-                    TextField("Amount", value: $checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD" ))
+                    TextField("Total de la Cuenta:",value: $totalCuenta,format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                         .keyboardType(.decimalPad)
                         .focused($isFocused)
-                    
-                    Picker("Number of people",selection: $numberOfPeople){
-                        ForEach(2..<10){
+                    Picker("Number of people",selection: $cantidadPersonas){
+                        ForEach(1...10, id: \.self){
                             Text("\($0) people")
                         }
                     }
                 }
-                Section("How much do you want to tip?"){
-                    
-                    Picker("Tip percentage",selection: $tipPercentage){
-                        ForEach(tipPercentages, id: \.self){
-                            Text($0, format: .percent)
+                Section("CUANTO QUIERES DEJAR DE PROPINA?") {
+                    Picker("Cantidad de Propina",selection: $cantidadDePropina){
+                        ForEach(propinas,id : \.self){
+                            Text($0,format: .percent)
                         }
                     }
                     .pickerStyle(.segmented)
                 }
-                Section{
-                    Text(totalPerPerson, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                Section {
+                        Text(cantidadPorPersona,format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                 }
             }
-            .navigationTitle(Text("WeSplit"))
+            .navigationTitle("WeSplit")
             .toolbar{
-                if isFocused {
-                    Button("Done"){
+                if isFocused{
+                    Button("Hecho"){
                         isFocused = false
                     }
                 }
             }
-        }
 
+        }
+        
     }
 }
+
 #Preview {
     ContentView()
 }
+
