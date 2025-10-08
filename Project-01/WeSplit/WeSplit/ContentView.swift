@@ -2,84 +2,93 @@
 //  ContentView.swift
 //  WeSplit
 //
-//  Created by Jose Rafael Peralta Martinez  on 06/10/25.
+//  Created by Jose Rafael Peralta Martinez on 06/10/25.
 //
-//probar git
-//Ejecutar el simulador Cmd+R
+
 import SwiftUI
 
 struct ContentView: View {
-    //Primero debemos crear nuestras variables que seran leidas por la UI
     @State private var totalCuenta = 0.0
     @State private var cantidadPersonas = 1
     @State private var cantidadDePropina = 10
-    
     @FocusState private var isFocused: Bool
     
-    //Crear una lista con las propinas disponibles
-    let propinas = [10, 15, 20, 25,0]
-    //Crear la variable computada que calculara el valor de la cantidada por persona
-    var cantidadPorPersona: Double {
-            let personas = Double(cantidadPersonas)
-            let propinaSeleccionada = Double(cantidadDePropina)
-            
-            let valorPropina = totalCuenta * propinaSeleccionada / 100
-            let totalConPropina = totalCuenta + valorPropina
-            let totalPorPersona = totalConPropina / personas
-            
-            return totalPorPersona
-        }
+    let propinas = [10, 15, 20, 25, 0]
     
-    //Mostrar el total con propina
-    var totalConPropina : Double {
-        let propinaSeleccionada = Double(cantidadDePropina)
-        let valorPropina = totalCuenta * propinaSeleccionada / 100
-        return totalCuenta + valorPropina
+    var amountPerPerson: Double {
+        let people = Double(cantidadPersonas)
+        let tip = Double(cantidadDePropina)
+        let tipAmount = totalCuenta * tip / 100
+        let totalWithTip = totalCuenta + tipAmount
+        return totalWithTip / people
+    }
+    
+    var totalWithTip: Double {
+        let tip = Double(cantidadDePropina)
+        return totalCuenta + (totalCuenta * tip / 100)
     }
     
     var body: some View {
-        NavigationStack{
-            Form{
-                Section{
-                    TextField("Total de la Cuenta:",value: $totalCuenta,format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+        NavigationStack {
+            ZStack {
+                // Minimal background
+                Color(.systemGray6)
+                    .ignoresSafeArea()
+                
+                Form {
+                    Section {
+                        TextField(
+                            "Enter total amount 💰",
+                            value: $totalCuenta,
+                            format: .currency(code: Locale.current.currency?.identifier ?? "USD")
+                        )
                         .keyboardType(.decimalPad)
                         .focused($isFocused)
-                    Picker("Numero de Personas",selection: $cantidadPersonas){
-                        ForEach(1...12, id: \.self){
-                            Text("\($0) personas")
+                        
+                        Picker("Number of people 👥", selection: $cantidadPersonas) {
+                            ForEach(1...12, id: \.self) {
+                                Text("\($0) people")
+                            }
+                        }
+                    }
+                    
+                    Section("Tip percentage 💵") {
+                        Picker("Tip", selection: $cantidadDePropina) {
+                            ForEach(propinas, id: \.self) {
+                                Text("\($0)%")
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                    }
+                    
+                    Section("Amount per person 🧾") {
+                        Text(amountPerPerson, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.blue)
+                    }
+                    
+                    Section("Total with tip 🏦") {
+                        Text(totalWithTip, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                            .font(.body)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                .scrollContentBackground(.hidden) // Show background color
+                .background(Color(.systemGray6))
+                .navigationTitle("WeSplit 💰")
+                .toolbar {
+                    if isFocused {
+                        Button("Done") {
+                            isFocused = false
                         }
                     }
                 }
-                Section("CUANTO QUIERES DEJAR DE PROPINA?") {
-                    Picker("Cantidad de Propina",selection: $cantidadDePropina){
-                        ForEach(propinas,id : \.self){
-                            Text($0,format: .percent)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                }
-                Section("Total por persona"){
-                        Text(cantidadPorPersona,format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
-                }
-                Section("Total con propina"){
-                    Text(totalConPropina,format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
-                }
             }
-            .navigationTitle("WeSplit")
-            .toolbar{
-                if isFocused{
-                    Button("Hecho"){
-                        isFocused = false
-                    }
-                }
-            }
-
         }
-        
     }
 }
 
 #Preview {
     ContentView()
 }
-
