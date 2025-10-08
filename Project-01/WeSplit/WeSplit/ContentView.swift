@@ -11,7 +11,7 @@ import SwiftUI
 struct ContentView: View {
     //Primero debemos crear nuestras variables que seran leidas por la UI
     @State private var totalCuenta = 0.0
-    @State private var cantidadPersonas = 2
+    @State private var cantidadPersonas = 1
     @State private var cantidadDePropina = 10
     
     @FocusState private var isFocused: Bool
@@ -20,7 +20,7 @@ struct ContentView: View {
     let propinas = [10, 15, 20, 25,0]
     //Crear la variable computada que calculara el valor de la cantidada por persona
     var cantidadPorPersona: Double {
-            let personas = Double(cantidadPersonas + 2)
+            let personas = Double(cantidadPersonas)
             let propinaSeleccionada = Double(cantidadDePropina)
             
             let valorPropina = totalCuenta * propinaSeleccionada / 100
@@ -30,6 +30,13 @@ struct ContentView: View {
             return totalPorPersona
         }
     
+    //Mostrar el total con propina
+    var totalConPropina : Double {
+        let propinaSeleccionada = Double(cantidadDePropina)
+        let valorPropina = totalCuenta * propinaSeleccionada / 100
+        return totalCuenta + valorPropina
+    }
+    
     var body: some View {
         NavigationStack{
             Form{
@@ -37,9 +44,9 @@ struct ContentView: View {
                     TextField("Total de la Cuenta:",value: $totalCuenta,format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                         .keyboardType(.decimalPad)
                         .focused($isFocused)
-                    Picker("Number of people",selection: $cantidadPersonas){
-                        ForEach(1...10, id: \.self){
-                            Text("\($0) people")
+                    Picker("Numero de Personas",selection: $cantidadPersonas){
+                        ForEach(1...12, id: \.self){
+                            Text("\($0) personas")
                         }
                     }
                 }
@@ -51,8 +58,11 @@ struct ContentView: View {
                     }
                     .pickerStyle(.segmented)
                 }
-                Section {
+                Section("Total por persona"){
                         Text(cantidadPorPersona,format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                }
+                Section("Total con propina"){
+                    Text(totalConPropina,format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                 }
             }
             .navigationTitle("WeSplit")
