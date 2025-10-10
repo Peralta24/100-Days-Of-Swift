@@ -8,76 +8,88 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var mensaje = "Selecciona una accion"
-    @State private var alerta = false
+    
+    // Lista de países
+    @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Spain", "UK", "Ukraine", "US"].shuffled()
+    
+    // Respuesta correcta
+    @State private var correctAnswer = Int.random(in: 0...2)
+    
+    @State private var showingScore = false
+    @State private var scoreTitle = ""
+    
     var body: some View {
         ZStack{
-            LinearGradient(gradient: Gradient(colors: [.orange, .pink]), startPoint: .leading, endPoint: .trailing)
-                .ignoresSafeArea()
-            
-            VStack(spacing:30){
-                Text("Panel de Control")
+            RadialGradient(stops:
+                            [.init(color: Color(red:0.1,green: 0.2,blue:0.45), location: 0.3),
+                             .init(color: Color(red:0.76,green: 0.15,blue:0.26), location: 0.3)], center: .top, startRadius: 200, endRadius: 700)
+                .ignoresSafeArea(edges: .all)
+            VStack{
+                Spacer()
+                
+                Text("Guess the Flag")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundStyle(.white)
                 
-                
-                Text(mensaje)
-                    .font(.title2)
-                    .foregroundStyle(.white)
-                    .padding()
-                    .background(.ultraThinMaterial)
-                    .cornerRadius(10)
-
-                HStack(spacing:50){
-                    Image(systemName: "play")
-                    Image(systemName: "pause")
-                    Image(systemName: "stop")
+                VStack(spacing: 15) {
+                    VStack {
+                        Text("Tap the flag of")
+                            .font(.headline)
+                            .foregroundStyle(.secondary)
+                        Text(countries[correctAnswer])
+                            .font(.largeTitle.weight(.semibold))
+                    }
+                    
+                    ForEach(0..<3) { number in
+                        Button {
+                            flaggTapped(number)
+                        } label: {
+                            Image(countries[number])
+                                .clipShape(.capsule)
+                                .shadow(radius: 5)
+                        }
+                    }
                 }
-                .font(.largeTitle)
-                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 20)
+                .background(.regularMaterial)
+                .clipShape(.rect(cornerRadius: 20))
                 
+                Spacer()
+                Spacer()
                 
-                HStack(spacing: 20){
-                   
-                    Button("Accion1"){
-                        mensaje = "Accion 1 activada!"
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.green)
-                    
-                    
-                    Button("Accion2",role: .destructive){
-                        mensaje = "Accion 2 activada!"
-                    }
-                    .buttonStyle(.borderedProminent)
-                    
-                    Button("Alerta"){
-                        alerta = true
-                    }
-                    .padding()
+                Text("Score: ???")
                     .foregroundStyle(.white)
-                    .buttonStyle(.borderedProminent)
-                    .alert("Importante",isPresented: $alerta){
-                        Button("Save"){}
-                        Button("Undo"){}
-                    }message: {
-                        Text("Mensaje Importante")
-                    }
-
-                }
-                Label("Configuracion", systemImage: "gear")
-                    .padding()
-                    .background(.cyan)
-                    .cornerRadius(12)
+                    .fontWeight(.bold)
+                    .font(.title3)
+                
+                Spacer()
             }
-
+            .padding()
             
         }
-        
+        .alert(scoreTitle, isPresented: $showingScore){
+            Button("Continue",action: askQuestion)
+        } message: {
+            Text("Your score is ???")
+        }
 
     }
-
+    
+    func flaggTapped(_ number: Int) {
+        if number == correctAnswer{
+            scoreTitle = "Correct"
+        }else{
+            scoreTitle = "Wrong"
+        }
+        showingScore = true
+    }
+    
+    func askQuestion() {
+        countries.shuffle()
+        correctAnswer = Int.random(in: 0...2)
+    }
 }
 
 #Preview {
