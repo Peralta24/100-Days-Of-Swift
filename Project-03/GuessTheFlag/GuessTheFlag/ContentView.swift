@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  GuessTheFlag
-//
-//  Created by Jose Rafael Peralta Martinez  on 09/10/25.
-//
-
 import SwiftUI
 
 struct ContentView: View {
@@ -15,16 +8,22 @@ struct ContentView: View {
     // Respuesta correcta
     @State private var correctAnswer = Int.random(in: 0...2)
     
+    // Estados
     @State private var showingScore = false
+    @State private var showingEndGame = false
     @State private var scoreTitle = ""
+    @State private var puntuacionUsuario: Int = 0
+    @State private var totalPreguntas: Int = 8
     
     var body: some View {
-        ZStack{
-            RadialGradient(stops:
-                            [.init(color: Color(red:0.1,green: 0.2,blue:0.45), location: 0.3),
-                             .init(color: Color(red:0.76,green: 0.15,blue:0.26), location: 0.3)], center: .top, startRadius: 200, endRadius: 700)
+        ZStack {
+            RadialGradient(stops: [
+                .init(color: Color(red:0.1, green:0.2, blue:0.45), location: 0.3),
+                .init(color: Color(red:0.76, green:0.15, blue:0.26), location: 0.3)
+            ], center: .top, startRadius: 200, endRadius: 700)
                 .ignoresSafeArea(edges: .all)
-            VStack{
+            
+            VStack {
                 Spacer()
                 
                 Text("Guess the Flag")
@@ -59,7 +58,7 @@ struct ContentView: View {
                 Spacer()
                 Spacer()
                 
-                Text("Score: ???")
+                Text("Score: \(puntuacionUsuario)")
                     .foregroundStyle(.white)
                     .fontWeight(.bold)
                     .font(.title3)
@@ -67,28 +66,56 @@ struct ContentView: View {
                 Spacer()
             }
             .padding()
-            
         }
-        .alert(scoreTitle, isPresented: $showingScore){
-            Button("Continue",action: askQuestion)
+        
+        // Primer alert → resultado de la pregunta
+        .alert(scoreTitle, isPresented: $showingScore) {
+            Button("Continue", action: askQuestion)
         } message: {
-            Text("Your score is ???")
+            Text("Your score is \(puntuacionUsuario)")
         }
-
+        
+        // Segundo alert → fin del juego
+        .alert("End of the Game", isPresented: $showingEndGame) {
+            Button("Reset", action: reset)
+        } message: {
+            Text(scoreTitle + "\nFinal score: \(puntuacionUsuario)")
+        }
     }
     
     func flaggTapped(_ number: Int) {
-        if number == correctAnswer{
-            scoreTitle = "Correct"
-        }else{
-            scoreTitle = "Wrong"
+        if number == correctAnswer {
+            scoreTitle = "Correct!"
+            puntuacionUsuario += 1
+        } else {
+            scoreTitle = "Wrong! That’s the flag of \(countries[number])"
         }
-        showingScore = true
+        
+        if totalPreguntas == 1 {
+            // fin del juego
+            if puntuacionUsuario >= 4 {
+                scoreTitle = "🎉 You Win!"
+            } else {
+                scoreTitle = "😢 You Lose!"
+            }
+            showingEndGame = true
+        } else {
+            totalPreguntas -= 1
+            showingScore = true
+        }
     }
     
     func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+    }
+    
+    func reset() {
+        totalPreguntas = 8
+        puntuacionUsuario = 0
+        countries.shuffle()
+        correctAnswer = Int.random(in: 0...2)
+        showingEndGame = false
     }
 }
 
