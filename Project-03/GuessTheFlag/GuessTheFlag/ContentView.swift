@@ -15,6 +15,8 @@ struct ContentView: View {
     @State private var puntuacionUsuario: Int = 0
     @State private var totalPreguntas: Int = 8
     
+    @State private var selectedFlag : Int? = nil
+    
     var body: some View {
         ZStack {
             RadialGradient(stops: [
@@ -42,11 +44,22 @@ struct ContentView: View {
                     
                     ForEach(0..<3) { number in
                         Button {
-                            flaggTapped(number)
+                            // Añadimos una animación explícita para el cambio de estado
+                            withAnimation {
+                                flaggTapped(number)
+                            }
                         } label: {
                             Image(countries[number])
                                 .clipShape(.capsule)
                                 .shadow(radius: 5)
+                                // --- INICIO DE MODIFICADORES NUEVOS ---
+                                .rotation3DEffect(
+                                    .degrees(selectedFlag == number ? 360 : 0),
+                                    axis: (x: 0.0, y: 1.0, z: 0.0)
+                                )
+                                .opacity(selectedFlag == nil || selectedFlag == number ? 1.0 : 0.25)
+                                .scaleEffect(selectedFlag == nil || selectedFlag == number ? 1.0 : 0.75)
+                                // --- FIN DE MODIFICADORES NUEVOS ---
                         }
                     }
                 }
@@ -57,7 +70,10 @@ struct ContentView: View {
                 
                 Spacer()
                 Spacer()
-                
+                Text("Total de Preguntas: \(totalPreguntas)")
+                    .foregroundStyle(.white)
+                    .fontWeight(.bold)
+                    .font(.title3)
                 Text("Score: \(puntuacionUsuario)")
                     .foregroundStyle(.white)
                     .fontWeight(.bold)
@@ -84,11 +100,18 @@ struct ContentView: View {
     }
     
     func flaggTapped(_ number: Int) {
+        selectedFlag = number
         if number == correctAnswer {
             scoreTitle = "Correct!"
             puntuacionUsuario += 1
+            
         } else {
             scoreTitle = "Wrong! That’s the flag of \(countries[number])"
+            if puntuacionUsuario <= 0 {
+                puntuacionUsuario = 0
+            }else{
+                puntuacionUsuario -= 1
+            }
         }
         
         if totalPreguntas == 1 {
@@ -108,6 +131,7 @@ struct ContentView: View {
     func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+        selectedFlag = nil
     }
     
     func reset() {
