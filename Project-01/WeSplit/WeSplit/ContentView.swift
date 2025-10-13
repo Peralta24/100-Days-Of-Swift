@@ -28,6 +28,7 @@ struct ContentView: View {
         return totalCuenta + (totalCuenta * tip / 100)
     }
     
+    
     var body: some View {
         NavigationStack {
             ZStack {
@@ -71,7 +72,8 @@ struct ContentView: View {
                     Section("Total with tip 🏦") {
                         Text(totalWithTip, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                             .font(.body)
-                            .foregroundColor(.secondary)
+                            .foregroundColor(cantidadDePropina == 0 ? .red : .secondary)
+                            
                     }
                 }
                 .scrollContentBackground(.hidden) // Show background color
