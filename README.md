@@ -21,14 +21,15 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 13 - Protocolos,Extenciones
 - [x] Día 14 - Opcionales
 - [x] Día 15 - Repaso de Swift (Finalizado)
-- [x] Día 16 - Projecto 1 (Parte Uno)
-- [x] Día 17 - Projecto 1 (Parte Dos)
-- [x] Día 18 - Projecto 1 (Parte Tres)
+- [x] Día 16 - Proyecto 1 (Parte Uno)
+- [x] Día 17 - Proyecto 1 (Parte Dos)
+- [x] Día 18 - Proyecto 1 (Parte Tres)
 - [x] Día 19 - Dia de reto proyecto
-- [x] Día 20 - Projecto 2 (Parte Uno)
-- [x] Día 21 - Projecto 2 (Parte Dos)
-- [x] Día 22 - Projecto 2 (Parte Tres)
-- [x] Día 23 - Projecto 3 (Parte Uno)
+- [x] Día 20 - Proyecto 2 (Parte Uno)
+- [x] Día 21 - Proyecto 2 (Parte Dos)
+- [x] Día 22 - Proyecto 2 (Parte Tres)
+- [x] Día 23 - Proyecto 3 (Parte Uno)
+- [x] Día 24 - Proyecto 3 (Parte Dos)
 
 
 
