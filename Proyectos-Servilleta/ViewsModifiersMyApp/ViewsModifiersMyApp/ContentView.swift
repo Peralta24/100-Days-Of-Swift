@@ -8,7 +8,7 @@
 import SwiftUI
 
 // MARK: - Modificadores
-
+let habilidadesAFuturo = ["Aprender SwiftUI","Construir mis propias Aplicaciones", "Construir una pagina web"]
 struct Titulos: ViewModifier {
     func body(content: Content) -> some View {
         content
@@ -83,6 +83,22 @@ extension View {
     }
 }
 
+struct FuturoALograr : ViewModifier{
+    func body(content: Content) -> some View {
+        content
+            .font(.headline)
+            .foregroundStyle(.white)
+            .padding()
+            .background(Color.black)
+            .cornerRadius(10)
+    }
+}
+extension View {
+    func futuroALograr() -> some View {
+        modifier(FuturoALograr())
+    }
+}
+
 // MARK: - ContentView
 
 struct ContentView: View {
@@ -122,6 +138,19 @@ struct ContentView: View {
                 Color.white
                     .frame(width: 300, height: 50)
                     .imagenPie(with: "Rafael Peralta iOS Developer")
+                
+                HStack{
+                    Text("Metas a largo plazo")
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        
+                }
+                VStack(alignment: .leading) {
+                    ForEach(habilidadesAFuturo,id: \.self){
+                        Text("\($0)")
+                    }
+                }
+                .futuroALograr()
             }
             .padding()
         }
