@@ -49,7 +49,7 @@ struct ContentView: View {
                 Text("Guess the Flag")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundStyle(.white)
+                    .foregroundStyle(puntuacionUsuario > 5 ? .yellow : .white)
                 
                 VStack(spacing: 15) {
                     VStack {
@@ -88,11 +88,11 @@ struct ContentView: View {
                 Spacer()
                 Spacer()
                 Text("Total de Preguntas: \(totalPreguntas)")
-                    .foregroundStyle(.white)
+                    .foregroundStyle(totalPreguntas == 1 ? .green : .white)
                     .fontWeight(.bold)
                     .font(.title3)
                 Text("Score: \(puntuacionUsuario)")
-                    .foregroundStyle(.white)
+                    .foregroundStyle(puntuacionUsuario < 4 ? .black : .green)
                     .fontWeight(.bold)
                     .font(.title3)
                 
