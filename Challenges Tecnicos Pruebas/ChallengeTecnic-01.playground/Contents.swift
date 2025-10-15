@@ -65,3 +65,13 @@ func matchElements(_ array: [String]) -> String {
 
 let fruit = ["🍓", "🍐", "🍊", "🍌", "🍍", "🍑", "🍎", "🍈", "🍊", "🍇"]
 print(matchElements(fruit)) // Match found at 2 and 8
+
+//Complejidad temportal factorial O(n!)
+
+func recursiveFibonacci(_ n: Int) -> Int {
+    guard n > 1 else {
+        return n
+    }
+    return recursiveFibonacci(n - 1) + recursiveFibonacci(n - 2)
+}
+print(recursiveFibonacci(3))
