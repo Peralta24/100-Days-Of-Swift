@@ -30,6 +30,8 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 22 - Proyecto 2 (Parte Tres)
 - [x] Día 23 - Proyecto 3 (Parte Uno)
 - [x] Día 24 - Proyecto 3 (Parte Dos)
+- [x] Día 25 - Hito (Proyecto 1 - 3)
+
 
 
 
