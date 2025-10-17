@@ -32,13 +32,14 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 24 - Proyecto 3 (Parte Dos)
 - [x] Día 25 - Hito (Proyecto 1 - 3)
 - [x] Día 26 - Proyecto 4 (Parte Uno)
+- [x] Día 27 - Proyecto 4 (Parte Dos)
 
 
 
 
 
 
-
+ 
 
  
 

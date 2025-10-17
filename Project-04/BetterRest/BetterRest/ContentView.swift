@@ -1,99 +1,85 @@
+import CoreML
+
 import SwiftUI
 
-struct Subtitulos : ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .foregroundStyle(.white)
-            .font(.subheadline) // Un poco más pequeño para subtítulos
-            .fontWeight(.bold)
-    }
-}
-
-extension View {
-    func subtitulos() -> some View {
-        modifier(Subtitulos())
-    }
-}
 
 struct ContentView: View {
-    @State private var horasDeSueno = 8.0
-    @State private var horaDespertar = Date.now
-    @State private var tazasDeCafe = 1
-
+    @State private var wakeUp = dayDefault
+    @State private var sleepAmoun = 8.0
+    @State private var coffeeAmount = 1
+    
+    @State private var alertTitle = ""
+    @State private var alertMessage = ""
+    @State private var showAlert = false
+    
+    static var dayDefault : Date {
+        var components = DateComponents()
+        components.hour = 7
+        components.minute = 0
+        return Calendar.current.date(from: components) ?? .now
+    }
     var body: some View {
-        NavigationStack {
-            ZStack {
-                LinearGradient(colors: [.black, .gray], startPoint: .bottom, endPoint: .top)
-                    .ignoresSafeArea()
-                
-                
-                Form {
-                    Section {
-                        Text("¿Cuántas horas quieres dormir?")
-                            .font(.headline)
-                        Stepper("\(horasDeSueno.formatted()) horas", value: $horasDeSueno, in: 4...12, step: 0.25)
-                            .foregroundStyle(horasDeSueno < 7 || horasDeSueno > 9 ? .red : .primary)
-                    }
+        NavigationStack{
+            Form{
+                VStack(alignment: .leading, spacing: 0){
+                    Text("When do you want to wake up?")
+                        .font(.headline)
                     
-                    Section {
-                        Text("¿Cuándo quieres despertar?")
-                            .font(.headline)
-                        DatePicker("Selecciona una hora", selection: $horaDespertar, displayedComponents: .hourAndMinute)
-                            .labelsHidden()
-                    }
-                    
-                    Section {
-                        Text("¿Cuántas tazas de café tomas?")
-                            .font(.headline)
-                        
-                        
-                        Stepper("^[\(tazasDeCafe) taza](inflect: true)", value: $tazasDeCafe, in: 0...10)
-                    }
-                    
-                    
-                    Section("Tu puntaje de descanso es:") {
-                        Text("\(calcularPuntajeDescanso().formatted())")
-                            .font(.largeTitle.bold())
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .foregroundColor(puntajeColor())
-                    }
+                    DatePicker("Please enter a time",selection: $wakeUp,displayedComponents: .hourAndMinute)
+                        .labelsHidden()
                 }
-                .scrollContentBackground(.hidden)
-                .foregroundColor(.white)
                 
+                VStack(alignment: .leading, spacing : 20){
+                    Text("Desired amount of sleep")
+                        .font(.headline)
+                    
+                    Stepper("\(sleepAmoun.formatted()) hours",value: $sleepAmoun, in: 4...12,step: 0.25)
+                        .padding(.horizontal)
+                }
+
+                VStack(alignment: .leading, spacing : 0){
+                    Text("Dayli cofee intake")
+                        .font(.headline)
+                    
+                    Stepper("^[\(coffeeAmount) cup](inflect:true)",value: $coffeeAmount,in: 0...20)
+                        .padding(.horizontal)
+                }
+
             }
             .navigationTitle("BetterRest")
-            .navigationBarTitleDisplayMode(.large)
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("BetterRest").foregroundColor(.white)
+                Button("Calculate",action: calcutateBedTime)
+            }
+            .alert(alertTitle, isPresented: $showAlert){
+                Button("Ok"){
+                    
                 }
+            }message: {
+                Text(alertMessage)
             }
         }
     }
-    
-    func calcularPuntajeDescanso() -> Double {
-        if horasDeSueno == 8   {
-            return 10.0
-        }else if horasDeSueno >= 7 && horasDeSueno <= 9 {
-            return 8.0
-        } else {
-            return 5.0
+    func calcutateBedTime(){
+        do{
+            let config = MLModelConfiguration()
+            let model = try SleepCalculator(configuration: config)
+            let componentes = Calendar.current.dateComponents([.hour,.minute], from: wakeUp)
+            let hour = (componentes.hour ?? 0) * 60 * 60
+            let minute = (componentes.minute ?? 0) * 60
+            
+            let prediction = try model.prediction(wake: Double(hour + minute), estimatedSleep: sleepAmoun, coffee: Double(coffeeAmount))
+            
+            let sleepTime = wakeUp - prediction.actualSleep
+            alertTitle = "Your ideal bedtime is"
+            alertMessage = sleepTime.formatted(date: .omitted, time: .shortened)
+            
+        }catch{
+            alertTitle = "Error"
+            alertMessage = "Sorry, there was a problema calculating your sleep time. Try again later."
         }
-    }
-    
-    func puntajeColor() -> Color {
-        let puntaje = calcularPuntajeDescanso()
-        if puntaje == 10.0 {
-            return .green
-        } else if puntaje == 8.0 {
-            return .yellow
-        } else {
-            return .red
-        }
+        showAlert = true
     }
 }
-
 #Preview {
     ContentView()
         .preferredColorScheme(.dark)
