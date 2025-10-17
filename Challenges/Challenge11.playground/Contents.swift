@@ -411,3 +411,12 @@ gestorTareas.mostrarCompletasYNo()
 gestorTareas.ordenarTareasSegunPrioridad()
 
 gestorTareas.buscarTareaPorTitulo(titulo: "Estudiar Swiftdd")
+
+
+
+
+
+
+
+
+
