@@ -75,3 +75,27 @@ func recursiveFibonacci(_ n: Int) -> Int {
     return recursiveFibonacci(n - 1) + recursiveFibonacci(n - 2)
 }
 print(recursiveFibonacci(3))
+
+
+var contadorr = 0
+var numeror = 10
+
+while contadorr < numeror {
+    contadorr += 1
+    
+}
+print(contadorr)
+
+var contador2 = 10
+var numero2 = 21
+repeat {
+    numero2 += 1
+}while numero2 < contador2
+        
+print(numero2)
+
+var numero = 5
+
+for i in 1...10{
+    print("\(numero) * \(i) = \(numero * i) ")
+}

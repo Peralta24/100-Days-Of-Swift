@@ -63,3 +63,32 @@ while listaWhile.isEmpty == false{
 }
         
 print(listaWhile)
+
+
+
+
+
+var numerosA = [-1,-2,-3,0,1,2,3,4,5,6]
+var numerosAPositivos = [Int]()
+
+for numero in 0...numerosA.count-1 {
+    if numerosA[numero] < 0 {
+        continue
+    }
+    numerosAPositivos.append(numerosA[numero])
+}
+
+print(numerosAPositivos)
+
+var documentos = ["word.jpg", "ppt.jpg", "excel.jpg", "swift.swift"]
+var documentosJpg = 0
+
+for documento in documentos {
+    if documento.hasSuffix(".swift") {
+        break
+    }
+    documentosJpg += 1
+}
+
+print(documentosJpg)
+
