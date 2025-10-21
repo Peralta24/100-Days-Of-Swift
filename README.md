@@ -34,6 +34,7 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 26 - Proyecto 4 (Parte Uno)
 - [x] Día 27 - Proyecto 4 (Parte Dos)
 - [x] Día 28 - Proyecto 4 (Parte Tres)
+- [x] Día 29 - Proyecto 5 (Parte Uno)
 
 
 
