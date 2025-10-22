@@ -51,7 +51,10 @@ ayuden a mejorar como desarollador iOS.
 
 ## 🛠️ Proyectos
 
-- [Day 16–18] Proyecto 1: Storm Viewer – [Código](./Project1-StormViewer)  
-- [Day 19–21] Proyecto 2: Guess the Flag – [Código](./Project2-GuessTheFlag)  
+- Proyecto 1: We Split – [Código](./Project1-WeSplit)  
+- Proyecto 2: Guess the Flag – [Código](./Project2-GuessTheFlag)  
+- Proyecto 3 : Conversor De Unidades
+- Proyecto 4 : BetterRest
+- Proyecto 5 : Juego de palabras
 
 
