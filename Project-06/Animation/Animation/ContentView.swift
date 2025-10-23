@@ -11,24 +11,60 @@ struct ContentView: View {
 let letters = Array("Hello, World!")
     @State private var enabled = false
     @State private var dragAmount = CGSize.zero
+    @State private var isShowingRed = false
+    @State private var isShowingText = false
+    @State private var isShowingGreen = false
     var body: some View {
-        HStack(spacing: 0) {
-            ForEach(0..<letters.count, id: \.self){letter in
-                Text(String(letters[letter]))
+        VStack{
+            Button("Tap me"){
+                withAnimation{
+                    isShowingRed.toggle()
+                }
+            }
+            if isShowingRed{
+                Rectangle()
+                    .fill(.red)
+                    .frame(width: 100, height: 100)
+                    .transition(.scale)
+            }
+            
+            Button("Press me") {
+                withAnimation{
+                    isShowingText.toggle()
+                }
+            }
+            
+            if isShowingText{
+                Text("Hello, World!")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .transition(.asymmetric(insertion: .slide, removal: .slide))
+            }
+        }
+        
+        HStack(spacing: 0){
+
+            ForEach(0..<letters.count, id: \.self){number in
+                    Text(String(letters[number]))
                     .font(.title)
-                    .background(enabled ? .blue : .red)
+                    .background(enabled ? .red : .blue)
+                    .fontWeight(.bold)
                     .offset(dragAmount)
-                    .animation(.linear.delay(Double(letter)/20))
+                    .animation(.linear.delay(Double(number)/20))
+
             }
         }
         .gesture(
             DragGesture()
-                .onChanged{dragAmount = $0.translation}
+            
+                .onChanged{ dragAmount = $0.translation}
                 .onEnded { _ in
                     dragAmount = .zero
                     enabled.toggle()
                 }
         )
+        
+        
         
     }
 }
