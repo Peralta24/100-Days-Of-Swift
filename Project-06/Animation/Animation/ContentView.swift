@@ -14,7 +14,7 @@ struct ContentView: View {
         
         Button("Tap me"){
             withAnimation(.spring(duration:1 ,bounce:   0.3)){
-                animationAmoun += 320
+                animationAmoun += 360
             }
         }
         .padding(30)
