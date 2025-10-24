@@ -18,10 +18,11 @@ struct ContentView: View {
     @State private var numberOfQuestions = [5,10,20]
     var body: some View {
         Form {
-            
+            //Seccion de eleccion de tabla
             Section("Select the table you wanna practice"){
                 Stepper("Table of \(selectTable)",value: $selectTable, in: 2...12)
             }
+            //Seccion de eleccion de preguntas
             Section("Select how many questions do you want"){
                 Picker("Number of questions", selection: $selectNumberOfQuestions){
                     ForEach(numberOfQuestions, id: \.self){ number in
