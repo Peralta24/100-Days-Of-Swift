@@ -13,15 +13,27 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var selectTable = 2
+    @State private var selectNumberOfQuestions = 5
+    @State private var numberOfQuestions = [5,10,20]
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        Form {
+            
+            Section("Select the table you wanna practice"){
+                Stepper("Table of \(selectTable)",value: $selectTable, in: 2...12)
+            }
+            Section("Select how many questions do you want"){
+                Picker("Number of questions", selection: $selectNumberOfQuestions){
+                    ForEach(numberOfQuestions, id: \.self){ number in
+                        Text("\(number)")
+                    }
+                }
+                .pickerStyle(.segmented)
+            }
         }
-        .padding()
     }
+    
+
 }
 
 #Preview {
