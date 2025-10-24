@@ -1,136 +1,164 @@
 import SwiftUI
-
-// Modelo de pregunta
-struct Question {
-    let text: String
-    let answer: Int
+struct Pregunta {
+    var texto: String
+    var respuesta: Int
 }
 
+struct Botones : ViewModifier{
+    func body(content: Content) -> some View {
+        content
+            .font(.headline)
+            .foregroundStyle(.primary)
+            .fontWeight(.bold)
+            .padding(.horizontal,70)
+            .hoverEffect(.highlight)
+    }
+}
+extension View {
+    func botones() -> some View {
+        modifier(Botones())
+    }
+}
 struct ContentView: View {
-    // Configuración del juego
-    @State private var selectTable = 2
-    @State private var selectNumberOfQuestions = 5
-    let numberOfQuestions = [5,10,20]
-    
-    // Estado del juego
-    @State private var questions = [Question]()
-    @State private var currentQuestionIndex = 0
-    @State private var currentAnswer = ""
-    @State private var resultMessage = ""
+    @State private var juegoIniciado = false
+    @State private var tablaSeleccionada = 2
+    @State private var dificultadSeleccionada = 5
+    let dificultades = [5,10,20]
+    var tablaMinima = 2
+    var tablaMaxima = 12
+
+    // Variables
+    @State private var preguntas = [Pregunta]()
+    @State private var preguntaActual = 0
+    @State private var respuestaActual = ""
+    @State private var mensajeResultado = ""
     @State private var puntuacionUsuario = 0
-    @State private var gameStarted = false
-    
+    @State private var mostrarResultado = false
     var body: some View {
         NavigationStack {
-            VStack(spacing: 20) {
-                if !gameStarted {
-                    // Configuración inicial
+            VStack {
+                if !juegoIniciado {
                     Form {
-                        Section("Select the table to practice") {
-                            Stepper("Table: \(selectTable)", value: $selectTable, in: 2...12)
+                        Section("Selecciona la tabla que quieres practicar!"){
+                            Stepper("Tabla del \(tablaSeleccionada)",value: $tablaSeleccionada,in: tablaMinima...tablaMaxima)
                         }
-                        
-                        Section("Select number of questions") {
-                            Picker("Number of questions", selection: $selectNumberOfQuestions) {
-                                ForEach(numberOfQuestions, id: \.self) { number in
-                                    Text("\(number)")
+                        Section("Dificultad"){
+                            Picker("Selecciona la difultad",selection:$dificultadSeleccionada){
+                                ForEach(dificultades, id: \.self){
+                                    Text("\($0)")
                                 }
                             }
                             .pickerStyle(.segmented)
+                            
+                        }
+                        Section{
+                            Button{
+                                iniciarJuego()
+                            }label: {
+                                Text("Empezar a Practicar!")
+                                    .botones()
+                                    
+                            }
                         }
                         
-                        Button("Start Game") {
-                            startGame()
-                        }
                     }
-                } else {
-                    // Juego activo
-                    VStack(spacing: 15) {
-                        if currentQuestionIndex < questions.count {
-                            Text(questions[currentQuestionIndex].text)
-                                .font(.title)
-                                .bold()
-                            
-                            TextField("Your answer", text: $currentAnswer)
-                                .keyboardType(.numberPad)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .padding()
-                            
-                            Button("Check Answer") {
-                                checkAnswer()
-                            }
-                            
-                            Text(resultMessage)
-                                .font(.headline)
-                                .foregroundColor(resultMessage == "Correct ✅" ? .green : .red)
-                            
-                            Text("Score: \(puntuacionUsuario)")
-                        } else {
-                            // Juego terminado
-                            Text("🎉 You finished the game! 🎉")
-                                .font(.title2)
-                            Text("Final Score: \(puntuacionUsuario) / \(questions.count)")
-                            
-                            Button("Play Again") {
-                                resetGame()
+                }else {
+                    if preguntaActual < preguntas.count {
+                        VStack{
+                            Form {
+                                Section("Responde la siguiente pregunta:"){
+                                    Text(preguntas[preguntaActual].texto)
+                                        .font(.title2)
+                                        .foregroundStyle(.blue)
+                                        .multilineTextAlignment(.center)
+                                        .frame(width:400)
+                                    TextField("Introduce tu resultado",text:$respuestaActual)
+                                }
+                                Section{
+                                    Button{
+                                        validarRespuesta()
+                                    }label: {
+                                        Text("Validar la respuesta")
+                                            .botones()
+                                    }
+                                }
+                                Section{
+                                    Text("Puntuacion: \(puntuacionUsuario)")
+                                }
                             }
                         }
+                    }else {
+                        Text("Juego Terminado")
+                        Text("Tu puntuación final es: \(puntuacionUsuario)")
+                        Button{
+                            reiniciarJuego()
+                        }label: {
+                            Text("Volver a practicar")
+                                .botones()
+                        }
                     }
-                    .padding()
                 }
             }
-            .navigationTitle("Edutainment")
+            .navigationTitle("Multiplicaciones")
+        }
+        .alert(mensajeResultado,isPresented: $mostrarResultado){
+            Button("Ok"){
+                
+            }
         }
     }
     
-    // MARK: - Funciones del juego
-    func startGame() {
-        questions.removeAll()
+    //MARK: EMPEZAR A CREAR LA LOGICA DEL JUEGO
+    
+    func iniciarJuego(){
+        preguntas.removeAll()
+        preguntaActual = 0
+        respuestaActual = ""
+        mensajeResultado = ""
         puntuacionUsuario = 0
-        currentQuestionIndex = 0
-        resultMessage = ""
-        currentAnswer = ""
-        gameStarted = true
+        juegoIniciado = true
         
-        // Generar preguntas
-        for _ in 1...selectNumberOfQuestions {
-            let randomNumber = Int.random(in: 2...12)
-            let qText = "\(selectTable) x \(randomNumber)"
-            let qAnswer = selectTable * randomNumber
-            questions.append(Question(text: qText, answer: qAnswer))
+        for _ in 0..<dificultadSeleccionada{
+            let numeroAleatorio = Int.random(in: 1...12)
+            let preguntaTexto = "\(tablaSeleccionada) x \(numeroAleatorio)"
+            let respuestaCorrecta = tablaSeleccionada * numeroAleatorio
+            preguntas.append(Pregunta(texto: preguntaTexto, respuesta: respuestaCorrecta))
         }
     }
     
-    func checkAnswer() {
-        guard currentQuestionIndex < questions.count else { return }
+    func validarRespuesta(){
+        let respuestaCorrecta = preguntas[preguntaActual].respuesta
         
-        let correctAnswer = questions[currentQuestionIndex].answer
-        if currentAnswer == String(correctAnswer) {
-            resultMessage = "Correct ✅"
+        if respuestaActual == String(respuestaCorrecta){
+            mensajeResultado = "Correcto, sigue asi!"
             puntuacionUsuario += 1
-        } else {
-            resultMessage = "Incorrect ❌"
-            if puntuacionUsuario > 0 { puntuacionUsuario -= 1 }
-        }
+        }else {
+            mensajeResultado = "Incorrecto, sigue practicando!"
+            if puntuacionUsuario > 0{
+                puntuacionUsuario -= 1
+            }
         
-        // Limpiar respuesta y pasar a siguiente pregunta
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            resultMessage = ""
-            currentAnswer = ""
-            currentQuestionIndex += 1
         }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            mensajeResultado = ""
+            respuestaActual = ""
+            preguntaActual += 1
+            mostrarResultado = false
+
+        }
+        mostrarResultado = true
+        
     }
     
-    func resetGame() {
-        gameStarted = false
-        questions.removeAll()
-        currentQuestionIndex = 0
+    func reiniciarJuego(){
+        juegoIniciado = false
         puntuacionUsuario = 0
-        currentAnswer = ""
-        resultMessage = ""
+        preguntaActual = 0
+        preguntas.removeAll()
+        mensajeResultado = ""
+        respuestaActual = ""
     }
 }
-
 #Preview {
     ContentView()
 }
