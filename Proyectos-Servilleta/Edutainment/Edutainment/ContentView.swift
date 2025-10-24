@@ -1,110 +1,134 @@
-//
-//  ContentView.swift
-//  Edutainment
-//
-//  Created by Jose Rafael Peralta Martinez  on 24/10/25.
-//
-//Aplicion que permita seleccionar la tabla de multiplicar de 2 a 12
-//Poder seleccionar cuantas preguntas desea que le hagan de 5,10 o 20
-//Generar aleatoriamente tantas preguntas como nos pidieron , dentro del rango de dificultad solicitado[5,10,20]
-
-
-
 import SwiftUI
 
+// Modelo de pregunta
+struct Question {
+    let text: String
+    let answer: Int
+}
+
 struct ContentView: View {
+    // Configuración del juego
     @State private var selectTable = 2
     @State private var selectNumberOfQuestions = 5
-    @State private var numberOfQuestions = [5,10,20]
-    @State private var question = [String]()
-    @State private var currentQuestion = ""
-    @State private var correctAnswers = [Int]()
-    @State private var answerUser = ""
-    @State private var showQuestion: Bool = false
+    let numberOfQuestions = [5,10,20]
+    
+    // Estado del juego
+    @State private var questions = [Question]()
+    @State private var currentQuestionIndex = 0
+    @State private var currentAnswer = ""
     @State private var resultMessage = ""
+    @State private var puntuacionUsuario = 0
+    @State private var gameStarted = false
+    
     var body: some View {
-        NavigationStack{
-            
-            Form {
-                //Seccion de eleccion de tabla
-                Section("Select the table you wanna practice"){
-                    Stepper("Table of \(selectTable)",value: $selectTable, in: 2...12)
-                }
-                //Seccion de eleccion de preguntas
-                Section("Select how many questions do you want"){
-                    Picker("Number of questions", selection: $selectNumberOfQuestions){
-                        ForEach(numberOfQuestions, id: \.self){ number in
-                            Text("\(number)")
+        NavigationStack {
+            VStack(spacing: 20) {
+                if !gameStarted {
+                    // Configuración inicial
+                    Form {
+                        Section("Select the table to practice") {
+                            Stepper("Table: \(selectTable)", value: $selectTable, in: 2...12)
+                        }
+                        
+                        Section("Select number of questions") {
+                            Picker("Number of questions", selection: $selectNumberOfQuestions) {
+                                ForEach(numberOfQuestions, id: \.self) { number in
+                                    Text("\(number)")
+                                }
+                            }
+                            .pickerStyle(.segmented)
+                        }
+                        
+                        Button("Start Game") {
+                            startGame()
                         }
                     }
-                    .pickerStyle(.segmented)
-                }
-                
-                Section{
-                    Button("Show me the questions"){
-                        generateRandomQuestion(difficult: selectNumberOfQuestions, table: selectTable)
+                } else {
+                    // Juego activo
+                    VStack(spacing: 15) {
+                        if currentQuestionIndex < questions.count {
+                            Text(questions[currentQuestionIndex].text)
+                                .font(.title)
+                                .bold()
+                            
+                            TextField("Your answer", text: $currentAnswer)
+                                .keyboardType(.numberPad)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .padding()
+                            
+                            Button("Check Answer") {
+                                checkAnswer()
+                            }
+                            
+                            Text(resultMessage)
+                                .font(.headline)
+                                .foregroundColor(resultMessage == "Correct ✅" ? .green : .red)
+                            
+                            Text("Score: \(puntuacionUsuario)")
+                        } else {
+                            // Juego terminado
+                            Text("🎉 You finished the game! 🎉")
+                                .font(.title2)
+                            Text("Final Score: \(puntuacionUsuario) / \(questions.count)")
+                            
+                            Button("Play Again") {
+                                resetGame()
+                            }
+                        }
                     }
-                    Text(currentQuestion)
-                    TextField("Respuesta", text: $answerUser)
-                        .keyboardType(.numberPad)
-                    
-                    Button("Comprobar"){
-                        checkAnswer()
-                    }
-                    Text(resultMessage)
+                    .padding()
                 }
             }
-            .navigationTitle(Text("Edutainment"))
-            .toolbar{
-                Button("Reset"){
-                    question.removeAll()
-                    correctAnswers.removeAll()
-                }
-            }
-            
-//            .alert("Answer the question", isPresented: $showQuestion) {
-//                            Button("OK", role: .cancel) { }
-//                        } message: {
-//                            Text(currentQuestion)
-//                            TextField("Respuesta", text: $currentQuestion)
-//                        }
-
-
-
+            .navigationTitle("Edutainment")
         }
     }
     
-    
-    func generateRandomQuestion(difficult: Int, table: Int) {
-        question.removeAll()
-        correctAnswers.removeAll()
+    // MARK: - Funciones del juego
+    func startGame() {
+        questions.removeAll()
+        puntuacionUsuario = 0
+        currentQuestionIndex = 0
+        resultMessage = ""
+        currentAnswer = ""
+        gameStarted = true
         
-        for _ in 1...difficult{
-            _ = table
-            let randomNumber2: Int = Int.random(in: 2...12)
-            question.append("\(table) x \(randomNumber2)")
-            correctAnswers.append(table * randomNumber2)
-        }
-
-        if let first = question.first{
-            currentQuestion = first
+        // Generar preguntas
+        for _ in 1...selectNumberOfQuestions {
+            let randomNumber = Int.random(in: 2...12)
+            let qText = "\(selectTable) x \(randomNumber)"
+            let qAnswer = selectTable * randomNumber
+            questions.append(Question(text: qText, answer: qAnswer))
         }
     }
     
-    func checkAnswer(){
-        if answerUser == String(correctAnswers[0]){
-            resultMessage = "Correct"
-        }else {
-            resultMessage = "Incorrect"
+    func checkAnswer() {
+        guard currentQuestionIndex < questions.count else { return }
+        
+        let correctAnswer = questions[currentQuestionIndex].answer
+        if currentAnswer == String(correctAnswer) {
+            resultMessage = "Correct ✅"
+            puntuacionUsuario += 1
+        } else {
+            resultMessage = "Incorrect ❌"
+            if puntuacionUsuario > 0 { puntuacionUsuario -= 1 }
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                resultMessage = ""
-                answerUser = ""
-            generateRandomQuestion(difficult: selectNumberOfQuestions, table: selectTable)
-            }
+        // Limpiar respuesta y pasar a siguiente pregunta
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            resultMessage = ""
+            currentAnswer = ""
+            currentQuestionIndex += 1
+        }
     }
-
+    
+    func resetGame() {
+        gameStarted = false
+        questions.removeAll()
+        currentQuestionIndex = 0
+        puntuacionUsuario = 0
+        currentAnswer = ""
+        resultMessage = ""
+    }
 }
 
 #Preview {
