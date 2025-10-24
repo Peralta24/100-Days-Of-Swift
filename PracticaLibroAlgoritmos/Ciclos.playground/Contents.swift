@@ -92,3 +92,56 @@ for documento in documentos {
 
 print(documentosJpg)
 
+
+
+//Valor maximo de una serie de 100 nyumeros
+
+let numeros = (1...100).map { _ in Int.random(in: 1...100) }
+print(numeros)
+var maximo = 0
+var minimo = 0
+for numero in numeros {
+    if numero > maximo {
+        maximo = numero
+    }
+    if numero < minimo {
+        minimo = numero
+    }
+}
+
+
+print(maximo)
+print(minimo)
+
+var numeroFactorial = 5
+var resultadoFactorial = 1
+for i in 1...numeroFactorial {
+    resultadoFactorial *= i
+}
+print(resultadoFactorial)
+
+//Subfunciones
+
+//Entrada de altura y base
+
+func alturaRectangulo(altura: Int) -> Int{
+    var alturaRectangulo = altura
+    return alturaRectangulo
+}
+func baseRectangulo(base:Int) -> Int{
+    var baseRectangulo = base
+    return baseRectangulo
+}
+
+//Calculo de la superficie
+func calcularSuperficie(altura:Int,base:Int) -> Int{
+    print(altura * base)
+   return  altura * base
+}
+var altura = alturaRectangulo(altura: 20)
+var base = baseRectangulo(base: 3)
+
+calcularSuperficie(altura: altura, base: base
+)
+
+

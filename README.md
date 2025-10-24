@@ -38,7 +38,9 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 30 - Proyecto 5 (Parte Dos)
 - [x] Día 31 - Proyecto 5 (Parte Tres)
 - [x] Día 32 - Proyecto 6 (Parte Uno)
--  Día 33 - Proyecto 6 (Parte Dos)
+- [x] Día 33 - Proyecto 6 (Parte Dos)
+- [x] Día 34 - Proyecto 6 (Parte Tres)
+
 
 
 
