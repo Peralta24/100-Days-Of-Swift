@@ -40,6 +40,7 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 32 - Proyecto 6 (Parte Uno)
 - [x] Día 33 - Proyecto 6 (Parte Dos)
 - [x] Día 34 - Proyecto 6 (Parte Tres)
+- [x] Día 35 - Milestone
 
 
 
