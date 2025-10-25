@@ -1,164 +1,113 @@
 import SwiftUI
 struct Pregunta {
-    var texto: String
-    var respuesta: Int
-}
-
-struct Botones : ViewModifier{
-    func body(content: Content) -> some View {
-        content
-            .font(.headline)
-            .foregroundStyle(.primary)
-            .fontWeight(.bold)
-            .padding(.horizontal,70)
-            .hoverEffect(.highlight)
-    }
-}
-extension View {
-    func botones() -> some View {
-        modifier(Botones())
-    }
+    var texto : String
+    var respuesta : Int
 }
 struct ContentView: View {
-    @State private var juegoIniciado = false
     @State private var tablaSeleccionada = 2
     @State private var dificultadSeleccionada = 5
-    let dificultades = [5,10,20]
-    var tablaMinima = 2
-    var tablaMaxima = 12
-
-    // Variables
+    let dificultades = [5, 10, 20]
+    @State private var juegoEmpezado = false
+    
+    
     @State private var preguntas = [Pregunta]()
     @State private var preguntaActual = 0
-    @State private var respuestaActual = ""
+    @State private var respuestaSeleccionada = ""
     @State private var mensajeResultado = ""
     @State private var puntuacionUsuario = 0
-    @State private var mostrarResultado = false
     var body: some View {
         NavigationStack {
-            VStack {
-                if !juegoIniciado {
-                    Form {
-                        Section("Selecciona la tabla que quieres practicar!"){
-                            Stepper("Tabla del \(tablaSeleccionada)",value: $tablaSeleccionada,in: tablaMinima...tablaMaxima)
+            if !juegoEmpezado {
+                VStack(spacing:20){
+                    Form{
+                        Section("Ingresa la tabla que deseas practicar"){
+                            Stepper("Tabla de \(tablaSeleccionada)",value: $tablaSeleccionada,in : 2...12)
                         }
-                        Section("Dificultad"){
-                            Picker("Selecciona la difultad",selection:$dificultadSeleccionada){
+                        Section("Ingresa la dificultad"){
+                            Picker("Dificultad",selection: $dificultadSeleccionada){
                                 ForEach(dificultades, id: \.self){
                                     Text("\($0)")
                                 }
                             }
-                            .pickerStyle(.segmented)
-                            
+                            .pickerStyle(SegmentedPickerStyle())
                         }
                         Section{
-                            Button{
-                                iniciarJuego()
-                            }label: {
-                                Text("Empezar a Practicar!")
-                                    .botones()
-                                    
+                            Button("Empezar a Practicar"){
+                                empezarElJuego()
                             }
-                        }
-                        
-                    }
-                }else {
-                    if preguntaActual < preguntas.count {
-                        VStack{
-                            Form {
-                                Section("Responde la siguiente pregunta:"){
-                                    Text(preguntas[preguntaActual].texto)
-                                        .font(.title2)
-                                        .foregroundStyle(.blue)
-                                        .multilineTextAlignment(.center)
-                                        .frame(width:400)
-                                    TextField("Introduce tu resultado",text:$respuestaActual)
-                                }
-                                Section{
-                                    Button{
-                                        validarRespuesta()
-                                    }label: {
-                                        Text("Validar la respuesta")
-                                            .botones()
-                                    }
-                                }
-                                Section{
-                                    Text("Puntuacion: \(puntuacionUsuario)")
-                                }
-                            }
-                        }
-                    }else {
-                        Text("Juego Terminado")
-                        Text("Tu puntuación final es: \(puntuacionUsuario)")
-                        Button{
-                            reiniciarJuego()
-                        }label: {
-                            Text("Volver a practicar")
-                                .botones()
                         }
                     }
                 }
-            }
-            .navigationTitle("Multiplicaciones")
-        }
-        .alert(mensajeResultado,isPresented: $mostrarResultado){
-            Button("Ok"){
-                
+            }else {
+                if preguntaActual < preguntas.count {
+                    VStack{
+                        Form{
+                            Section("Pregunta a responder"){
+                                Text(preguntas[preguntaActual].texto)
+                                TextField("Ingresa tu respuesta",text: $respuestaSeleccionada)
+                            }
+                            Button("Verificar Respuesta"){
+                                verificarRespuesta()
+                            }
+                            Text(mensajeResultado)
+                            Text("Tu puntuacion es \(puntuacionUsuario)")
+                        }
+                    }
+                }else {
+                    Text("Juego terminado")
+                    Text("Tu puntuacion fue de \(puntuacionUsuario)")
+                    Button("Volver a practicar"){
+                        resetearJuego()
+                    }
+                }
             }
         }
     }
-    
-    //MARK: EMPEZAR A CREAR LA LOGICA DEL JUEGO
-    
-    func iniciarJuego(){
+    func empezarElJuego(){
         preguntas.removeAll()
         preguntaActual = 0
-        respuestaActual = ""
         mensajeResultado = ""
         puntuacionUsuario = 0
-        juegoIniciado = true
+        juegoEmpezado = true
         
-        for _ in 0..<dificultadSeleccionada{
-            let numeroAleatorio = Int.random(in: 1...12)
-            let preguntaTexto = "\(tablaSeleccionada) x \(numeroAleatorio)"
-            let respuestaCorrecta = tablaSeleccionada * numeroAleatorio
-            preguntas.append(Pregunta(texto: preguntaTexto, respuesta: respuestaCorrecta))
+        for _ in 1...dificultadSeleccionada {
+            let numeroRandom = Int.random(in: 1...12)
+            let textoPregunta = "\(tablaSeleccionada) x \(numeroRandom)"
+            let respuestaPregunta = tablaSeleccionada * numeroRandom
+            preguntas.append(Pregunta(texto: textoPregunta, respuesta: respuestaPregunta))
         }
     }
     
-    func validarRespuesta(){
-        let respuestaCorrecta = preguntas[preguntaActual].respuesta
+    func verificarRespuesta(){
+        var respuestaCorrecta = preguntas[preguntaActual].respuesta
         
-        if respuestaActual == String(respuestaCorrecta){
-            mensajeResultado = "Correcto, sigue asi!"
+        if respuestaSeleccionada == String(respuestaCorrecta){
+            mensajeResultado = "Correcto"
             puntuacionUsuario += 1
         }else {
-            mensajeResultado = "Incorrecto, sigue practicando!"
-            if puntuacionUsuario > 0{
+            if puntuacionUsuario > 0 {
+                mensajeResultado = "Incorrecto"
                 puntuacionUsuario -= 1
             }
-        
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             mensajeResultado = ""
-            respuestaActual = ""
             preguntaActual += 1
-            mostrarResultado = false
-
+            respuestaSeleccionada = ""
         }
-        mostrarResultado = true
-        
     }
     
-    func reiniciarJuego(){
-        juegoIniciado = false
+    func resetearJuego(){
+        juegoEmpezado = false
+        respuestaSeleccionada = ""
         puntuacionUsuario = 0
+        mensajeResultado = ""
         preguntaActual = 0
         preguntas.removeAll()
-        mensajeResultado = ""
-        respuestaActual = ""
     }
 }
+
 #Preview {
     ContentView()
 }
