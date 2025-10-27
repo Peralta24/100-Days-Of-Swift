@@ -21,9 +21,13 @@ class Numero {
     }
 }
 struct secondView : View {
+    @Environment(\.dismiss) var dismiss
     var name : String
     var body: some View {
         Text("Hello to the second view \(name)")
+        Button("Back to the main shett"){
+            dismiss()
+        }
     }
 }
 struct ContentView: View {
@@ -44,6 +48,9 @@ struct ContentView: View {
             
             Button("Go to the second View"){
                 showSecondView.toggle()
+            }
+            Button("Bakc"){
+                showSecondView = false
             }
         }
         .sheet(isPresented: $showSecondView){
