@@ -26,6 +26,10 @@ struct SeccionDos: View {
         }
     }
 }
+struct User : Codable {
+    var name : String
+    var email : String
+}
 struct ContentView: View {
     @State private var appsMovil = UserDefaults.standard.value(forKey: "appsMovil") as? [String] ?? []
     @AppStorage("taps") private var tapCounts = 0
@@ -35,6 +39,7 @@ struct ContentView: View {
     @State private var mostrarSeccionDos = false
     @State private var numerosAlmacenados = [Int]()
     @State private var numeroActual = 1
+    @State private var user = User(name: "rafael", email: "rafael@gmail.com")
     var body: some View {
         NavigationStack{
             Section{
@@ -48,6 +53,15 @@ struct ContentView: View {
                     appsMovil.append("App")
                     appActual += 1
                     UserDefaults.standard.set(appsMovil, forKey: "appsMovil")
+                }
+                
+                Button("Save data"){
+                    if let data = try? JSONEncoder().encode(user){
+                        UserDefaults.standard.set(data, forKey: "user")
+                    }
+                    if let data2 = try? JSONDecoder().decode(User.self, from: UserDefaults.standard.data(forKey: "user")!){
+                        Text("\(data2.name) \(data2.email)")
+                    }
                 }
             }
             
