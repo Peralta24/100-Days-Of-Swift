@@ -34,29 +34,50 @@ struct ContentView: View {
     @State private var user = User()
     @State private var numero = Numero()
     @State private var showSecondView = false
+    @State private var numberOfRows = [Int]()
+    @State private var numberActual = 1
 
     var body: some View {
-        VStack {
-            Text("Your name is \(user.firstName) \(user.lastName)")
-            TextField("First Name",text: $user.firstName)
-            TextField("Last Name",text: $user.lastName)
-            
-            Text("Contador \(numero.contador)")
-            Button("Aumentar"){
-                numero.aumentar()
+        NavigationStack {
+            VStack {
+                Text("Your name is \(user.firstName) \(user.lastName)")
+                TextField("First Name",text: $user.firstName)
+                TextField("Last Name",text: $user.lastName)
+                
+                Text("Contador \(numero.contador)")
+                Button("Aumentar"){
+                    numero.aumentar()
+                }
+                
+                Button("Go to the second View"){
+                    showSecondView.toggle()
+                }
+                Button("Bakc"){
+                    showSecondView = false
+                }
             }
-            
-            Button("Go to the second View"){
-                showSecondView.toggle()
+            .sheet(isPresented: $showSecondView){
+                secondView(name : "\(user.firstName) \(user.lastName)")
             }
-            Button("Bakc"){
-                showSecondView = false
+            List {
+                ForEach(numberOfRows, id: \.self){
+                    Text("\($0)")
+                }
+                .onDelete(perform: deleteRow)
+            }
+            Button("Add Row"){
+                numberOfRows.append(numberActual)
+                numberActual += 1
+            }
+            .toolbar{
+                EditButton()
             }
         }
-        .sheet(isPresented: $showSecondView){
-            secondView(name : "\(user.firstName) \(user.lastName)")
-        }
-        .padding()
+     
+    }
+    
+    func deleteRow(at offsets: IndexSet) {
+        numberOfRows.remove(atOffsets: offsets)
     }
 }
 
