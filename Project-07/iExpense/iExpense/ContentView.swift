@@ -1,19 +1,8 @@
 import SwiftUI
-enum ocupaciones {
-    case Programador_iOS
-    case Programador_Web
-    case Programador_Móvil
-}
-struct Persona {
+
+struct Nombre {
     var nombre : String
     var apellido : String
-    var edad : Int
-    var ocupacion : ocupaciones
-}
-@Observable
-class Persona2 {
-    var nombre = "Victor"
-    var apeliido = "Ramirez"
 }
 @Observable
 class Contador {
@@ -22,98 +11,91 @@ class Contador {
     func aumentar(){
         contador += 1
     }
-    func decrementar(){
+    func disminuir(){
         contador -= 1
     }
 }
-struct SeccionDos : View {
-    var nombre : String = ""
-    @Environment(\.dismiss) var dismiss
+struct SeccionDos: View {
+    var nombre : String
+    @Environment(\.dismiss)  var dismiss
     var body: some View {
-        Text("Bienvenido a la seccion numero dos \(nombre)")
-        Button("Salir"){
+        Text("Seccion Dos bienvenido \(nombre)")
+        
+        Button("Salir de la seccion"){
             dismiss()
         }
     }
 }
 struct ContentView: View {
-    
-    @AppStorage("Tap Count") private var tapCount = 0
-    
-    @State private var nombresApp = UserDefaults.standard.array(forKey: "Apps") as? [String] ?? []
-
-
-    
-    @State private var rafael = Persona(nombre: "Jose", apellido: "Peralta", edad: 21, ocupacion: .Programador_iOS)
+    @State private var appsMovil = UserDefaults.standard.value(forKey: "appsMovil") as? [String] ?? []
+    @AppStorage("taps") private var tapCounts = 0
+    @State private var rafael = Nombre(nombre: "rafael", apellido: "gonzalez")
     @State private var contador = Contador()
-    
-    @State private var victor = Persona2()
-    @State private var verSeccionDos = false
-    
-    @State private var numeros = [Int]()
+    @State private var appActual = 1
+    @State private var mostrarSeccionDos = false
+    @State private var numerosAlmacenados = [Int]()
     @State private var numeroActual = 1
-    
     var body: some View {
         NavigationStack{
-            List{
-                ForEach(nombresApp, id: \.self){app in
-                    Text("\(app)")
+            Section{
+                List {
+                    ForEach(appsMovil,id: \.self){
+                        Text("\($0) number \(self.appActual)")
+                    }
+                    .onDelete(perform: deleteAps)
+                }
+                Button("Apps: \(appsMovil.count)") {
+                    appsMovil.append("App")
+                    appActual += 1
+                    UserDefaults.standard.set(appsMovil, forKey: "appsMovil")
                 }
             }
-            Button("Apps name: \(nombresApp.count)") {
-                nombresApp.append("App Agregada!")
-                UserDefaults.standard.set(nombresApp, forKey: "Apps")
-            }
             
-            Button("Tap count: \(tapCount)"){
-                tapCount += 1
-            }
-            
-            Text("\(rafael.nombre) \(rafael.apellido) \(rafael.edad) \(rafael.ocupacion)")
-            TextField("Nombre: ",text: $rafael.nombre)
-            TextField("Apellido",text: $rafael.apellido)
-            Text("\(victor.nombre) \(victor.apeliido)")
-            TextField("Nombre",text: $victor.nombre)
-            TextField("Apellido",text: $victor.apeliido)
-            
-            Text("Contador \(contador.contador)")
-            Button("Aumentar Contador") {
-                contador.aumentar()
-            }
-            Button("Restar al contador"){
-                contador.decrementar()
-            }
-            
-            Section("Segunda Seccion"){
-                Button("Ir a la segunda seccion"){
-                    verSeccionDos.toggle()
+            Section{
+                Button("Tap Count \(tapCounts)"){
+                    tapCounts += 1
                 }
             }
-            .sheet(isPresented: $verSeccionDos){
-                SeccionDos(nombre: "Rafael")
-            }
-            
             List{
-                ForEach(numeros, id: \.self){
+                ForEach(numerosAlmacenados,id: \.self){
                     Text("\($0)")
                 }
-                .onDelete(perform: borrarNumero)
-                
             }
             Button("Agregar numero"){
-                numeros.append(numeroActual)
+                numerosAlmacenados.append(numeroActual)
                 numeroActual += 1
+            }
+            
+            Section{
+                Text("\(rafael.nombre) \(rafael.apellido)")
+                TextField("Nombre", text: $rafael.nombre)
+                TextField("Apellido",text: $rafael.apellido)
+                
+                Text("Contador \(contador.contador)")
+                Button("Aumentar Contador"){
+                    contador.aumentar()
+                }
+                Button("Disminuir contador"){
+                    contador.disminuir()
+                }
+            }
+            
+            Button("Ir a la segunda seccion"){
+                mostrarSeccionDos.toggle()
+            }
+            .sheet(isPresented: $mostrarSeccionDos){
+                SeccionDos(nombre: "Rafael")
             }
             .toolbar{
                 EditButton()
             }
         }
-        
-    }
-    func borrarNumero(offset: IndexSet){
-        numeros.remove(atOffsets: offset)
+
     }
     
+    func deleteAps(at offsets: IndexSet) {
+        appsMovil.remove(atOffsets: offsets)
+    }
 }
 
 #Preview {
