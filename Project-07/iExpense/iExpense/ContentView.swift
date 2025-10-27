@@ -37,6 +37,13 @@ struct SeccionDos : View {
     }
 }
 struct ContentView: View {
+    
+    @AppStorage("Tap Count") private var tapCount = 0
+    
+    @State private var nombresApp = UserDefaults.standard.array(forKey: "Apps") as? [String] ?? []
+
+
+    
     @State private var rafael = Persona(nombre: "Jose", apellido: "Peralta", edad: 21, ocupacion: .Programador_iOS)
     @State private var contador = Contador()
     
@@ -48,7 +55,19 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack{
+            List{
+                ForEach(nombresApp, id: \.self){app in
+                    Text("\(app)")
+                }
+            }
+            Button("Apps name: \(nombresApp.count)") {
+                nombresApp.append("App Agregada!")
+                UserDefaults.standard.set(nombresApp, forKey: "Apps")
+            }
             
+            Button("Tap count: \(tapCount)"){
+                tapCount += 1
+            }
             
             Text("\(rafael.nombre) \(rafael.apellido) \(rafael.edad) \(rafael.ocupacion)")
             TextField("Nombre: ",text: $rafael.nombre)
