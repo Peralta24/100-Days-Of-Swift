@@ -52,6 +52,8 @@ struct ContentView: View {
     
     @State private var aplicaciones = [String]()
     @State private var aplicacionActual = 1
+    
+    @State private var tapCount = UserDefaults.standard.integer(forKey: "tapCount")
     var body: some View {
 
         NavigationStack {
@@ -108,6 +110,11 @@ struct ContentView: View {
                         aplicaciones.append("Aplicacion: \(aplicacionActual)")
                         aplicacionActual += 1
                     }
+                }
+                
+                Button("Tap Count: \(tapCount)") {
+                    UserDefaults.standard.set(tapCount, forKey: "tapCount")
+                    tapCount += 1
                 }
             }
             .toolbar {
