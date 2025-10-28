@@ -14,7 +14,7 @@ struct AddView: View {
     var expenses : Expenses
     let types = ["Bussines", "Personal"]
     var body: some View {
-        VStack {
+        NavigationStack {
             Form{
                 TextField("Name", text: $name)
                 Picker("Type",selection: $type){
@@ -24,6 +24,14 @@ struct AddView: View {
                 }
                 TextField("Amount", value: $amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                     .keyboardType(.decimalPad)
+            }
+            .navigationTitle(Text("Add Expense"))
+            .toolbar{
+                Button("Save"){
+                    let item = ExpenseItem(name: name, type: type, amount: amount)
+                    expenses.items.append(item)
+                    
+                }
             }
         }
     }
