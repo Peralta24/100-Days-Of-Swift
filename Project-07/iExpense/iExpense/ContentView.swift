@@ -1,5 +1,5 @@
 import SwiftUI
-struct NombresE : ViewModifier {
+struct NombresE : ViewModifier  {
     func body(content: Content) -> some View {
         content
             .font(.system(size: 15))
@@ -11,7 +11,7 @@ extension View {
         modifier(NombresE())
     }
 }
-struct Nombres {
+struct Nombres  {
     var nombre : String
     var apellido : String
 }
@@ -115,6 +115,13 @@ struct ContentView: View {
                 Button("Tap Count: \(tapCount)") {
                     UserDefaults.standard.set(tapCount, forKey: "tapCount")
                     tapCount += 1
+                }
+                Button("Save"){
+//                    let encoder = JSONEncoder()
+//                    
+//                    if let data = try? encoder.encode(rafael){
+//                        UserDefaults.standard.set(data, forKey: "rafael")
+//                    }
                 }
             }
             .toolbar {
