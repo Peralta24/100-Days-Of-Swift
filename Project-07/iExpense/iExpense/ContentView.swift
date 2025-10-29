@@ -1,6 +1,5 @@
-
-
 import SwiftUI
+
 struct Gasto: Identifiable, Codable {
     var id = UUID()
     let nombre : String
@@ -27,40 +26,89 @@ class Gastos {
         indices = []
     }
 }
+
 struct ContentView: View {
     @State private var gastos = Gastos()
     @State private var mostrarFormulario = false
+    
+    var gastosPersonales: [Gasto] {
+        gastos.indices.filter { $0.categoria == "Personal" }
+    }
+    
+    var gastosNegocios: [Gasto] {
+        gastos.indices.filter { $0.categoria == "Negocios" }
+    }
+    
     var body: some View {
         NavigationStack {
-            List{
-                ForEach(gastos.indices){gasto in
-                    HStack{
-                        VStack(alignment: .leading){
-                            Text(gasto.nombre)
-                                .font(.headline)
-                            
-                            Text(gasto.categoria)
+            List {
+                Section("Gastos Personales") {
+                    ForEach(gastosPersonales) { gasto in
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text(gasto.nombre)
+                                Text(gasto.categoria)
+                            }
+                            Spacer()
+                            Text(gasto.cantidad.formatted())
+                                .foregroundStyle(colorParaCantidad(gasto.cantidad))
                         }
-                        Spacer()
-                        Text(gasto.cantidad,format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                     }
+                    .onDelete(perform: borrarIndicesPersonales)
                 }
-                .onDelete(perform: borrarIndices)
+                
+                Section("Gastos Empresariales") {
+                    ForEach(gastosNegocios) { gasto in
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text(gasto.nombre)
+                                Text(gasto.categoria)
+                            }
+                            Spacer()
+                            Text(gasto.cantidad.formatted())
+                                // 2. Llama a la nueva función aquí también
+                                .foregroundStyle(colorParaCantidad(gasto.cantidad))
+                        }
+                    }
+                    .onDelete(perform: borrarIndicesNegocios)
+                }
             }
             .navigationTitle(Text("Gastos"))
             .toolbar {
-                Button("Agregar gasto",systemImage: "plus"){
+                Button("Agregar gasto", systemImage: "plus") {
                     mostrarFormulario = true
                 }
             }
-            .sheet(isPresented: $mostrarFormulario){
+            .sheet(isPresented: $mostrarFormulario) {
                 AddView(gasto: gastos)
             }
         }
-        
     }
-    func borrarIndices(offset: IndexSet){
-        gastos.indices.remove(atOffsets: offset)
+    
+    func colorParaCantidad(_ cantidad: Double) -> Color {
+        if cantidad < 10 {
+            return .green
+        } else if cantidad < 100 {
+            return .yellow
+        } else {
+            return .red
+        }
+    }
+    
+    func borrarIndicesPersonales(offset: IndexSet) {
+        let itemsABorrar = offset.map { gastosPersonales[$0] }
+        
+        gastos.indices.removeAll { gasto in
+            itemsABorrar.contains { $0.id == gasto.id }
+        }
+    }
+    
+    func borrarIndicesNegocios(offset: IndexSet) {
+        let itemsABorrar = offset.map { gastosNegocios[$0] }
+        
+        gastos.indices.removeAll { gasto in
+            itemsABorrar.contains { $0.id == gasto.id }
+        }
     }
 }
 
