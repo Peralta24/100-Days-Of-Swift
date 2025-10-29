@@ -1,115 +1,64 @@
-import SwiftUI
 
-struct Gasto: Identifiable, Codable {
+import SwiftUI
+struct Gasto : Identifiable, Codable {
     var id = UUID()
     let nombre : String
-    let categoria: String
-    let cantidad : Double
+    let categoria : String
+    let monto : Double
 }
 
 @Observable
 class Gastos {
-    var indices = [Gasto]() {
-        didSet {
-            if let encodes = try? JSONEncoder().encode(indices) {
-                UserDefaults.standard.set(encodes, forKey: "gastos")
-            }
-        }
-    }
-    init(){
-        if let savedItems = UserDefaults.standard.data(forKey: "gastos") {
-            if let decode = try? JSONDecoder().decode([Gasto].self, from: savedItems) {
-                indices = decode
-                return
-            }
-        }
-        indices = []
-    }
+    var indices = [Gasto]()
 }
-
 struct ContentView: View {
     @State private var gastos = Gastos()
+    var gastosPersonales : [Gasto] {
+        gastos.indices.filter{$0.categoria == "Personal"}
+    }
+    var gastosNegocios : [Gasto] {
+        gastos.indices.filter{$0.categoria == "Negocio"}
+    }
     @State private var mostrarFormulario = false
-    
-    var gastosPersonales: [Gasto] {
-        gastos.indices.filter { $0.categoria == "Personal" }
-    }
-    
-    var gastosNegocios: [Gasto] {
-        gastos.indices.filter { $0.categoria == "Negocios" }
-    }
-    
     var body: some View {
-        NavigationStack {
-            List {
-                Section("Gastos Personales") {
-                    ForEach(gastosPersonales) { gasto in
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text(gasto.nombre)
-                                Text(gasto.categoria)
-                            }
-                            Spacer()
-                            Text(gasto.cantidad.formatted())
-                                .foregroundStyle(colorParaCantidad(gasto.cantidad))
-                        }
+        NavigationStack{
+            List{
+                Section("Gastos personales"){
+                    ForEach(gastosPersonales){gasto in
+                        Text(gasto.nombre)
                     }
-                    .onDelete(perform: borrarIndicesPersonales)
+                    .onDelete(perform: borrarGastosPersonal)
                 }
-                
-                Section("Gastos Empresariales") {
-                    ForEach(gastosNegocios) { gasto in
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text(gasto.nombre)
-                                Text(gasto.categoria)
-                            }
-                            Spacer()
-                            Text(gasto.cantidad.formatted())
-                                // 2. Llama a la nueva función aquí también
-                                .foregroundStyle(colorParaCantidad(gasto.cantidad))
-                        }
+                Section("Gastos Negocios"){
+                    ForEach(gastosNegocios){gastos in
+                        Text(gastos.nombre)
                     }
-                    .onDelete(perform: borrarIndicesNegocios)
+                    .onDelete(perform: borrarGastosNegocio)
                 }
             }
             .navigationTitle(Text("Gastos"))
-            .toolbar {
-                Button("Agregar gasto", systemImage: "plus") {
-                    mostrarFormulario = true
+            .toolbar{
+                Button("Agregar",systemImage: "plus"){
+                    
                 }
             }
-            .sheet(isPresented: $mostrarFormulario) {
-                AddView(gasto: gastos)
-            }
         }
     }
-    
-    func colorParaCantidad(_ cantidad: Double) -> Color {
-        if cantidad < 10 {
-            return .green
-        } else if cantidad < 100 {
-            return .yellow
-        } else {
-            return .red
-        }
-    }
-    
-    func borrarIndicesPersonales(offset: IndexSet) {
-        let itemsABorrar = offset.map { gastosPersonales[$0] }
+    func borrarGastosPersonal(offset: IndexSet) {
+        let personales = gastos.indices.enumerated().filter { $0.element.categoria == "Personal" }
         
-        gastos.indices.removeAll { gasto in
-            itemsABorrar.contains { $0.id == gasto.id }
-        }
-    }
-    
-    func borrarIndicesNegocios(offset: IndexSet) {
-        let itemsABorrar = offset.map { gastosNegocios[$0] }
+        let indicesAEliminar = offset.map { personales[$0].offset }
         
-        gastos.indices.removeAll { gasto in
-            itemsABorrar.contains { $0.id == gasto.id }
-        }
+        gastos.indices.remove(atOffsets: IndexSet(indicesAEliminar))
     }
+    func borrarGastosNegocio(offset: IndexSet) {
+        let negocios = gastos.indices.enumerated().filter { $0.element.categoria == "Negocio" }
+        
+        let indicesAEliminar = offset.map { negocios[$0].offset }
+        
+        gastos.indices.remove(atOffsets: IndexSet(indicesAEliminar))
+    }
+
 }
 
 #Preview {
