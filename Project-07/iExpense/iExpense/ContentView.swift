@@ -9,7 +9,23 @@ struct Gasto : Identifiable, Codable {
 
 @Observable
 class Gastos {
-    var indices = [Gasto]()
+    var indices = [Gasto]() {
+        didSet{
+            if let data = try? JSONEncoder().encode(indices){
+                UserDefaults.standard.set(data, forKey: "gastos")
+            }
+        }
+    }
+    init() {
+        if let data = UserDefaults.standard.data(forKey: "gastos") {
+            if let decoded = try? JSONDecoder().decode([Gasto].self, from: data) {
+                indices = decoded
+                return
+            }
+        }
+        indices = []
+    }
+
 }
 struct ContentView: View {
     @State private var gastos = Gastos()
@@ -39,8 +55,11 @@ struct ContentView: View {
             .navigationTitle(Text("Gastos"))
             .toolbar{
                 Button("Agregar",systemImage: "plus"){
-                    
+                    mostrarFormulario = true
                 }
+            }
+            .sheet(isPresented: $mostrarFormulario){
+                AddView(gastos: gastos)
             }
         }
     }
