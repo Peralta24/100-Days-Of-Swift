@@ -1,70 +1,41 @@
-import SwiftUI
 
-struct Gastos: Identifiable, Codable {
+
+import SwiftUI
+struct Gasto: Identifiable, Codable {
     var id = UUID()
     let nombre : String
-    let categoria : String
+    let categoria: String
     let cantidad : Double
 }
+
 @Observable
-class GastosAlmacen {
-    var gastos = [Gastos]() {
-        didSet {
-            if let encode = try? JSONEncoder().encode(gastos) {
-                UserDefaults.standard.set(encode, forKey: "gastos")
-            }
-        }
-    }
-    init(){
-        if let savedItems = UserDefaults.standard.data(forKey: "gastos") {
-            if let decoded = try? JSONDecoder().decode([Gastos].self, from: savedItems) {
-                gastos = decoded
-                return
-            }
-        }
-        gastos = []
-    }
+class Gastos {
+    var indices = [Gasto]()
 }
 struct ContentView: View {
-    @State private var gastosAlmacenados = GastosAlmacen()
-
-    @State private var mostrarFormulario = false
+    @State private var gastos = Gastos()
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(gastosAlmacenados.gastos){gasto in
-                    HStack{
-                        VStack(alignment: .leading){
-                            Text(gasto.nombre)
-                                .font(.headline)
-                            
-                            Text(gasto.categoria)
-                        }
-                        Spacer()
-                        Text(gasto.cantidad.formatted())
-                    }
+            List{
+                ForEach(gastos.indices){gasto in
+                    Text(gasto.nombre)
                 }
-                .onDelete(perform: eliminarGasto)
+                .onDelete(perform: borrarIndices)
             }
             .navigationTitle(Text("Gastos"))
-            .toolbar{
+            .toolbar {
                 Button("Agregar gasto",systemImage: "plus"){
-                    mostrarFormulario = true
+                    let gasto = Gasto(nombre: "Gasto 1", categoria: "Alimentación", cantidad: 100.0)
+                    gastos.indices.append(gasto)
                 }
             }
-            .sheet(isPresented: $mostrarFormulario){
-                AddView(gastos: gastosAlmacenados)
-            }
         }
-       
-        
     }
-func eliminarGasto(at indexSet: IndexSet){
-        gastosAlmacenados.gastos.remove(atOffsets: indexSet)
+    func borrarIndices(offset: IndexSet){
+        gastos.indices.remove(atOffsets: offset)
     }
 }
 
 #Preview {
     ContentView()
 }
-
