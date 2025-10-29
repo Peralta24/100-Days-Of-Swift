@@ -1,73 +1,70 @@
 import SwiftUI
 
-
-struct ExpenseItem : Identifiable, Codable {
+struct Gastos: Identifiable, Codable {
     var id = UUID()
-    let name: String
-    let type : String
-    let amount: Double
+    let nombre : String
+    let categoria : String
+    let cantidad : Double
 }
-
 @Observable
-class Expenses {
-    var items  = [ExpenseItem]() {
+class GastosAlmacen {
+    var gastos = [Gastos]() {
         didSet {
-            if let encoded = try? JSONEncoder().encode(items) {
-                UserDefaults.standard.set(encoded, forKey: "Items")
+            if let encode = try? JSONEncoder().encode(gastos) {
+                UserDefaults.standard.set(encode, forKey: "gastos")
             }
         }
     }
-    
-    init() {
-        if let savedItems = UserDefaults.standard.data(forKey: "Items") {
-            if let decoded = try? JSONDecoder().decode([ExpenseItem].self, from: savedItems) {
-                items = decoded
+    init(){
+        if let savedItems = UserDefaults.standard.data(forKey: "gastos") {
+            if let decoded = try? JSONDecoder().decode([Gastos].self, from: savedItems) {
+                gastos = decoded
                 return
             }
         }
-        items = []
+        gastos = []
+    }
+}
+struct ContentView: View {
+    @State private var gastosAlmacenados = GastosAlmacen()
+
+    @State private var mostrarFormulario = false
+    var body: some View {
+        NavigationStack {
+            List {
+                ForEach(gastosAlmacenados.gastos){gasto in
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text(gasto.nombre)
+                                .font(.headline)
+                            
+                            Text(gasto.categoria)
+                        }
+                        Spacer()
+                        Text(gasto.cantidad.formatted())
+                    }
+                }
+                .onDelete(perform: eliminarGasto)
+            }
+            .navigationTitle(Text("Gastos"))
+            .toolbar{
+                Button("Agregar gasto",systemImage: "plus"){
+                    mostrarFormulario = true
+                }
+            }
+            .sheet(isPresented: $mostrarFormulario){
+                AddView(gastos: gastosAlmacenados)
+            }
+        }
+       
+        
+    }
+func eliminarGasto(at indexSet: IndexSet){
+        gastosAlmacenados.gastos.remove(atOffsets: indexSet)
     }
 }
 
-struct ContentView: View {
-    
-    @State private var expenses = Expenses()
-    @State private var showingAddExpense = false
-    var body: some View {
-        NavigationStack {
-            List{
-                ForEach(expenses.items){item in
-                    HStack{
-                        VStack(alignment: .leading){
-                            Text(item.name)
-                                .font(.headline)
-                            
-                            Text(item.type)
-                        }
-                        Spacer()
-                        Text(item.amount.formatted())
-                    }
-                }
-                .onDelete(perform: removingExpense)
-            }
-            .navigationTitle(Text("iExpenses"))
-            .toolbar {
-                Button("Add expens",systemImage: "plus"){
-                    showingAddExpense = true
-                }
-            }
-            .sheet(isPresented: $showingAddExpense){
-                AddView(expenses: expenses)
-            }
-        }
-    }
-    func removingExpense(at offsets: IndexSet) {
-        expenses.items.remove(atOffsets: offsets)
-    }
-}
 #Preview {
     ContentView()
 }
-//ExpenseItem
-//Expenses
-//removingExpense
+

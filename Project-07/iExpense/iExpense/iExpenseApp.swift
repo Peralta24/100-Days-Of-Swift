@@ -15,3 +15,7 @@ struct iExpenseApp: App {
         }
     }
 }
+
+#Preview {
+    ContentView()
+}

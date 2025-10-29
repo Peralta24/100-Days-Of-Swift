@@ -1,45 +1,37 @@
-//
-//  AddView.swift
-//  iExpense
-//
-//  Created by Jose Rafael Peralta Martinez  on 28/10/25.
-//
 
 import SwiftUI
 
 struct AddView: View {
     @Environment(\.dismiss) var dismiss
+    var gastos : GastosAlmacen
+    @State private var nombre = ""
+    @State private var cantidad: Double = 0
+    @State private var cateogria: String = ""
     
-    @State private var name = ""
-    @State private var type = "Personal"
-    @State private var amount = 0.0
-    var expenses : Expenses
-    let types = ["Bussines", "Personal"]
+    let tipo = ["Personal","Grupal"]
     var body: some View {
         NavigationStack {
             Form{
-                TextField("Name", text: $name)
-                Picker("Type",selection: $type){
-                    ForEach(types, id: \.self){
-                        Text($0)
+                TextField("Nombre",text: $nombre)
+                Picker("Tipo", selection: $cateogria){
+                    ForEach(tipo, id: \.self){
+                        Text("\($0)")
                     }
                 }
-                TextField("Amount", value: $amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                TextField("Precio",value: $cantidad,format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                     .keyboardType(.decimalPad)
             }
-            .navigationTitle(Text("Add Expense"))
+            .navigationTitle(Text("Añadir Gasto"))
             .toolbar{
-                Button("Save"){
-                    let item = ExpenseItem(name: name, type: type, amount: amount)
-                    expenses.items.append(item)
+                Button("Guardar"){
+                    let gasto = Gastos(nombre: nombre, categoria: cateogria, cantidad: cantidad)
+                    gastos.gastos.append(gasto)
                     dismiss()
-                    
                 }
             }
         }
     }
 }
-
 #Preview {
-    AddView(expenses: Expenses())
+    AddView(gastos: GastosAlmacen())
 }
