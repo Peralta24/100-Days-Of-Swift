@@ -15,7 +15,24 @@ struct ContentView: View {
             .containerRelativeFrame(.horizontal){size,axis in
                 size * 0.8
             }
+        
+        ScrollView{
+            LazyVStack(spacing: 20){
+                ForEach(0..<20){_ in
+                    Text("Hello, World!")
+                        .font(.headline)
+                }
+            }
     }
+        ScrollView(.horizontal){
+            LazyHStack(spacing: 20){
+                ForEach(0..<20){_ in
+                    Text("Hello, World!")
+                        .font(.headline)
+                }
+            }
+        }
+        }
 }
 
 #Preview {
