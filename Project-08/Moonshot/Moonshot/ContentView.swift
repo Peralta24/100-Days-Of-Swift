@@ -1,15 +1,19 @@
 import SwiftUI
-struct Usuario : Codable {
-    let nombre : String
-    let dirrecion : Direccion
+struct User: Codable {
+    let name: String
+    let address: Address
 }
 
-struct Direccion : Codable {
-    let calle : String
-    let ciudad : String
+struct Address: Codable {
+    let street: String
+    let city: String
 }
 struct ContentView: View {
+    let layout = [
+        GridItem(.adaptive(minimum: 100))
+    ]
     var body: some View {
+    
         NavigationStack{
             Image(.example)
                 .resizable()
@@ -60,14 +64,27 @@ struct ContentView: View {
                     }
                 }
                 """
-                
                 let data = Data(input.utf8)
                 let decoder = JSONDecoder()
-                
-                if let usuario = try? decoder.decode(Usuario.self, from: data){
-                    print(usuario.dirrecion.ciudad)
+                if let user = try? decoder.decode(User.self, from: data){
+                    print(user.name)
+                    print(user.address.city)
                 }
-                
+            }
+            
+            ScrollView{
+                LazyVGrid(columns: layout){
+                    ForEach(0..<20){item in
+                        Text("Item \(item)")
+                    }
+                }
+            }
+            ScrollView(.horizontal){
+                LazyHGrid(rows: layout){
+                    ForEach(0..<20){item in
+                        Text("Item \(item)")
+                    }
+                }
             }
            
         }
