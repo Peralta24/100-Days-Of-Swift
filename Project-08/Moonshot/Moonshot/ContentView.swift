@@ -1,5 +1,13 @@
 import SwiftUI
+struct Usuario : Codable {
+    let nombre : String
+    let dirrecion : Direccion
+}
 
+struct Direccion : Codable {
+    let calle : String
+    let ciudad : String
+}
 struct ContentView: View {
     var body: some View {
         NavigationStack{
@@ -40,6 +48,28 @@ struct ContentView: View {
                     Text("Detalles")
                 }
             }
+            
+            
+            Button("Decode JSON"){
+                let input = """
+                {
+                    "name": "Taylor Swift",
+                    "address": {
+                        "street": "555, Taylor Swift Avenue",
+                        "city": "Nashville"
+                    }
+                }
+                """
+                
+                let data = Data(input.utf8)
+                let decoder = JSONDecoder()
+                
+                if let usuario = try? decoder.decode(Usuario.self, from: data){
+                    print(usuario.dirrecion.ciudad)
+                }
+                
+            }
+           
         }
         
     }
