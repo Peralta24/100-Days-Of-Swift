@@ -31,7 +31,7 @@ struct ContentView: View {
                             VStack(alignment: .leading){
                                 Text(gasto.nombre)
                                     .font(.headline)
-                                
+                                  
                                 Text(gasto.categoria)
                             }
                             Spacer()
