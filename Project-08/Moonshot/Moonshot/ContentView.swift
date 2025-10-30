@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  Moonshot
-//
-//  Created by Jose Rafael Peralta Martinez  on 30/10/25.
-//
-
 import SwiftUI
 
 struct ContentView: View {
@@ -12,27 +5,26 @@ struct ContentView: View {
         Image(.example)
             .resizable()
             .scaledToFit()
-            .containerRelativeFrame(.horizontal){size,axis in
+            .containerRelativeFrame(.horizontal, alignment: .center){size, axis in
                 size * 0.8
             }
         
-        ScrollView{
-            LazyVStack(spacing: 20){
-                ForEach(0..<20){_ in
-                    Text("Hello, World!")
-                        .font(.headline)
+        ScrollView {
+            LazyVStack {
+                ForEach(0..<100){
+                    Text("\($0)")
                 }
             }
-    }
+        }
         ScrollView(.horizontal){
-            LazyHStack(spacing: 20){
-                ForEach(0..<20){_ in
-                    Text("Hello, World!")
-                        .font(.headline)
+            LazyHStack{
+                ForEach(0..<100){
+                    Text("\($0)")
                 }
             }
         }
-        }
+        
+    }
 }
 
 #Preview {
