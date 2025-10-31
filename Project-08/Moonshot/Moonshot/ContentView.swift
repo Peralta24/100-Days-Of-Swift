@@ -107,6 +107,14 @@ struct ContentView: View {
                         }
                     }
                 }
+                
+                NavigationLink("Practica de lista con enlace"){
+                    List(0..<21){opcion in
+                        NavigationLink("Opcion \(opcion)"){
+                            Text("Detalle opcion \(opcion)")
+                        }
+                    }
+                }
             }
         }
     }
