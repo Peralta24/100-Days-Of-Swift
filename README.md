@@ -44,7 +44,7 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 36 - Proyecto 7 (Parte Uno)
 - [x] Día 37- Proyecto 7 (Parte Dos)
 - [x] Día 38- Proyecto 7 (Parte Tres)
--  Día 39- Proyecto 8 (Introduccion)
+- [x] Día 39- Proyecto 8 (Introduccion)
 
 
 
