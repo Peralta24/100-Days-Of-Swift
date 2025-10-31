@@ -1,112 +1,117 @@
-
 import SwiftUI
-struct User: Codable {
-    let name: String
+
+struct Usuarios : Codable {
+    let name : String
     let address: Address
 }
 
-struct Address: Codable {
-    let street: String
-    let city: String
+struct Address : Codable {
+    let street : String
+    let city : String
 }
-
-
 struct ContentView: View {
-    var layout = [
-        GridItem(.adaptive(minimum: 100, maximum: 120))
+    let frame = [
+        GridItem(.adaptive(minimum: 100))
     ]
-    var mensajes = 10
+    
     var body: some View {
         NavigationStack {
             
-            Image(.example)
-                .resizable()
-                .scaledToFit()
-                .scaledToFill()
-                .frame(width: 200, height: 200)
-                .navigationTitle(Text("Example Image"))
             VStack {
-                NavigationLink("Ir a la pagina de listView"){
+                Image(.example)
+                    .resizable()
+                    .scaledToFit()
+                    .scaledToFill()
+                    .frame(width: 200, height: 200)
+                    .scaledToFit()
+                
+            }
+            .navigationTitle(Text("Example"))
+            VStack{
+                NavigationLink("Scroll Vertical") {
                     ScrollView{
-                        LazyVStack{
-                            ForEach(0..<40){num in
-                                Text("\(num)")
-                            }
-                        }
-                    }
-                    
-                }
-                NavigationLink("Ir a la seccion de las columnas"){
-                    ScrollView{
-                        LazyVGrid(columns: layout){
-                            ForEach(0..<1000){num in
-                                Text("\(num)")
+                            LazyVStack{
+                                ForEach(0..<100){numero in
+                                    Text("\(numero)")
                             }
                         }
                     }
                 }
-                NavigationLink("Ir a la seccion de filas"){
-                    ScrollView(.horizontal){
-                        LazyHGrid(rows: layout){
-                            ForEach(0..<1000){num in
-                                Text("\(num)")
-                            }
-                        }
-                    }
-                }
-                NavigationLink("Ir a la pagina de HStack"){
+                NavigationLink("Scroll Horizontal"){
                     ScrollView(.horizontal){
                         LazyHStack{
-                            ForEach(0..<40){num in
-                                Text("\(num)")
+                            ForEach(0..<100){numero in
+                                Text("\(numero)")
                             }
                         }
                     }
                 }
                 NavigationLink{
-                    Text("Presionaste")
-                }label: {
-                    Text(Image.init(systemName: "plus"))
-                    Text("Aquí")
+                    Text("Bienvenido")
+                }label:{
+                    Text("Presioname")
                 }
                 
-                NavigationLink("Opcion seleccion multiple"){
-                    List(0..<21){ fila in
+                NavigationLink("Vista de mensajes"){
+                    List(0..<21){fila in
                         NavigationLink("Filas \(fila)"){
                             Text("Detalles")
                         }
-                        
                     }
                 }
-                NavigationLink("Opciones de mensajes"){
-                    List(1..<mensajes){ mensaje in
-                        NavigationLink("Mensaje: \(mensaje)"){
-                            Text("Mensaje: \(mensaje)")
+                NavigationLink("Vista de distintas Opciones"){
+                    List(0..<30){fila in
+                        NavigationLink("Opcion \(fila)"){
+                            Text("Detalle opcion \(fila)")
                         }
                     }
                 }
                 
                 Button("Decode JSON"){
-                                let input = """
-                                {
-                                    "name": "Taylor Swift",
-                                    "address": {
-                                        "street": "555, Taylor Swift Avenue",
-                                        "city": "Nashville"
-                                    }
-                                }
-                                """
-                                let data = Data(input.utf8)
-                                let decoder = JSONDecoder()
-                                if let user = try? decoder.decode(User.self, from: data){
-                                    print(user.name)
-                                    print(user.address.city)
-                                }
-                            }            }
+                    let input = """
+                                                    {
+                                                        "name": "Taylor Swift",
+                                                        "address": {
+                                                            "street": "555, Taylor Swift Avenue",
+                                                            "city": "Nashville"
+                                                        }
+                                                    }
+                                                    """
+                    
+                    let data = Data(input.utf8)
+                    if let datos = try? JSONDecoder().decode(Usuarios.self, from: data){
+                        print(datos.address.city)
+                        print(datos.name)
+                        
+                    }
+                    
+                    
+                    
+                }
+                
+                NavigationLink("Vista de grid vertical"){
+                    ScrollView{
+                        LazyVGrid(columns: frame){
+                            ForEach(0..<200){numero in
+                                Text("\(numero)")
+                            }
+                        }
+                    }
+                }
+                NavigationLink("Vista de grid horizontal"){
+                    ScrollView(.horizontal){
+                        LazyHGrid(rows: frame){
+                            ForEach(0..<200){numero in
+                                Text("\(numero)")
+                            }
+                        }
+                    }
+                }
+            }
         }
-        
     }
 }
+
 #Preview {
     ContentView()
 }
