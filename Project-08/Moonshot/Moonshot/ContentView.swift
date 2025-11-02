@@ -33,8 +33,11 @@ struct ContentView: View {
                 }
                 VStack(alignment: .leading){
                     NavigationLink("Ir a los mensajes"){
-                        
-                    }
+                        List(0..<20){num in
+                            NavigationLink("mensaje\(num)"){
+                                Text("mnesaje \(num)")
+                            }
+                        }                    }
                 }
             }
         }
