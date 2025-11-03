@@ -57,7 +57,7 @@ struct ContentView: View {
                                     "address": {
                                         "street": "555, Avenue",
                                         "city": "Nashvile"
-                                    }
+                                    } 
                                     }
                                     """
                         
