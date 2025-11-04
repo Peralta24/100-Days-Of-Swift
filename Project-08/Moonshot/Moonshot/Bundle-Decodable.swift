@@ -11,7 +11,7 @@ extension Bundle {
     
     func decode<T: Codable>(_ file : String) -> T{
        
-        guard let url = url(forResource: file, withExtension: "json") else {
+        guard let url = self.url(forResource: file, withExtension: nil) else {
             fatalError( "File not found")
         }
         
@@ -19,9 +19,12 @@ extension Bundle {
             fatalError( "File not found")
         }
         let decoder = JSONDecoder()
+        let formatted = DateFormatter()
+        formatted.dateFormat = "y-MM-dd"
+        decoder.dateDecodingStrategy = .formatted(formatted) 
         do {
             return try decoder.decode(T.self, from: data)
-        }catch DecodingError.keyNotFound(let key, let context) {
+        }catch DecodingError.keyNotFound(_, _) {
             fatalError()
         }catch {
             fatalError()
