@@ -67,5 +67,7 @@ ayuden a mejorar como desarollador iOS.
 - Proyecto 3 : Conversor De Unidades
 - Proyecto 4 : BetterRest
 - Proyecto 5 : Juego de palabras
+- Proyecto 6 : iExpense
+- Proyecto 8 : Moonshot
 
 
