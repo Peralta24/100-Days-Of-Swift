@@ -7,19 +7,18 @@ struct ContentView: View {
         GridItem(.adaptive(minimum: 150, maximum: 300))
     ]
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                LazyVGrid(columns:columns) {
+        NavigationStack{
+            ScrollView{
+                LazyVGrid(columns: columns){
                     ForEach(missions){mission in
-                        NavigationLink {
-                            Text("Detalle")
+                        NavigationLink{
+                            Text("Detail of \(mission.displayName)")
                         }label : {
                             VStack{
                                 Image(mission.image)
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: 100, height: 100)
-                                    .padding()
+                                    .frame(width: 150, height: 150)
                                 
                                 VStack{
                                     Text(mission.displayName)
@@ -28,15 +27,14 @@ struct ContentView: View {
                                     
                                     Text(mission.formattedLaunchDate)
                                         .font(.caption)
-                                        .foregroundStyle(.secondary)
+                                        .foregroundStyle(.gray)
                                 }
                                 .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.lightBackground)
-
+                                .frame(maxWidth: .infinity )
+                                .background(.lightBackground)
                             }
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
-                            .overlay (
+                            .clipShape(.rect(cornerRadius: 10))
+                            .overlay(
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(.lightBackground)
                             )
@@ -45,13 +43,12 @@ struct ContentView: View {
                 }
                 .padding([.horizontal, .bottom])
             }
-            .navigationTitle("Moonshot")
+            .navigationTitle(Text("Moonshot"))
             .background(Color.darkBackground)
             .preferredColorScheme(.dark)
         }
     }
 }
-
 
 #Preview {
     ContentView()

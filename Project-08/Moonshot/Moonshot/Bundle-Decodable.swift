@@ -9,14 +9,13 @@ import Foundation
 
 extension Bundle {
     
-    func decode <T: Codable> (_ file : String) -> T {
-        
+    func decode <T:Codable> (_ file: String) -> T {
         guard let url = self.url(forResource: file, withExtension: nil) else {
-            fatalError( "Couldn't find \(file).json")
+            fatalError("File could not be loaded")
         }
         
         guard let data = try? Data(contentsOf: url) else {
-            fatalError( "Couldn't load \(file).json")
+            fatalError( "File could not be loaded")
         }
         
         let decoder = JSONDecoder()
@@ -26,9 +25,7 @@ extension Bundle {
         
         do {
             return try decoder.decode(T.self, from: data)
-        }catch DecodingError.keyNotFound(let key, let context) {
-            fatalError("Error in \(file).json at \(key), \(context)")
-        }catch{
+        }catch {
             fatalError(error.localizedDescription)
         }
     }
