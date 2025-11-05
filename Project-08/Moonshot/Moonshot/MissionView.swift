@@ -54,6 +54,13 @@ struct MissionView: View {
                             .padding(.bottom, 5)
                             .padding(.horizontal)
                         
+                        HStack{
+                            Text("Date of Launch: ")
+                            Text(mission.formattedLaunchDate)
+                        }
+                        .foregroundStyle(.secondary)
+                        .font(.caption)
+                        .padding([.horizontal, .bottom])
                         Text(mission.description)
                             .padding(.horizontal)
                         
