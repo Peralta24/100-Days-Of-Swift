@@ -1,55 +1,60 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var cambiarVista = "List"
+    @State private var cambiarVistaCondicion = false
     let astronauts : [String : Astronaut] = Bundle.main.decode("astronauts.json")
     let missions : [Mission] = Bundle.main.decode("missions.json")
     let columns = [
         GridItem(.adaptive(minimum: 150, maximum: 300))
     ]
+    
     var body: some View {
-        NavigationStack{
-            ScrollView{
-                LazyVGrid(columns: columns){
-                    ForEach(missions){mission in
-                        NavigationLink{
-                            MissionView(mission: mission, astronauts: astronauts)
-                        }label : {
-                            VStack{
-                                Image(mission.image)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 150, height: 150)
-                                
-                                VStack{
-                                    Text(mission.displayName)
-                                        .font(.headline)
-                                        .foregroundStyle(.white)
-                                    
-                                    Text(mission.formattedLaunchDate)
-                                        .font(.caption)
-                                        .foregroundStyle(.gray)
+        NavigationStack {
+            
+            Group {
+                if !cambiarVistaCondicion {
+                    ScrollView {
+                        LazyVGrid(columns: columns) {
+                            ForEach(missions) { mission in
+                                NavigationLink {
+                                    MissionView(mission: mission, astronauts: astronauts)
+                                } label : {
+                                    MissionCellView(mission: mission)
                                 }
-                                .padding()
-                                .frame(maxWidth: .infinity )
-                                .background(.lightBackground)
                             }
-                            .clipShape(.rect(cornerRadius: 10))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(.lightBackground)
-                            )
                         }
+                        .padding([.horizontal, .bottom])
                     }
+                    .background(.darkBackground)
+
+                } else {
+                    List(missions) { mission in
+                        NavigationLink {
+                            MissionView(mission: mission, astronauts: astronauts)
+                        } label : {
+                            MissionCellView(mission: mission)
+                        }
+                        .listRowBackground(Color.darkBackground)
+                        .listRowInsets(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
+                    }
+                    .listStyle(.plain)
+                    .scrollContentBackground(.hidden)
+                    .background(.darkBackground)
                 }
-                .padding([.horizontal, .bottom])
-            }
-            .navigationTitle(Text("Moonshot"))
-            .background(Color.darkBackground)
+            }             .navigationTitle("Moonshot")
             .preferredColorScheme(.dark)
+            .toolbar {
+                Button {
+                    cambiarVistaCondicion.toggle()
+                    cambiarVista = cambiarVistaCondicion ? "Grid" : "List"
+                } label : {
+                    Text(cambiarVista)
+                }
+            }
         }
     }
 }
 
-#Preview {
-    ContentView()
-}
+
+
