@@ -46,20 +46,16 @@ struct ScrollViewChildren: View {
 }
 
 #Preview {
-    // 1. Creamos un astronauta de mentira (mock)
-    // (Asegúrate que las propiedades coincidan con tu struct Astronaut)
+
     let mockAstronaut = Astronaut(id: "armstrong",
                                  name: "Neil A. Armstrong",
                                  description: "Un astronauta de prueba.")
 
-    // 2. Creamos una tripulación de mentira usando el astronauta
     let mockCrew = [
         CrewMember(role: "Comandante", astronaut: mockAstronaut),
         CrewMember(role: "Piloto", astronaut: mockAstronaut)
     ]
 
-    // 3. Le pasamos el array 'mock' a la vista
     return ScrollViewChildren(crew: mockCrew)
-        // 4. Añadimos el fondo para que se vea bien
         .background(.darkBackground)
 }
