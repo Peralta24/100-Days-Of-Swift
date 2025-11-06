@@ -29,7 +29,7 @@ struct MissionCellView: View {
             .padding()
             .frame(maxWidth: .infinity)
             .background(.lightBackground)
-        }
+        } 
         .clipShape(.rect(cornerRadius: 10))
         .overlay(
             RoundedRectangle(cornerRadius: 10)
