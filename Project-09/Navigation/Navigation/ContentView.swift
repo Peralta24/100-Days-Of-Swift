@@ -6,35 +6,32 @@
 //
 
 import SwiftUI
-struct DetailView: View {
-    var number : Int
-    var body: some View {
-        Text("Detail view \(number)")
-    }
-    
-    init(number: Int) {
-        self.number = number
-        print("The number is \(number)")
-    }
-}
-struct Student : Hashable {
-    let id = UUID()
-    var name : String
-}
 
-var students = [Student](repeating: .init(name: "Jose"), count: 100)
 struct ContentView: View {
+    @State private var path = [String]()
+    
     var body: some View {
-        NavigationStack{
-            List(0..<100){ i in
-                NavigationLink("Select \(i)",value: i)
-                NavigationLink("Student",value:students[i])
+        NavigationStack(path: $path) {
+            VStack {
+                
+
+                Button("Add first name") {
+                    path = ["Rafael"]
+                    print(path)
+                }
+                Button("Add last name") {
+                    path.append("Peralta")
+                    print(path)
+
+                }
+                Button("Add full name") {
+                    path = ["Rafael", "Peralta"]
+                    print(path)
+
+                }
             }
-            .navigationDestination(for: Int.self){ selection in
-                Text("Your selection is \(selection)")
-            }
-            .navigationDestination(for: Student.self) { student in
-                Text("Hello, \(student.name)")
+            .navigationDestination(for: String.self) { selection in
+                Text("You selected: \(selection)")
             }
         }
     }
@@ -43,3 +40,4 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
+
