@@ -6,30 +6,54 @@
 //
 
 import SwiftUI
-
-struct DetailView : View {
-    var number : Int
+@Observable
+class PathStore {
+    var path: NavigationPath {
+        didSet {
+            save()
+        }
+    }
     
-@Binding var path : NavigationPath
-     var body: some View {
-         NavigationLink("Go to random Number",value: Int.random(in: 0..<1000))
-             .navigationTitle("Number \(number)")
-             .toolbar{
-                 Button("Home"){
-                     path = NavigationPath()
-                 }
-             }
+    private let savePath = URL.documentsDirectory.appending(path: "SavedPath")
+    
+    init() {
+        if let data = try? Data(contentsOf: savePath) {
+            if let decoded = try? JSONDecoder().decode(NavigationPath.CodableRepresentation.self, from: data) {
+                path = NavigationPath(decoded)
+                return
+            }
+        }
+        
+        path = NavigationPath()
+    }
+    
+    func save(){
+        guard let representatios = path.codable else {return }
+        do {
+            let data = try JSONEncoder().encode(representatios)
+            try data.write(to: savePath)
+        }catch {
+            print("Failed to save navigation data")
+        }
+    }
+}
+struct DetailView: View {
+    var number: Int
+
+    var body: some View {
+        NavigationLink("Go to Random Number", value: Int.random(in: 1...1000))
+            .navigationTitle("Number: \(number)")
     }
 }
 
 struct ContentView: View {
-    @State private var path = NavigationPath()
+    @State private var pathStore = PathStore()
     
     var body: some View {
-        NavigationStack(path: $path){
-            DetailView(number: 0, path: $path)
+        NavigationStack(path: $pathStore.path){
+            DetailView(number: 0)
                 .navigationDestination(for: Int.self) { index in
-                    DetailView(number: index, path: $path)
+                    DetailView(number: index)
                 }
         }
     }
