@@ -51,10 +51,17 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack(path: $pathStore.path){
-            DetailView(number: 0)
-                .navigationDestination(for: Int.self) { index in
-                    DetailView(number: index)
+            
+            
+            List(0..<100){ number in
+                NavigationLink("Go to Detail \(number)"){
+                    Text("Details \(number)")
                 }
+            }
+            .navigationTitle("Details Views")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.black, for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
         }
     }
 }
