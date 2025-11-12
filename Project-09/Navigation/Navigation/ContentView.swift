@@ -62,6 +62,17 @@ struct ContentView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.black, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
+            
+            .toolbar {
+                ToolbarItemGroup(placement: .topBarLeading){
+                    Button("Save"){
+                        
+                    }
+                    Button("Cancel"){
+                        
+                    }
+                }
+            }
         }
     }
 }
