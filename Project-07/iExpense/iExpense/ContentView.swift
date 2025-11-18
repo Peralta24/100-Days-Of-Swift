@@ -55,12 +55,10 @@ struct ContentView: View {
             }
             .navigationTitle("Gastos")
             .toolbar{
-                Button("Agregar",systemImage: "plus"){
-                    mostrarFormulario = true
+                
+                NavigationLink("Agregar") {
+                    AddView(gastos: gastos)
                 }
-            }
-            .sheet(isPresented: $mostrarFormulario){
-                AddView(gastos: gastos)
             }
         }
     }

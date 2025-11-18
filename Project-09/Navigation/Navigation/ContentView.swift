@@ -48,7 +48,8 @@ struct DetailView: View {
 
 struct ContentView: View {
     @State private var pathStore = PathStore()
-    
+
+    @State private var title : String = "Navigation"
     var body: some View {
         NavigationStack(path: $pathStore.path){
             
@@ -58,7 +59,7 @@ struct ContentView: View {
                     Text("Details \(number)")
                 }
             }
-            .navigationTitle("Details Views")
+            .navigationTitle($title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(.black, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)

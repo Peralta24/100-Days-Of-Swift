@@ -9,10 +9,10 @@ struct AddView: View {
     @State private var monto: Double = 0
     
     let categorias = ["Personal","Negocio"]
+    @State private var tituloGasto = "Nombre del gasto"
     var body: some View {
         NavigationStack {
             Form {
-                TextField("Nombre", text: $nombre)
                 Picker("Categoria",selection: $cateogoria){
                     ForEach(categorias, id:\.self){
                         Text($0)
@@ -20,10 +20,11 @@ struct AddView: View {
                 }
                 TextField("Cantidad",value: $monto,format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
             }
-            .navigationTitle("Agregar")
+            .navigationTitle($tituloGasto)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 Button("Guardar"){
-                    let nuevoGasto = Gasto(nombre: nombre, categoria: cateogoria, monto: monto)
+                    let nuevoGasto = Gasto(nombre: tituloGasto, categoria: cateogoria, monto: monto)
                     gastos.index.append(nuevoGasto)
                     dismiss()
                 }
