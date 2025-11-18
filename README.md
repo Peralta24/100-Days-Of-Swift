@@ -50,7 +50,7 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 42- Proyecto 8 (Parte Cuatro)
 - [x] Día 43- Proyecto 9 (Parte Uno) 
 - [x] Día 44- Proyecto 9 (Parte Dos) 
-- Día 45- Proyecto 9 (Parte Tres) 
+- [x] Día 45- Proyecto 9 (Parte Tres) 
 
 
 
