@@ -420,3 +420,17 @@ gestorTareas.buscarTareaPorTitulo(titulo: "Estudiar Swiftdd")
 
 
 
+class Contador {
+    var numero = 0
+}
+
+var n1 = Contador()
+n1.numero = 10
+var n2 = Contador()
+n2.numero = 20
+var n3 = Contador()
+n3.numero = 30
+
+print(n1.numero) 
+print(n2.numero) 
+print(n3.numero)
