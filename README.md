@@ -54,6 +54,7 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 46- Proyecto 9 (Parte Cuatro) 
 - [x] Día 47- Milestone  
 - [x] Día 48  
+- [x] Día 49 - Proyecto 10 (Parte uno)
 
 
 
