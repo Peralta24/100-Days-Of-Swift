@@ -53,7 +53,7 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 45- Proyecto 9 (Parte Tres) 
 - [x] Día 46- Proyecto 9 (Parte Cuatro) 
 - [x] Día 47- Milestone  
--  Día 48 
+- [x] Día 48  
 
 
 
