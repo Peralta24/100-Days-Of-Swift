@@ -21,6 +21,10 @@ struct ContentView: View {
     @State private var results = [Result]()
     @State private var userName = ""
     @State private var email = ""
+    
+    var isDisabled: Bool {
+        userName.count < 5 || email.count < 5
+    }
     var body: some View {
         List(results, id: \.trackId) { item in
             VStack(alignment: .leading) {
@@ -65,7 +69,7 @@ struct ContentView: View {
                     print("Creating acount")
                 }
             }
-            .disabled(userName.isEmpty || email.isEmpty)
+            .disabled(isDisabled)
         }
         .task {
             await loadData()
