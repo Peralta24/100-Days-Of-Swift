@@ -19,7 +19,8 @@ struct Result: Codable {
 
 struct ContentView: View {
     @State private var results = [Result]()
-    
+    @State private var userName = ""
+    @State private var email = ""
     var body: some View {
         List(results, id: \.trackId) { item in
             VStack(alignment: .leading) {
@@ -54,6 +55,18 @@ struct ContentView: View {
         }
         .frame(width: 200,height: 200)
 
+        Form {
+            Section {
+                TextField("User name", text: $userName)
+                TextField("Email", text: $email)
+            }
+            Section {
+                Button("Create account"){
+                    print("Creating acount")
+                }
+            }
+            .disabled(userName.isEmpty || email.isEmpty)
+        }
         .task {
             await loadData()
         }
