@@ -11,6 +11,9 @@ struct CheckOut: View {
     var order : Order
     @State private var confirmMessage = ""
     @State private var showingConfirmationAlert = false
+    
+    @State private var failMessage = ""
+    @State private var showingFailAlert = false
     var body: some View {
         ScrollView {
             VStack {
@@ -44,6 +47,11 @@ struct CheckOut: View {
         }message : {
             Text(confirmMessage)
         }
+        .alert("Your order is",isPresented:$showingFailAlert){
+            Button("Ok"){}
+        }message : {
+            Text(failMessage)
+        }
     }
     func placeOrder() async {
         guard let encoded = try? JSONEncoder().encode(order) else {
@@ -54,7 +62,7 @@ struct CheckOut: View {
         let url = URL(string: "https://reqres.in/api/cupcakes")!
         var request = URLRequest(url: url)
         request.setValue( "application/json", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "POST"
+//        request.httpMethod = "POST"
         
         
         do {
@@ -65,6 +73,8 @@ struct CheckOut: View {
             confirmMessage = "Your order for \(decodedOrder.quantity) x \(Order.types[decodedOrder.type].lowercased()) cupcakes has been placed. Thank you!)"
             showingConfirmationAlert = true
         } catch {
+            failMessage = "We encountered an error placing your order. Please try again later."
+            showingFailAlert = true
             print("Check out failed : \(error.localizedDescription)")
         }
         
