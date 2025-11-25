@@ -18,10 +18,11 @@ struct ButtonConfirm : View {
 }
 struct ContentView : View {
     @State var isPresented = false
+    @AppStorage("notes") var notes = ""
     var body: some View {
-        VStack{
-            ButtonConfirm(title: "Boton", isOn: $isPresented)
-            Text(isPresented ? "Presionado" : "No presionado")
+        NavigationStack {
+            TextEditor(text: $notes)
+                .navigationTitle("Notes")
         }
     }
 }
