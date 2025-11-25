@@ -57,6 +57,7 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 49 - Proyecto 10 (Parte uno)
 - [x] Día 50 - Proyecto 10 (Parte Dos)
 - [x] Día 51 - Proyecto 10 (Parte Tres)
+- [x] Día 52 - Proyecto 10 (Parte Cuatro)
 
 
 
