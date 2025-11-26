@@ -4,7 +4,7 @@
 //
 //  Created by Jose Rafael Peralta Martinez  on 25/11/25.
 //
-
+import SwiftData
 import SwiftUI
 struct ButtonConfirm : View {
     var title: String
@@ -17,12 +17,28 @@ struct ButtonConfirm : View {
     }
 }
 struct ContentView : View {
+    @Environment(\.modelContext) var modelContext
+    @Query var students : [Student]
     @State var isPresented = false
     @AppStorage("notes") var notes = ""
     var body: some View {
         NavigationStack {
-            TextField("text",text: $notes,axis: .vertical)
-                .navigationTitle("Notes")
+            List(students) {student in
+                Text(student.name)
+            }
+            
+            .navigationTitle("Classroom")
+            .toolbar {
+                Button("Add"){
+                    let firtsName = ["Ginny","Harry","Hermiones","Luna","Ron"]
+                    let lastName = ["Weasley","Potter","Granger","Lovegood","Weasley"]
+                    let chosenFirsName = firtsName.randomElement()!
+                    let chosenLastName = lastName.randomElement()!
+                    
+                    let student = Student(id: UUID(), name: "\(chosenFirsName) \(chosenLastName)")
+                    modelContext.insert(student)
+                }
+            }
         }
     }
 }
