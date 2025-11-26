@@ -6,39 +6,26 @@
 //
 import SwiftData
 import SwiftUI
-struct ButtonConfirm : View {
-    var title: String
-    @Binding var isOn : Bool
-    
-    var body: some View {
-        Button(title) {
-            isOn.toggle()
-        }
-    }
-}
+
 struct ContentView : View {
     @Environment(\.modelContext) var modelContext
-    @Query var students : [Student]
-    @State var isPresented = false
-    @AppStorage("notes") var notes = ""
+    @Query var books : [Book]
+    
+    @State var showingAddScreen : Bool = false
     var body: some View {
         NavigationStack {
-            List(students) {student in
-                Text(student.name)
-            }
-            
-            .navigationTitle("Classroom")
-            .toolbar {
-                Button("Add"){
-                    let firtsName = ["Ginny","Harry","Hermiones","Luna","Ron"]
-                    let lastName = ["Weasley","Potter","Granger","Lovegood","Weasley"]
-                    let chosenFirsName = firtsName.randomElement()!
-                    let chosenLastName = lastName.randomElement()!
-                    
-                    let student = Student(id: UUID(), name: "\(chosenFirsName) \(chosenLastName)")
-                    modelContext.insert(student)
+            Text("The count is \(books.count)")
+                .navigationTitle("BookWorm")
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Add Book", systemImage: "plus") {
+                            showingAddScreen.toggle()
+                        }
+                    }
                 }
-            }
+                .sheet(isPresented: $showingAddScreen) {
+                    AddBook()
+                }
         }
     }
 }
