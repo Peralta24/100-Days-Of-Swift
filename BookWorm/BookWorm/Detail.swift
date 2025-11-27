@@ -9,6 +9,10 @@ import SwiftData
 import SwiftUI
 
 struct Detail: View {
+    @Environment(\.modelContext) var modelContext
+    @Environment(\.dismiss) var dismiss
+    
+    @State private var shwoingDeleteAlert: Bool = false
     let book: Book
     var body: some View {
         ScrollView {
@@ -38,6 +42,21 @@ struct Detail: View {
         .navigationTitle(book.title)
         .navigationBarTitleDisplayMode(.inline)
         .scrollBounceBehavior(.basedOnSize)
+        .alert("Delete Book", isPresented: $shwoingDeleteAlert) {
+            Button("Delete",role: .destructive,action: deleteBook)
+            Button("Cancel",role:.cancel){}
+        }message: {
+            Text("Are you sure? This action cannot be undone.")
+        }
+        .toolbar{
+            Button("Delete this book",systemImage: "trash"){
+                shwoingDeleteAlert = true
+            }
+        }
+    }
+    func deleteBook() {
+        modelContext.delete(book)
+        dismiss()
     }
 }
 
