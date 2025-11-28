@@ -20,7 +20,7 @@ struct Detail: View {
                 Image(book.genre)
                     .resizable()
                     .scaledToFit()
-                
+                                    
                 Text(book.genre.uppercased())
                     .fontWeight(.black)
                     .padding(8)
@@ -29,6 +29,10 @@ struct Detail: View {
                     .clipShape(.capsule)
                     .offset(x: -5, y: -5)
             }
+            Text("Added on: \(book.date, style: .date)")
+                .font(.caption)
+                .padding()
+
             
             Text(book.author)
                 .font(.title)
@@ -72,3 +76,4 @@ struct Detail: View {
         return Text("Failed to create preview: \(error.localizedDescription)")
     }
 }
+
