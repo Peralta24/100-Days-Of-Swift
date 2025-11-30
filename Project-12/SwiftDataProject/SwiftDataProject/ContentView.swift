@@ -17,7 +17,7 @@ struct ContentView: View {
     @State private var path = [User]()
     var body: some View {
         NavigationStack {
-            List(users) { user in
+            List(users) { user in 
                 Text(user.name)
             }
             .navigationTitle("Users")
