@@ -63,7 +63,7 @@ ayuden a mejorar como desarollador iOS.
 - [x] Día 55 - Proyecto 11 (Parte Tres)
 - [x] Día 56 - Proyecto 11 (Parte Cuatro)
 - [x] Día 57 - Proyecto 12 (Parte Uno)
--  Día 58 - Proyecto 12 (Parte Dos)
+- [x] Día 58 - Proyecto 12 (Parte Dos)
 
 
  
