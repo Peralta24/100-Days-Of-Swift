@@ -10,51 +10,58 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.modelContext) var modelContext
-    @State private var isShowingUpComing = false
-    @State private var sortOder = [
+    @State private var path = [User]()
+    @State private var joinDate = false
+    @State private var sortOrder = ([
         SortDescriptor(\User.name),
         SortDescriptor(\User.joinDate)
-    ]
-    @State private var path = [User]()
+    ])
+    
     var body: some View {
         NavigationStack {
-            UsersView(minimumjoinDate: isShowingUpComing ? .now : .distantPast, sortOder: sortOder)
-            .navigationTitle("Users")
-            .toolbar {
-                Button("Add Samples", systemImage: "plus") {
-                    try? modelContext.delete(model:User.self)
-                    let first = User(name: "Ed Sheeran", city: "london", joinDate: .now.addingTimeInterval(86400 * -10))
-                    let second = User(name: "Rosa Diaz", city: "New York", joinDate: .now.addingTimeInterval(86400 * -5))
-                    let third = User(name: "Roy Kent", city: "London", joinDate: .now.addingTimeInterval(86400 * 5))
-                    let fourth = User(name: "Johnny English", city: "London", joinDate: .now.addingTimeInterval(86400 * 10))
-
-                    modelContext.insert(first)
-                    modelContext.insert(second)
-                    modelContext.insert(third)
-                    modelContext.insert(fourth)
-                }
-                Button(isShowingUpComing ? "Show Everyone" : "Show Upcoming") {
-                    isShowingUpComing.toggle()
-                }
-                
-                Menu("Sort",systemImage: "arrow.up.arrow.down") {
-                    Picker("Sort by", selection: $sortOder) {
-                        Text("Sort by name")
-                            .tag([
-                                SortDescriptor(\User.name),
-                                SortDescriptor(\User.joinDate)
-                            ])
+            UsersView(minimumJoinDate: joinDate ? .now: .distantPast, sortOrder: sortOrder)
+            
+                .navigationTitle("Users")
+                .toolbar {
+                    Button("Add Samples", systemImage: "plus") {
+                        try? modelContext.delete(model:User.self)
+                        let first = User(name: "Ed Sheeran", city: "london", joinDate: .now.addingTimeInterval(86400 * -10))
+                        let second = User(name: "Rosa Diaz", city: "New York", joinDate: .now.addingTimeInterval(86400 * -5))
+                        let third = User(name: "Roy Kent", city: "London", joinDate: .now.addingTimeInterval(86400 * 5))
+                        let fourth = User(name: "Johnny English", city: "London", joinDate: .now.addingTimeInterval(86400 * 10))
                         
-                        Text("Sort by joinDate")
-                            .tag([
-                                SortDescriptor(\User.joinDate),
-                                SortDescriptor(\User.name)
-                            ])
+                        modelContext.insert(first)
+                        modelContext.insert(second)
+                        modelContext.insert(third)
+                        modelContext.insert(fourth)
                     }
+                    Button(joinDate ? "Show everyone" : "Show upcoming") {
+                        joinDate.toggle()
+                    }
+                    
+                    Menu("Sort",systemImage: "arrow.up.arrow.down"){
+                        Picker("Sort by",selection: $sortOrder) {
+                            Text("Sort by name")
+                                .tag([
+                                    SortDescriptor(\User.name),
+                                    SortDescriptor(\User.joinDate)
+                                ])
+                            
+                            Text("Sort by joinDate")
+                                .tag([
+                                    SortDescriptor(\User.joinDate),
+                                    SortDescriptor(\User.name)
+
+                                ])
+                        }
+                    }
+                    EditButton()
+                    
                 }
-            }
         }
     }
+    
+
 }
 
 #Preview {
