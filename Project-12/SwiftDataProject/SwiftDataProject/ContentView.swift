@@ -10,16 +10,15 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.modelContext) var modelContext
-    @Query(filter: #Predicate<User> {user in
-        user.name.localizedStandardContains("R") &&
-        user.city.localizedStandardContains("London")
-    },sort: \User.name) var users: [User]
+    @State private var isShowingUpComing = false
+    @State private var sortOder = [
+        SortDescriptor(\User.name),
+        SortDescriptor(\User.joinDate)
+    ]
     @State private var path = [User]()
     var body: some View {
         NavigationStack {
-            List(users) { user in 
-                Text(user.name)
-            }
+            UsersView(minimumjoinDate: isShowingUpComing ? .now : .distantPast, sortOder: sortOder)
             .navigationTitle("Users")
             .toolbar {
                 Button("Add Samples", systemImage: "plus") {
@@ -33,6 +32,25 @@ struct ContentView: View {
                     modelContext.insert(second)
                     modelContext.insert(third)
                     modelContext.insert(fourth)
+                }
+                Button(isShowingUpComing ? "Show Everyone" : "Show Upcoming") {
+                    isShowingUpComing.toggle()
+                }
+                
+                Menu("Sort",systemImage: "arrow.up.arrow.down") {
+                    Picker("Sort by", selection: $sortOder) {
+                        Text("Sort by name")
+                            .tag([
+                                SortDescriptor(\User.name),
+                                SortDescriptor(\User.joinDate)
+                            ])
+                        
+                        Text("Sort by joinDate")
+                            .tag([
+                                SortDescriptor(\User.joinDate),
+                                SortDescriptor(\User.name)
+                            ])
+                    }
                 }
             }
         }

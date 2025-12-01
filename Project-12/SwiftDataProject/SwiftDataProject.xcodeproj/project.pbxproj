@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		60D10FB92EDDAFFF000A228A /* UsersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D10FB82EDDAFFF000A228A /* UsersView.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		60D10F892EDC76C0000A228A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,7 @@
 		60D10F782EDC76BF000A228A /* SwiftDataProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftDataProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60D10F882EDC76C0000A228A /* SwiftDataProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftDataProjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		60D10F922EDC76C0000A228A /* SwiftDataProjectUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftDataProjectUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		60D10FB82EDDAFFF000A228A /* UsersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +80,7 @@
 		60D10F6F2EDC76BF000A228A = {
 			isa = PBXGroup;
 			children = (
+				60D10FB82EDDAFFF000A228A /* UsersView.swift */,
 				60D10F7A2EDC76BF000A228A /* SwiftDataProject */,
 				60D10F8B2EDC76C0000A228A /* SwiftDataProjectTests */,
 				60D10F952EDC76C0000A228A /* SwiftDataProjectUITests */,
@@ -236,6 +242,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60D10FB92EDDAFFF000A228A /* UsersView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
