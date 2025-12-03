@@ -13,6 +13,7 @@ struct iExpenseApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: Gasto.self)
     }
 }
 

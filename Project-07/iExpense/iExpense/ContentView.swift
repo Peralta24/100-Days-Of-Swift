@@ -1,80 +1,80 @@
 import SwiftUI
-struct Gasto : Identifiable , Codable{
+import SwiftData
+@Model
+class Gasto {
     var id = UUID()
-    let nombre : String
-    let categoria: String
-    let monto: Double
+    var nombre : String
+    var categoria: String
+    var monto: Double
+    init(id: UUID = UUID(), nombre: String, categoria: String, monto: Double) {
+        self.id = id
+        self.nombre = nombre
+        self.categoria = categoria
+        self.monto = monto
+    }
 }
 
-@Observable
-class Gastos {
-    var index = [Gasto]()
-}
 struct ContentView: View {
-    @State private var gastos = Gastos()
-    var gastosPersonales : [Gasto] {
-        gastos.index.filter{$0.categoria == "Personal"}
+    @Environment(\.modelContext) var modelContext
+
+    @Query(sort: \Gasto.nombre) var gastos: [Gasto]
+
+    @State private var categoriaSeleccionada = "Personal"
+
+    var gastosFiltrados: [Gasto] {
+        if categoriaSeleccionada == "Todos" {
+            return gastos
+        }else {
+                return gastos.filter { $0.categoria == categoriaSeleccionada }
+        }
     }
-    var gastosNegocios : [Gasto]{
-        gastos.index.filter{$0.categoria == "Negocio"}
-    }
-    @State private var mostrarFormulario = false
+
     var body: some View {
-        NavigationStack{
-            List{
-                Section("Gastos Personales"){
-                    ForEach(gastosPersonales){gasto in
-                        HStack{
-                            VStack(alignment: .leading){
-                                Text(gasto.nombre)
-                                    .font(.headline)
-                                
-                                Text(gasto.categoria)
-                            }
-                            Spacer()
-                            Text(gasto.monto,format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
-                        }
+        NavigationStack {
+            List {
+                Section("Gastos \(categoriaSeleccionada)") {
+                    ForEach(gastosFiltrados) { gasto in
+                        fila(gasto)
                     }
-                    .onDelete(perform: borrarGastoPersonal)
-                }
-                Section("Gastos Negocios"){
-                    ForEach(gastosNegocios) { gasto in
-                        HStack{
-                            VStack(alignment: .leading){
-                                Text(gasto.nombre)
-                                    .font(.headline)
-                                
-                                Text(gasto.categoria)
-                            }
-                            Spacer()
-                            Text(gasto.monto,format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
-                        }
+                    .onDelete { indexSet in
+                        borrar(indexSet, en: gastosFiltrados)
                     }
-                    .onDelete(perform: borrarGastoNegocio)
                 }
             }
             .navigationTitle("Gastos")
-            .toolbar{
-                
+            .toolbar {
                 NavigationLink("Agregar") {
-                    AddView(gastos: gastos)
+                    AddView(orderCategori: categoriaSeleccionada, sortOrder: [])
+                }
+
+                Menu("Filtrar") {
+                    Button("Personal") { categoriaSeleccionada = "Personal" }
+                    Button("Negocio") { categoriaSeleccionada = "Negocio" }
+                    Button("Todos") { categoriaSeleccionada = "Todos" }
+
                 }
             }
         }
     }
-    func borrarGastoPersonal(offset:IndexSet){
-        let itemsABorrar = offset.map {gastosPersonales[$0]}
-        gastos.index.removeAll{gasto in
-            itemsABorrar.contains{$0.id == gasto.id}
+
+    func fila(_ gasto: Gasto) -> some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(gasto.nombre).font(.headline)
+                Text(gasto.categoria)
+            }
+            Spacer()
+            Text(gasto.monto, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
         }
     }
-    func borrarGastoNegocio(offset:IndexSet){
-        let itemsABorrar = offset.map {gastosNegocios[$0]}
-        gastos.index.removeAll{gasto in
-            itemsABorrar.contains{$0.id == gasto.id}
+
+    func borrar(_ offset: IndexSet, en lista: [Gasto]) {
+        for index in offset {
+            modelContext.delete(lista[index])
         }
     }
 }
+
 
 
 #Preview {

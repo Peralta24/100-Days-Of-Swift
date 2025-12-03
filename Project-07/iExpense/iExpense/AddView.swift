@@ -1,9 +1,10 @@
 
 import SwiftUI
-
+import SwiftData
 struct AddView: View {
     @Environment(\.dismiss) var dismiss
-    var gastos = Gastos()
+    @Environment(\.modelContext) var modelContext
+    @Query var datosFiltrados : [Gasto]
     @State private var nombre = ""
     @State private var cateogoria = "Personal"
     @State private var monto: Double = 0
@@ -25,14 +26,26 @@ struct AddView: View {
             .toolbar{
                 Button("Guardar"){
                     let nuevoGasto = Gasto(nombre: tituloGasto, categoria: cateogoria, monto: monto)
-                    gastos.index.append(nuevoGasto)
+                    modelContext.insert(nuevoGasto)
                     dismiss()
                 }
             }
         }
+        
+    }
+    init(orderCategori: String, sortOrder: [SortDescriptor<Gasto>]) {
+        _datosFiltrados = Query(
+            filter: #Predicate<Gasto> {gasto in
+                gasto.categoria == orderCategori
+            },
+            sort: sortOrder
+        )
     }
 }
 
 #Preview {
-    AddView()
+    AddView(
+        orderCategori: "Personal", sortOrder: [SortDescriptor(\Gasto.monto)]
+    )
+    
 }
