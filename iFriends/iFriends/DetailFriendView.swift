@@ -42,12 +42,13 @@ struct DetailFriendView: View {
                     Image(systemName: "person.circle")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 150, height: 150)
+                        .frame(width: 100, height: 100)
                         .padding(30)
                     
                     VStack {
                         Text(user.name)
                             .font(.title)
+                            .lineLimit(1)
                             .fontWeight(.bold)
                         
                         Text(user.isActive ? "Activo" : "Inactivo")
@@ -57,7 +58,7 @@ struct DetailFriendView: View {
                             .clipShape(Capsule())
                             .foregroundColor(.white)
                     }
-                    .padding()
+                    .padding(.horizontal,30)
                 }
                 .cardStyle()
                 
@@ -147,13 +148,13 @@ struct DetailFriendView: View {
                         Text("Friends")
                             .font(.headline)
                         
-                        VStack (alignment: .leading) {
+                        VStack () {
                             ForEach(user.friends) { friend in
                                
                                 if let fullFriendInfo = allUsers.first(where: { $0.id == friend.id }) {
                                     
                                     NavigationLink(value: fullFriendInfo) {
-                                        HStack {
+                                        VStack {
                                             Image(systemName: "person.circle")
                                                 .resizable()
                                                 .scaledToFit()
